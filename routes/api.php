@@ -52,7 +52,7 @@ Route::post('/event/save/{event}' , 'Api\Event\SaveEventController@index');
 Route::post('/order' , 'Api\Event\OrderController@store');
 //
 Route::get('/attendees/{event}' , 'Api\Report\AttendeeController@index');
-Route::post('/attendee/checkin/' , 'Api\Report\AttendeeController@checkin');
+Route::post('/attendee/checkin/' , 'Api\Report\AttendeeController@checkin')->name('checkin');
 Route::get('/report/{event}' , 'Api\Report\DashboardController@index');
 Route::get('/search/attendee/' , 'Api\Search\AttendeeController@search');
 
@@ -64,4 +64,4 @@ Route::post('/logout', 'Api\Auth\AuthController@logout');
 
 //Auth
 Route::post('/register', 'Api\Auth\AuthController@register');
-Route::post('/login', 'Api\Auth\AuthController@login');
+Route::post('/login', 'Api\Auth\AuthController@login')->name('login');

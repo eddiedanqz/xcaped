@@ -6,15 +6,16 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Attendee;
 
 class GenerateQrCodeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
         /**
-     * The order instance.
+     * The Attendee instance.
      *
-     * @var \App\Models\Order
+     * @var \App\Models\Attendee
      */
     public $attendee;
 
@@ -26,7 +27,7 @@ class GenerateQrCodeMail extends Mailable
      */
     public function __construct(Attendee $attendee)
     {
-        $this->$attendee = $attendee;
+        $this->attendee = $attendee;
     }
 
     /**
@@ -36,6 +37,6 @@ class GenerateQrCodeMail extends Mailable
      */
     public function build()
     {
-        return $this->view('view.emails.qrcode');
+        return $this->view('emails.qrcode');
     }
 }

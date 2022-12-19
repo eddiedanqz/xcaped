@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Ticket;
 use App\Models\Attendee;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\GenerateQrCodeMail;
 
 
 class OrderController extends Controller
@@ -20,16 +21,6 @@ class OrderController extends Controller
     public function index()
     {
 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -86,17 +77,24 @@ class OrderController extends Controller
             $ticket->update();
         }
 
-        //Send email to customers
+        //
         foreach ($data as $item) {
-           $attendee = new Attendee;
-           $attendee->order_id = $order->id;
-           $attendee->event_id = $eventId;
-           $attendee->ticket_id = $item['ticketId'];
-           $attendee->fullname = $user->fullname;
-           $attendee->email = $user->email;
-           $attendee->reference = rand(11111111,99999999);
-           $attendee->save();
+            $attendee = new Attendee;
+            $attendee->order_id = $order->id;
+            $attendee->event_id = $eventId;
+            $attendee->ticket_id = $item['ticketId'];
+            $attendee->fullname = $user->fullname;
+            $attendee->email = $user->email;
+            $attendee->reference = rand(11111111,99999999);
+            $attendee->save();
         }
+
+        //Send email to customers
+
+        $attendees = Attendee::where('order_id',$order->id)->get();
+          foreach ($attendees as $attendee) {
+            Mail::to($attendee->email)->send(new GenerateQrCodeMail($attendee));
+          }
 
         //
         $response =  [
