@@ -79,4 +79,14 @@ class User extends Authenticatable implements ReactsInterface
 //     return '/uploads/'.$imagePath;
 //   }
 
+ /**
+     * The orders associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

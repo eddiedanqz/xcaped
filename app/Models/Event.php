@@ -60,4 +60,24 @@ class Event extends Model implements ReactableInterface
 
         return '/uploads/'.$imagePath;
     }
+
+    /**
+     * The orders associated with the event.
+     *
+     * @return HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * The attendees associated with the event.
+     *
+     * @return HasMany
+     */
+    public function attendees()
+    {
+        return $this->hasMany(Attendee::class);
+    }
 }

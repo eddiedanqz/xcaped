@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Api\Event;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Ticket;
+use App\Models\Attendee;
+use Illuminate\Support\Facades\Mail;
+
 
 class OrderController extends Controller
 {
@@ -14,15 +19,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $userId = auth()->user()->id;
 
-        $orders = Order::where('user_id',$userId)->latest()->get();
-
-        $response = [
-            'orders' => $orders
-        ];
-
-        return response($response,200);
     }
 
     /**
@@ -43,24 +40,32 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = auth()->user()->id;
+        $user = auth()->user();
         //Get Tickets
-        $cartItems = Cart::where('user_id',$userId)->get();
+        // $cartItems = Cart::where('user_id',$userId)->get();
 
         $total = 0;
+        $quantity = 0;
+        $eventId;
+
+        $data = [$request->all()];
 
         $order = new Order();
-        $order->order_no = 'xcp'.rand(11111111,99999999);
-        $order->user_id = $userId;
-        $order->full_name = $request->full_name;
-        $order->user_email = $request->user_email;
+        $order->order_no = 'XCP'.rand(11111111,99999999);
+        $order->user_id = $user->id;
+        $order->full_name = $user->fullname;
+        $order->user_email = $user->email;
         //Calculate total price
-        foreach ($cartItems as $prod)
+        foreach ($data as $ticket)
         {
-          $total += $prod->product->regular_price;
+            $total += $ticket['total'];
+            $quantity += $ticket['qty'];
+            $eventId = $ticket['eventId'];
         }
 
+        $order->event_id = $eventId;
         $order->grand_total = $total;
+        $order->quantity = $quantity;
 
         $order->save();
 
@@ -68,23 +73,30 @@ class OrderController extends Controller
 
 
         //Create order item
-        foreach ($cartItems as $item)
+        foreach ($data as $item)
         {
-         $order->items()->attach($item->product->id,
+         $order->items()->attach($item['ticketId'],
             [
-                'price' => $item->product->regular_price,
-                'quantity'=> $item->quantity
+                'price' => $item['price'],
+                'quantity'=> $item['qty']
             ]);
             //Check stock
-            $product = Product::find($item->product->id);
-            $product->quantity = $product->quantity - $item->quantity;
-            $product->update();
+            $ticket = Ticket::find($item['ticketId']);
+            $ticket->capacity = $ticket->capacity - $item['qty'];
+            $ticket->update();
         }
 
-        //Empty cart
-        // Cart::destroy($cartItems);
-
         //Send email to customers
+        foreach ($data as $item) {
+           $attendee = new Attendee;
+           $attendee->order_id = $order->id;
+           $attendee->event_id = $eventId;
+           $attendee->ticket_id = $item['ticketId'];
+           $attendee->fullname = $user->fullname;
+           $attendee->email = $user->email;
+           $attendee->reference = rand(11111111,99999999);
+           $attendee->save();
+        }
 
         //
         $response =  [

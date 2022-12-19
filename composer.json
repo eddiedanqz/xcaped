@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "fedeisas/laravel-mail-css-inliner": "4.*",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -15,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "predis/predis": "^2.0",
         "qirolab/laravel-reactions": "^2.5",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "stevebauman/location": "^6.5",
         "torann/geoip": "^3.0"
     },

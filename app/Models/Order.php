@@ -16,10 +16,11 @@ class Order extends Model
      */
     protected $fillable = [
         'full_name','user_email','status','order_no','user_id','grand_total',
-        'isPaid','payment_method',
+        'isPaid','payment_method','quantity','event_id',
         'message',
     ];
 
+    protected $dateFormat = 'Y-m-d';
 
     /**
      * The roles that belong to the Order
@@ -41,4 +42,37 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+     /**
+     * The attendees associated with the order.
+     *
+     * @return HasMany
+     */
+    public function attendees()
+    {
+        return $this->hasMany(Attendee::class);
+    }
+
+      /**
+     * The event associated with the order.
+     *
+     * @return BelongsTo
+     */
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    /**
+     * The tickets associated with the order.
+     * @return BelongsToMany
+     */
+    // public function tickets()
+    // {
+    //     return $this->belongsToMany(
+    //         Ticket::class,
+    //         'ticket_order',
+    //         'order_id',
+    //         'ticket_id'
+    //     );
+    // }
 }

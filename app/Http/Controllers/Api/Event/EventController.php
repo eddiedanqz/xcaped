@@ -32,7 +32,7 @@ class EventController extends Controller
         $gip = Location::get($_SERVER['REMOTE_ADDR']);
         $lat =  5.8;//$gip->latitude;
         $lng =  -0.25;//$gip->longitude;
-        $radius = 20;
+        $radius = 50;
         // $city = $gip->city;
 
          $distanceString = "( 6371 * acos( cos( radians($lat) ) * cos( radians( address_latitude ) ) * cos( radians( address_longitude ) - radians($lng) ) + sin( radians($lat) ) * sin( radians( address_latitude ) ) ) )

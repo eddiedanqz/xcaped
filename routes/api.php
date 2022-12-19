@@ -49,7 +49,12 @@ Route::post('/follow/{user}/' , 'Api\User\FollowController@index');
 //interested event
 Route::post('/event/save/{event}' , 'Api\Event\SaveEventController@index');
 //
-// Route::post('/ifInterested/{event}/' , 'User\InterestedController@check');
+Route::post('/order' , 'Api\Event\OrderController@store');
+//
+Route::get('/attendees/{event}' , 'Api\Report\AttendeeController@index');
+Route::post('/attendee/checkin/' , 'Api\Report\AttendeeController@checkin');
+Route::get('/report/{event}' , 'Api\Report\DashboardController@index');
+Route::get('/search/attendee/' , 'Api\Search\AttendeeController@search');
 
 Route::post('/verify/slug','Api\Event\SlugCheckerController@index');
 //Logout

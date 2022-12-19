@@ -10,6 +10,7 @@ use App\Models\Event;
 use App\Http\Resources\EventResource;
 use Illuminate\Support\Carbon;
 
+
 class SearchController extends Controller
 {
 

@@ -37,4 +37,19 @@ class Ticket extends Model
     {
         return $this->belongsTo(Event::class, 'event_id')->withTrashed();
     }
+
+     /**
+     * The order associated with the ticket.
+     * @return BelongsToMany
+     */
+    public function orders()
+    {
+        return $this->belongsToMany(
+            Order::class,
+            'ticket_order',
+            'ticket_id',
+            'order_id'
+        );
+    }
+
 }
