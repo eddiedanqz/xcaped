@@ -44,8 +44,6 @@ class EventController extends Controller
           ->whereRaw("$distanceString < ?",[$radius])
           ->orderBy('distance')->offset(0)->paginate(10);
 
-        // $events = Event::latest()->paginate(10);
-
         return EventResource::collection($events);
     }
 

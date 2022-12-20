@@ -56,7 +56,8 @@ class UserController extends Controller
                   return $user->following->count();
               });
 
-        return response(['user'=> $user,'events' => $events,'savedCount' => $savedCount]);
+        return response(['user'=> $user,'events' => $events,'savedCount' => $savedCount,'follows' => $follows,
+    'followers' => $followersCount,'following' => $followingCount]);
     }
 
     /**

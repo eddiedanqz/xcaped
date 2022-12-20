@@ -35,8 +35,8 @@ class AttendeeController extends Controller
     public function checkin(Request $request)
     {
 
-    $attendee = Attendee::where('id',$request->id)->where('event_id',$request->eventId)
-        ->update(['status' => 'checked', 'check_time' => Carbon::now()->format('H:i')]);
+    $attendee = Attendee::where('reference',$request->reference)->where('event_id',$request->eventId)->get();
+        $attendee->update(['status' => 'checked', 'check_time' => Carbon::now()->format('H:i')]);
 
     return response($attendee);
     }

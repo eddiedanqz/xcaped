@@ -47,7 +47,8 @@ Route::get('/profile/{user}','Api\User\UserController@index');
 //follow user
 Route::post('/follow/{user}/' , 'Api\User\FollowController@index');
 //interested event
-Route::post('/event/save/{event}' , 'Api\Event\SaveEventController@index');
+Route::get('/event/saved' , 'Api\Event\SaveEventController@index');
+Route::post('/event/save/{event}' , 'Api\Event\SaveEventController@store');
 //
 Route::post('/order' , 'Api\Event\OrderController@store');
 //
