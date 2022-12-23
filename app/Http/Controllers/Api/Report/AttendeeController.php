@@ -23,7 +23,7 @@ class AttendeeController extends Controller
      */
     public function index(Event $event)
     {
-        $attendees = Attendee::where('event_id',$event->id)->paginate(10);
+        $attendees = Attendee::where('event_id',$event->id)->latest()->paginate(10);
         return AttendeeResource::collection($attendees);
     }
 
@@ -32,13 +32,18 @@ class AttendeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkin(Request $request)
+    public function checkin(Request $request, Attendee $attendee)
     {
+        $attendee = Attendee::findOrFail($request->id);
+        $eventId = $attendee->event_id;
 
-    $attendee = Attendee::where('reference',$request->reference)->where('event_id',$request->eventId)->get();
-        $attendee->update(['status' => 'checked', 'check_time' => Carbon::now()->format('H:i')]);
+        $this->authorize('update', [$attendee, $eventId]);
 
-    return response($attendee);
+        $attendee->status = 'checked';
+        $attendee->check_time = Carbon::now()->format('H:i');
+        $attendee->save();
+
+    return AttendeeResource::make($attendee);
     }
 
 

@@ -20,7 +20,7 @@ class AttendeeResource extends JsonResource
             "event_id" => $this->event_id,
             "ticket_id" => $this->ticket_id,
             "fullname"=>$this->fullname,
-            "email" => $this->email,
+            // "email" => $this->email,
             "reference" =>$this->reference,
             "checkIn_time" =>$this->check_time,
             "status" =>$this->status,

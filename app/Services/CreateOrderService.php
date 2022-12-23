@@ -17,7 +17,7 @@ class CreateOrderService {
         $quantity = 0;
         $eventId;
 
-        $data = [$request->all()];
+        $data = json_decode($request->tickets);
 
         $order = new Order();
         $order->order_no = 'XCP'.rand(11111111,99999999);
@@ -27,39 +27,38 @@ class CreateOrderService {
         //Calculate total price
         foreach ($data as $ticket)
         {
-            $total += $ticket['total'];
-            $quantity += $ticket['qty'];
-            $eventId = $ticket['eventId'];
+            $total += $ticket->total;
+            $quantity += $ticket->qty;
+            $eventId = $ticket->eventId;
         }
 
         $order->event_id = $eventId;
         $order->grand_total = $total;
         $order->quantity = $quantity;
-
         //Save order items
         $order->save();
 
         //Create order item
         foreach ($data as $item)
         {
-         $order->items()->attach($item['ticketId'],
+         $order->items()->attach($item->ticketId,
             [
-                'price' => $item['price'],
-                'quantity'=> $item['qty']
+                'price' => $item->price,
+                'quantity'=> $item->qty
             ]);
             //Check stock
-            $ticket = Ticket::find($item['ticketId']);
-            $ticket->capacity = $ticket->capacity - $item['qty'];
+            $ticket = Ticket::find($item->ticketId);
+            $ticket->capacity = $ticket->capacity - $item->qty;
             $ticket->update();
         }
 
-        //
+        /**refactor */
         foreach ($data as $item) {
-            for ($i=0; $i < $item['qty']; $i++) {
+            for ($i=0; $i < $item->qty; $i++) {
                 $attendee = new Attendee;
                 $attendee->order_id = $order->id;
                 $attendee->event_id = $eventId;
-                $attendee->ticket_id = $item['ticketId'];
+                $attendee->ticket_id = $item->ticketId;
                 $attendee->fullname = $user->fullname;
                 $attendee->email = $user->email;
                 $attendee->reference = rand(11111111,99999999);
@@ -74,7 +73,7 @@ class CreateOrderService {
           foreach ($attendees as $attendee) {
             Mail::to($attendee->email)->send(new GenerateQrCodeMail($attendee));
           }
-
+        //
     }
 }
 ?>

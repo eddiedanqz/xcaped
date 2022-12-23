@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Traits\ImageUploader;
 use App\Http\Resources\EventResource;
-use App\Http\Requests\CreateEventRequest;
+use App\Services\StoreEventService;
 use Carbon\Carbon;
 use Stevebauman\Location\Facades\Location;
 
@@ -48,52 +48,14 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,StoreEventService $storeEventService)
     {
-        $user = auth()->user();
-
-        //handle image upload
-         if ($request->hasFile('image'))
-          {
-         $name = $request->file('image')->store('/images/uploads','public');
-         $nameArray = explode("/", $name);
-         $filename = array_pop($nameArray);
-        }
-
-        $event = new Event;
-        $event->title = $request->title;
-        $event->slug =Str::slug($request->title).time();
-        $event->category_id = $request->category_id;
-        $event->description = $request->description;
-        $event->banner = $request->hasFile('image') ? $filename :'';
-        $event->start_time = $request->start_time;
-        $event->start_date = $request->start_date;
-        $event->end_date = $request->end_date;
-        $event->end_time = $request->end_time;
-        $event->venue = $request->venue;
-        $event->address = $request->address;
-        $event->address_latitude = $request->lat;
-        $event->address_longitude = $request->lon;
-        $event->user_id = $user->id;
-        $event->author = $user->username;
-        // return $event;
-        $event->save();
-
+        $event =  $storeEventService ->store($request);
         return response($event,201);
     }
 
@@ -127,7 +89,7 @@ class EventController extends Controller
     public function edit($id)
     {
             $event = Event::findOrFail($id);
-        return  response($event);
+        return  EventResource::make($event);
     }
 
     /**

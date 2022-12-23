@@ -40,10 +40,9 @@ class TicketController extends Controller
     public function store(Request $request)
     {
        $tickets = json_decode($request->tickets);
-       $event_id = json_decode($request->id);
-    //    return $event_id;
+       $event_id = $request->id;
 
-       //    return $tickets;
+        //   return $tickets;
        foreach ($tickets as $req) {
             $ticket = new Ticket;
             $ticket->title = $req->title;

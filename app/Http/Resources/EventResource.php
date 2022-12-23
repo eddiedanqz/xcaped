@@ -18,6 +18,7 @@ class EventResource extends JsonResource
             "id" => $this->id,
             "slug" =>$this->slug,
             "title" => $this->title,
+            "userId" => $this->user_id,
             "category"=> new CategoryResource($this->category),
             "author" => $this->author,
             "banner"=>$this->banner,
@@ -28,6 +29,8 @@ class EventResource extends JsonResource
             "start_time" => $this->start_time,
             "venue" => $this->venue,
             "address" => $this->address,
+            "lat" => $this->address_latitude,
+            "lon" => $this->address_longitude,
             "ticket" => TicketResource::collection($this->ticket),
             "distance" => $this->distance
         ];

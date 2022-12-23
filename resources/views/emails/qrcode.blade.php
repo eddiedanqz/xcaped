@@ -12,7 +12,7 @@
             <div class="bg-white grid grid-cols-1 shadow rounded-lg p-5">
                 <h6 class="text-gray-800 font-bold text-center mb-1">Scan This Qr Code</h6>
                  <div class="bg-gray-100 flex justify-center py-6 rounded mx-5">
-                             {{ QrCode::size(150)->generate($attendee); }}
+                             {{ QrCode::size(150)->generate($attendee->id); }}
                 </div>
 
                 <div class="relative mt-4 border-t-2 border-gray-200 border-dashed border-">

@@ -34,11 +34,8 @@ class OrderController extends Controller
 
         $createOrderService->create($request);
         //
-        $response =  [
-            'message' => 'Success',
-          ];
 
-          return response($response,200);
+          return response(['message' => 'Success'],200);
     }
 
     /**

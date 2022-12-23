@@ -10,6 +10,8 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Http\Requests\UserUserRequest;
+use App\Http\Requests\UserPasswordRequest;
 
 class UserController extends Controller
 {  use ImageUploader;
@@ -69,7 +71,6 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-
         $name = $request->file('image')->store('/images/user','public');
         $nameArray = explode("/", $name);
         $filename = array_pop($nameArray);
@@ -96,16 +97,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UserUserRequest $request)
     {
          //
          $user = auth()->user();
-
-         $this->validate($request,[
-            'fullname' => ['required', 'string', 'max:255'],
-             'username' => ['required', 'string', 'max:191', 'unique:users,username,'.$user->id],
-             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
-         ]);
 
          $user->update($request->all());
          $user->profile->update($request->all());
@@ -113,14 +108,15 @@ class UserController extends Controller
          return UserResource::make($user);
     }
 
+     /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function updatePassword(Request $request)
      {
-
         $user = auth()->user();
-
-        $this->validate($request,[
-            'password' => ['required', 'string', 'min:6'],
-        ]);
 
         //if password not empty
         if(!empty($request->password)){
