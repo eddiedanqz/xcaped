@@ -46,11 +46,15 @@ Route::get('/profile/{user}','Api\User\UserController@index');
 
 //follow user
 Route::post('/follow/{user}/' , 'Api\User\FollowController@index');
+Route::get('/followers/' , 'Api\User\FollowController@followers');
 //interested event
 Route::get('/event/saved' , 'Api\Event\SaveEventController@index');
 Route::post('/event/save/{event}' , 'Api\Event\SaveEventController@store');
 //
 Route::post('/order' , 'Api\Event\OrderController@store');
+Route::get('/my-tickets' , 'Api\Ticket\MyTicketController@index');
+Route::get('/my-ticket/{id}' , 'Api\Ticket\MyTicketController@show');
+Route::post('/ticket/share/{attendee}' , 'Api\Ticket\MyTicketController@update');
 //
 Route::get('/attendees/{event}' , 'Api\Report\AttendeeController@index');
 Route::post('/attendee/checkin/' , 'Api\Report\AttendeeController@checkin')->name('checkin');

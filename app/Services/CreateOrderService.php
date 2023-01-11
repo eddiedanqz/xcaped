@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Models\Attendee;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GenerateQrCodeMail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CreateOrderService {
 
@@ -18,6 +19,7 @@ class CreateOrderService {
         $eventId;
 
         $data = json_decode($request->tickets);
+        // $data = [$request->all()];
 
         $order = new Order();
         $order->order_no = 'XCP'.rand(11111111,99999999);
@@ -58,6 +60,7 @@ class CreateOrderService {
                 $attendee = new Attendee;
                 $attendee->order_id = $order->id;
                 $attendee->event_id = $eventId;
+                $attendee->user_id = $user->id;
                 $attendee->ticket_id = $item->ticketId;
                 $attendee->fullname = $user->fullname;
                 $attendee->email = $user->email;
@@ -66,14 +69,37 @@ class CreateOrderService {
             }
         }
 
-
         //Send email to customers
-
-        $attendees = Attendee::where('order_id',$order->id)->get();
-          foreach ($attendees as $attendee) {
-            Mail::to($attendee->email)->send(new GenerateQrCodeMail($attendee));
-          }
+        //Send notification
+        // $attendees = Attendee::where('order_id',$order->id)->get();
+        //   foreach ($attendees as $attendee) {
+        //     // $image = QrCode::format('png')
+        //     //     //  ->merge('img/t.jpg', 0.1, true)
+        //     //      ->size(200)->errorCorrection('H')
+        //     //      ->generate('A simple example of QR code!');
+        //     //         $output_file = '/images/qr-code/img-' . time() . '.png';
+        //     //         \Storage::disk('public')->put($output_file, $image);
+        //     Mail::to($attendee->email)->send(new GenerateQrCodeMail($attendee));
+        //   }
         //
+    }
+
+    public function createAtendee()
+    {
+         foreach ($data as $item) {
+                $attendee = new Attendee;
+                $attendee->order_id = $order->id;
+                $attendee->event_id = $eventId;
+                $attendee->ticket_id = $item->ticketId;
+                $attendee->fullname = $user->fullname;
+                $attendee->email = $user->email;
+                $attendee->reference = rand(11111111,99999999);
+                $attendee->save();
+                $item->qty -= 1;
+            if ($item->qty > 0) {
+                createAtendee();
+            }
+        }
     }
 }
 ?>

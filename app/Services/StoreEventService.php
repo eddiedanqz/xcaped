@@ -28,6 +28,7 @@ class StoreEventService {
         $event->start_date = $request->start_date;
         $event->end_date = $request->end_date;
         $event->end_time = $request->end_time;
+        $event->type = $request->type;
         $event->venue = $request->venue;
         $event->address = $request->address;
         $event->address_latitude = $request->lat;
@@ -35,6 +36,8 @@ class StoreEventService {
         $event->user_id = $user->id;
         $event->author = $user->username;
         $event->save();
+
+        // Store Ticket
 
          return $event;
     }

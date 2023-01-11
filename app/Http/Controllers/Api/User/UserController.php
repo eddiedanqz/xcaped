@@ -10,7 +10,7 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
-use App\Http\Requests\UserUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserPasswordRequest;
 
 class UserController extends Controller
@@ -97,7 +97,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUserRequest $request)
+    public function update(UpdateUserRequest $request)
     {
          //
          $user = auth()->user();

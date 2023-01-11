@@ -25,6 +25,7 @@ class AttendeeResource extends JsonResource
             "checkIn_time" =>$this->check_time,
             "status" =>$this->status,
             "ticket" => new TicketResource($this->ticket),
+            "event" => new EventResource($this->event),
         ];
     }
 }

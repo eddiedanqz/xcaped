@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Traits\ImageUploader;
 use App\Http\Resources\EventResource;
 use App\Services\StoreEventService;
+use App\Services\CreateTicketService;
 use Carbon\Carbon;
 use Stevebauman\Location\Facades\Location;
 
@@ -56,6 +57,11 @@ class EventController extends Controller
     public function store(Request $request,StoreEventService $storeEventService)
     {
         $event =  $storeEventService ->store($request);
+        //create Ticket
+        if ($request->has('tickets')) {
+            $ticketService = new CreateTicketService();
+            $ticketService->create($event,$request->tickets);
+        }
         return response($event,201);
     }
 

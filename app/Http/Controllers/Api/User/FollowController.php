@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Resources\UserResource;
 
 
 class FollowController extends Controller
@@ -24,5 +25,11 @@ class FollowController extends Controller
     public function index(User $user)
     {
         return auth()->user()->following()->toggle($user->profile);
+    }
+
+    public function followers()
+    {
+        $user = auth()->user()->profile->followers;
+        return UserResource::collection($user);
     }
 }
