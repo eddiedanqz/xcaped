@@ -32,11 +32,14 @@ class AttendeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkin(Request $request, Attendee $attendee)
+    public function checkin(Request $request)
     {
-        $attendee = Attendee::findOrFail($request->id);
-        $eventId = $attendee->event_id;
+        $request = json_decode($request->id);
 
+        //
+        $attendee = Attendee::where('id',$request->id)->where('reference',$request->reference)
+        ->where('status','pending')->whereNull('check_time')->firstOrFail();
+        $eventId = $attendee->event_id;
         $this->authorize('update', [$attendee, $eventId]);
 
         $attendee->status = 'checked';

@@ -19,7 +19,11 @@ class MyTicketController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $myticket = Attendee::where('user_id',$user->id)->latest()->paginate(10);
+
+        $myticket = Cache::remember('myticket',now()->addMinutes(150),function () use ($user) {
+            return Attendee::where('user_id',$user->id)->latest()->paginate(10);
+        });
+
         return AttendeeResource::collection($myticket);
     }
 
