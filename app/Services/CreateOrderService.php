@@ -5,8 +5,9 @@ use App\Models\Order;
 use App\Models\Ticket;
 use App\Models\Attendee;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\GenerateQrCodeMail;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Notifications\OrderCreated;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateOrderService {
 
@@ -69,8 +70,9 @@ class CreateOrderService {
             }
         }
 
-        //Send email to customers
         //Send notification
+        Notification::send($user, new OrderCreated($order));
+
         // $attendees = Attendee::where('order_id',$order->id)->get();
         //   foreach ($attendees as $attendee) {
         //     // $image = QrCode::format('png')

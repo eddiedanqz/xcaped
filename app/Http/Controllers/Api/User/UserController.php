@@ -114,16 +114,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(UserPasswordRequest $request)
      {
         $user = auth()->user();
 
         //if password not empty
-        if(!empty($request->password)){
-            $user->update(['password' => Hash::make($request['password'])]);
+        if(Hash::check($request->OldPassword, $user->password)){
+            $user->update(['password' => Hash::make($request->password)]);
         }
 
-        return ['message' => "Success"];
+        return ['message' => "Password Updated"];
      }
 
     /**

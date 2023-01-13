@@ -49,7 +49,6 @@ class AuthController extends Controller
     public function register(StoreUserRequest $request)
     {
         //
-
         $user =  User::create([
             'username' => $request['username'],
             'fullname' => $request['fullname'],
@@ -77,7 +76,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
-
 
         return [
             'message' => 'Logged Out',

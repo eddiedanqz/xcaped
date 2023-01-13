@@ -10,10 +10,11 @@ use Illuminate\Support\Str;
 use App\Traits\ImageUploader;
 use App\Http\Resources\EventResource;
 use App\Services\StoreEventService;
+use App\Services\UpdateEventService;
 use App\Services\CreateTicketService;
 use Carbon\Carbon;
 use Stevebauman\Location\Facades\Location;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EventController extends Controller
 {  use  ImageUploader;
@@ -56,7 +57,7 @@ class EventController extends Controller
      */
     public function store(Request $request,StoreEventService $storeEventService)
     {
-        $event =  $storeEventService ->store($request);
+        $event =  $storeEventService->store($request);
         //create Ticket
         if ($request->has('tickets')) {
             $ticketService = new CreateTicketService();
@@ -105,34 +106,13 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request,UpdateEventService $updateEventService, $id)
     {
-        $user = auth()->user();
-
-        if ($request->hasFile('image'))
-        {
-         $name = $request->file('image')->store('/images/uploads','public');
-         $nameArray = explode("/", $name);
-         $filename = array_pop($nameArray);
+        try {
+            $updateEventService->update($request,$id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
         }
-
-        $event = Event::findOrFail($id);
-        $event->title = $request->title;
-        $event->slug =Str::slug($request->title).time();
-        $event->category_id = $request->category_id;
-        $event->description = $request->description;
-        $event->banner = $request->hasFile('image') ? $filename : $event->banner;
-        $event->start_time = $request->start_time;
-        $event->start_date = $request->start_date;
-        $event->end_date = $request->end_date;
-        $event->end_time = $request->end_time;
-        $event->venue = $request->venue;
-        $event->address = $request->address;
-        $event->address_latitude = $request->lat;
-        $event->address_longitude = $request->lon;
-        // return $event;
-        $event->save();
-
         return response()->json(['message' => 'Event updated'],201);
     }
 

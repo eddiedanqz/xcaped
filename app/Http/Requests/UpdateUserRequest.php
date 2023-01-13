@@ -23,6 +23,8 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+        $user = auth()->user();
+
         return [
             'fullname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:191', 'unique:users,username,'.$user->id],

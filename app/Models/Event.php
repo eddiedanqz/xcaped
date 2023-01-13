@@ -29,10 +29,10 @@ class Event extends Model implements ReactableInterface
         'remember_token',
      ];
 
-     protected $dates = [
-        'start_date','end_date',
+    //  protected $dates = [
+    //     'start_date','end_date',
 
-       ];
+    //    ];
 
      //
      public function user (){

@@ -60,8 +60,10 @@ Route::get('/attendees/{event}' , 'Api\Report\AttendeeController@index');
 Route::post('/attendee/checkin/' , 'Api\Report\AttendeeController@checkin')->name('checkin');
 Route::get('/report/{event}' , 'Api\Report\DashboardController@index');
 Route::get('/search/attendee/' , 'Api\Search\AttendeeController@search');
+//
+Route::get('/notifications/' , 'Api\Notification\UserNotificationController@index');
+Route::get('/notifications/read' , 'Api\Notification\UserNotificationController@read');
 
-Route::post('/verify/slug','Api\Event\SlugCheckerController@index');
 //Logout
 Route::post('/logout', 'Api\Auth\AuthController@logout');
 

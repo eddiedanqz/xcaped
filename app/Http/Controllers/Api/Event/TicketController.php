@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Ticket;
-
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TicketController extends Controller
 {
@@ -19,16 +18,6 @@ class TicketController extends Controller
     public function index()
     {
         return Ticket::with('event')->all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -89,9 +78,8 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         $tickets = json_decode($request->tickets);
-     //    return $event_id;
 
-        //    return $tickets;
+     try {
         foreach ($tickets as $req) {
              $ticket = Ticket::findOrFail($req->id);
              $ticket->title = $req->title;
@@ -99,6 +87,9 @@ class TicketController extends Controller
              $ticket->capacity = $req->capacity;
              $ticket->save();
          }
+     }catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Ticket doesn\'t exist'], 404);
+        }
 
          return response(['message'=>'Ticket Updated'],201);
     }
@@ -113,5 +104,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
+
+        return response(['message'=>'Deleted'],200);
     }
 }
