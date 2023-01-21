@@ -31,10 +31,12 @@ class AuthController extends Controller
 
     $token = $user->createToken('xcoken')->plainTextToken;
     $authUser = UserResource::make($user);
+    $notesCount = $authUser->unreadNotifications()->count();
 
     $response =  [
       'user' => $authUser,
       'token' => $token,
+      'count' =>$notesCount
     ];
 
     return response()->json($response);

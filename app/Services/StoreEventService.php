@@ -40,7 +40,7 @@ class StoreEventService {
         $event->save();
 
         $details = [
-        'title' => $event->slug ,
+        'title' => $event->id ,
         'body' => $event->author.' created a new event'
         ];
 

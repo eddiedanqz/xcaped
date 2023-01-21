@@ -25,6 +25,7 @@ class UserNotificationController extends Controller
     public function read()
     {
         auth()->user()->unreadNotifications->markAsRead();
+        return auth()->user()->notifications;
     }
 
     /**
@@ -33,7 +34,7 @@ class UserNotificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
         auth()->user()->notifications()->delete();
     }
