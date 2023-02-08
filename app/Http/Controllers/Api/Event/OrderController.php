@@ -31,7 +31,7 @@ class OrderController extends Controller
     public function store(Request $request,CreateOrderService $createOrderService)
     {
           $createOrderService->create($request);
-          return response(['message' => 'Success'],200);
+          return response(['message' => 'Order Created'],200);
     }
 
     /**

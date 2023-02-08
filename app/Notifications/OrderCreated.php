@@ -56,7 +56,7 @@ class OrderCreated extends Notification
     {
         return [
             'title' => 'Order created',
-            'body' => 'Your order have been created.'
+            'body' => 'Ticket will be available shortly.'
         ];
     }
 }

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .juicy-peach-gradient {
-    background-image: -webkit-gradient(linear, left top, right top, from(#ffecd2), to(#fcb69f));
-    background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%)
+    background-image: -webkit-gradient(linear, left top, right top, from(#ffffff), to(#fcb69f));
+    background-image: linear-gradient(to right, #faf8f6 60%, #fcb69f 40%)
 }
 
 .young-passion-gradient {
@@ -24,3 +24,8 @@
 .peach-gradient {
     background: linear-gradient(40deg, #ffd86f, #fc6262) !important
 }
+
+.blue__gradient {
+    background: linear-gradient(180deg, rgba(188, 165, 255, 0) 0%, #214d76 100%);
+    filter: blur(123px);
+  }

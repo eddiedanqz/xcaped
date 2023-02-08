@@ -86,21 +86,27 @@ class CreateOrderService {
         //
     }
 
-    public function createAtendee()
+    public function createAtendee($data)
     {
-         foreach ($data as $item) {
+        $attendees = [];
+
+        foreach ($data as $item) {
+            for ($i=0; $i < $item->qty; $i++) {
                 $attendee = new Attendee;
                 $attendee->order_id = $order->id;
                 $attendee->event_id = $eventId;
+                $attendee->user_id = $user->id;
                 $attendee->ticket_id = $item->ticketId;
                 $attendee->fullname = $user->fullname;
                 $attendee->email = $user->email;
                 $attendee->reference = rand(11111111,99999999);
-                $attendee->save();
-                $item->qty -= 1;
-            if ($item->qty > 0) {
-                createAtendee();
+                $attendees[] = $attendee;
             }
+        }
+
+        //
+        foreach($attendees as $attendee){
+            $attendee->save();
         }
     }
 }
