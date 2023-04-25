@@ -20,19 +20,20 @@ class CreateOrderService {
         $eventId;
 
         $data = json_decode($request->tickets);
-        // $data = [$request->all()];
+        //  $data = [$request->all()];
 
-        $order = new Order();
-        $order->order_no = 'XCP'.rand(11111111,99999999);
-        $order->user_id = $user->id;
-        $order->full_name = $user->fullname;
-        $order->user_email = $user->email;
-        //Calculate total price
+         $order = new Order();
+         $order->order_no = 'XCP'.rand(11111111,99999999);
+         $order->user_id = $user->id;
+         $order->full_name = $user->fullname;
+         $order->user_email = $user->email;
+
+         //Calculate total price
         foreach ($data as $ticket)
         {
-            $total += $ticket->total;
-            $quantity += $ticket->qty;
-            $eventId = $ticket->eventId;
+            $total += $ticket['total'];
+            $quantity += $ticket['qty'];
+            $eventId = $ticket['eventId'];
         }
 
         $order->event_id = $eventId;
@@ -47,17 +48,16 @@ class CreateOrderService {
          $order->items()->attach($item->ticketId,
             [
                 'price' => $item->price,
-                'quantity'=> $item->qty
+                'quantity'=>  $item->qty
             ]);
             //Check stock
             $ticket = Ticket::find($item->ticketId);
-            $ticket->capacity = $ticket->capacity - $item->qty;
+            $ticket->capacity = $ticket->capacity -  $item->qty;
             $ticket->update();
         }
 
-        /**refactor */
-        foreach ($data as $item) {
-            for ($i=0; $i < $item->qty; $i++) {
+        collect($data)->each(function ($item) use ($order, $eventId, $user) {
+            for ($i = 0; $i < $item->qty; $i++) {
                 $attendee = new Attendee;
                 $attendee->order_id = $order->id;
                 $attendee->event_id = $eventId;
@@ -65,29 +65,34 @@ class CreateOrderService {
                 $attendee->ticket_id = $item->ticketId;
                 $attendee->fullname = $user->fullname;
                 $attendee->email = $user->email;
-                $attendee->reference = rand(11111111,99999999);
+                $attendee->reference = rand(11111111, 99999999);
                 $attendee->save();
             }
-        }
+        });
+
+         /**refactor */
+        // foreach ($data as $item) {
+        //     for ($i=0; $i < $item['qty']; $i++) {
+        //         $attendee = new Attendee;
+        //         $attendee->order_id = $order->id;
+        //         $attendee->event_id = $eventId;
+        //         $attendee->user_id = $user->id;
+        //         $attendee->ticket_id = $item['ticketId'];
+        //         $attendee->fullname = $user->fullname;
+        //         $attendee->email = $user->email;
+        //         $attendee->reference = rand(11111111,99999999);
+        //         $attendee->save();
+        //     }
+        // }
 
         //Send notification
         Notification::send($user, new OrderCreated($order));
 
-        // $attendees = Attendee::where('order_id',$order->id)->get();
-        //   foreach ($attendees as $attendee) {
-        //     // $image = QrCode::format('png')
-        //     //     //  ->merge('img/t.jpg', 0.1, true)
-        //     //      ->size(200)->errorCorrection('H')
-        //     //      ->generate('A simple example of QR code!');
-        //     //         $output_file = '/images/qr-code/img-' . time() . '.png';
-        //     //         \Storage::disk('public')->put($output_file, $image);
-        //     Mail::to($attendee->email)->send(new GenerateQrCodeMail($attendee));
-        //   }
-        //
     }
 
-    public function createAtendee($data)
+    private function createAtendee($data,$order,$eventId,$user)
     {
+
         $attendees = [];
 
         foreach ($data as $item) {
