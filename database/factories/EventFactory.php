@@ -22,6 +22,14 @@ class EventFactory extends Factory
         $endDate = strtotime('+1 day', $startDate->getTimestamp());
         $title = $this->faker->name();
 
+        $centerLatitude = 5.5547;
+        $centerLongitude = -0.1835;
+
+        // Generate random numbers between -0.01 and +0.01 for the latitude and longitude coordinates
+        $latitude = $this->faker->randomFloat(6, $centerLatitude - 0.5, $centerLatitude + 0.5);
+        $longitude = $this->faker->randomFloat(6, $centerLongitude - 0.5, $centerLongitude + 0.5);
+
+
         return [
         'title'=> $title,
         'slug' => Str::slug($title).time(),
@@ -34,8 +42,8 @@ class EventFactory extends Factory
         'venue' => $this->faker->name(),
         'banner' => $this->faker->imageUrl(900,580,'animals',true),
         'address' => $this->faker->address(),
-        'address_latitude' => $this->faker->latitude(),
-        'address_longitude' => $this->faker->longitude(),
+        'address_latitude' => $latitude,
+        'address_longitude' => $longitude,
         'author' => $this->faker->unique()->name(),
          'type' => 'public',
         'user_id' => rand(1,2)
