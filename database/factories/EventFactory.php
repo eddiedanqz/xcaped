@@ -26,7 +26,7 @@ class EventFactory extends Factory
         'title'=> $title,
         'slug' => Str::slug($title).time(),
         'description' => $this->faker->text(),
-        'category_id' => $this->faker->bigInteger(),
+        'category_id' => rand(1,2),
         'start_date' => $startDate,
         'start_time' => $this->faker->time('H:i'),
         'end_date' => $endDate,
