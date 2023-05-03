@@ -37,7 +37,7 @@ class EventController extends Controller
 
         $distance = $getDistanceAction->execute();
 
-        $events = Event::select('*')->nearby($distance)->orderBy('distance')
+        $events = Event::select('*')->nearby($distance)->orderBy('distance')->published()
         ->offset(0)->paginate(10);
 
         return EventResource::collection($events);
@@ -57,6 +57,7 @@ class EventController extends Controller
             $ticketService = new CreateTicketService();
             $ticketService->create($event,$request->tickets);
         }
+
         return response($event,201);
     }
 

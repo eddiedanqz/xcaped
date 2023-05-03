@@ -70,7 +70,6 @@ class CreateOrderService {
             }
         });
 
-         /**refactor */
         // foreach ($data as $item) {
         //     for ($i=0; $i < $item['qty']; $i++) {
         //         $attendee = new Attendee;
