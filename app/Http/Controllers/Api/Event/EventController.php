@@ -12,7 +12,7 @@ use App\Http\Resources\EventResource;
 use App\Services\StoreEventService;
 use App\Services\UpdateEventService;
 use App\Services\CreateTicketService;
-use Carbon\Carbon;
+use App\Actions\GetDistanceAction;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -29,22 +29,16 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetDistanceAction $getDistanceAction)
     {
         $gip = Location::get($_SERVER['REMOTE_ADDR']);
-        $lat =  5.8;//$gip->latitude;
-        $lng =  -0.25;//$gip->longitude;
-        $radius = 50;
-        // $city = $gip->city;
+       // $lat = $gip->latitude;
+       // $lng = $gip->longitude;
 
-         $distanceString = "( 6371 * acos( cos( radians($lat) ) * cos( radians( address_latitude ) ) * cos( radians( address_longitude ) - radians($lng) ) + sin( radians($lat) ) * sin( radians( address_latitude ) ) ) )
-          ";
+        $distance = $getDistanceAction->execute();
 
-          $events = Event::select('*')->selectRaw("$distanceString AS distance")
-        //   ->where('status','=','published')
-        // ->where('end_date','>=', Carbon::today()->format('Y-m-d'))
-          ->whereRaw("$distanceString < ?",[$radius])
-          ->orderBy('distance')->offset(0)->paginate(10);
+        $events = Event::select('*')->nearby($distance)->orderBy('distance')
+        ->offset(0)->paginate(10);
 
         return EventResource::collection($events);
     }

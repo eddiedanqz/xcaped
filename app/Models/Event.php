@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 use Qirolab\Laravel\Reactions\Traits\Reactable;
 use Qirolab\Laravel\Reactions\Contracts\ReactableInterface;
@@ -80,4 +81,29 @@ class Event extends Model implements ReactableInterface
     {
         return $this->hasMany(Attendee::class);
     }
+
+     /**
+     * Published events
+     */
+    public function scopePublished($query)
+    {
+       return $query->where('status','=','published');
+    }
+
+    /**
+     * Upcoming events
+     */
+    public function scopeUpcoming($query)
+    {
+       return $query->where('start_date','>=', Carbon::today()->format('Y-m-d'));
+    }
+
+    /**
+     * Nearby events
+     */
+    public function scopeNearby($query,$arg)
+    {
+       return $query->selectRaw("$arg AS distance")->whereRaw("$arg < ?",[50]);
+    }
+
 }
