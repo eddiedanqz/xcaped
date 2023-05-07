@@ -134,6 +134,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //delete account
+        $user = User::find($id);
+        $user->delete();
+
+        return response()->json('Account Deleted', 200);
     }
 }

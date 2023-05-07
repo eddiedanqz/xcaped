@@ -32,14 +32,14 @@ class TicketController extends Controller
        $event_id = $request->id;
 
         //   return $tickets;
-    //    foreach ($tickets as $req) {
-    //         $ticket = new Ticket;
-    //         $ticket->title = $req->title;
-    //         $ticket->price = $req->price;
-    //         $ticket->capacity = $req->capacity;
-    //         $ticket->event_id = $event_id;
-    //         $ticket->save();
-    //     }
+        //    foreach ($tickets as $req) {
+        //         $ticket = new Ticket;
+        //         $ticket->title = $req->title;
+        //         $ticket->price = $req->price;
+        //         $ticket->capacity = $req->capacity;
+        //         $ticket->event_id = $event_id;
+        //         $ticket->save();
+        //     }
 
         collect($tickets)->each(function ($item) use ( $event_id)
         {
