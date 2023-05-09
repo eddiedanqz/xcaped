@@ -31,9 +31,9 @@ class CreateOrderService {
          //Calculate total price
         foreach ($data as $ticket)
         {
-            $total += $ticket['total'];
-            $quantity += $ticket['qty'];
-            $eventId = $ticket['eventId'];
+            $total += $ticket->total;
+            $quantity += $ticket->qty;
+            $eventId = $ticket->eventId;
         }
 
         $order->event_id = $eventId;
