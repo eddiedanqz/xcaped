@@ -18,8 +18,11 @@ class EventResource extends JsonResource
             "id" => $this->id,
             "slug" =>$this->slug,
             "title" => $this->title,
+<<<<<<< HEAD
             "type" => $this->type,
             "userId" => $this->user_id,
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
             "category"=> new CategoryResource($this->category),
             "author" => $this->author,
             "banner"=>$this->banner,
@@ -29,11 +32,15 @@ class EventResource extends JsonResource
             "start_date" => $this->start_date,
             "start_time" => $this->start_time,
             "venue" => $this->venue,
+<<<<<<< HEAD
             "address" => $this->address,
             "lat" => $this->address_latitude,
             "lon" => $this->address_longitude,
             "ticket" => TicketResource::collection($this->ticket),
             "distance" => $this->distance
+=======
+            "ticket" => TicketResource::collection($this->ticket),
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
         ];
     }
 }

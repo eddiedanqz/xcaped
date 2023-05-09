@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
     //User
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -40,6 +45,7 @@ Route::get('/categories','Api\Category\CategoryController@index');
 Route::post('/profile/photo/update','Api\User\UserController@updatePhoto');
 Route::post('/profile/update','Api\User\UserController@update');
 Route::post('/profile/password/','Api\User\UserController@updatePassword');
+<<<<<<< HEAD
 Route::get('/profile/{user}','Api\User\UserController@index');
 
 //follow user
@@ -62,6 +68,18 @@ Route::get('/search/attendee/' , 'Api\Search\AttendeeController@search');
 Route::get('/notifications/' , 'Api\Notification\UserNotificationController@index');
 Route::get('/notifications/read' , 'Api\Notification\UserNotificationController@read');
 
+=======
+Route::get('/profile','Api\User\UserController@index');
+
+//follow user
+Route::post('/follow/{user}/' , 'User\FollowsController@_invoke');
+//interested event
+Route::post('/interested/{event}/' , 'User\InterestedController@_invoke');
+//
+Route::post('/ifInterested/{event}/' , 'User\InterestedController@check');
+
+Route::post('/verify/slug','Api\Event\SlugCheckerController@index');
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 //Logout
 Route::post('/logout', 'Api\Auth\AuthController@logout');
 
@@ -69,4 +87,8 @@ Route::post('/logout', 'Api\Auth\AuthController@logout');
 
 //Auth
 Route::post('/register', 'Api\Auth\AuthController@register');
+<<<<<<< HEAD
 Route::post('/login', 'Api\Auth\AuthController@login')->name('login');
+=======
+Route::post('/login', 'Api\Auth\AuthController@login');
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4

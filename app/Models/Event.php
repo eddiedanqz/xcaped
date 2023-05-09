@@ -4,7 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use Carbon\Carbon;
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
 use Qirolab\Laravel\Reactions\Traits\Reactable;
 use Qirolab\Laravel\Reactions\Contracts\ReactableInterface;
@@ -30,10 +33,17 @@ class Event extends Model implements ReactableInterface
         'remember_token',
      ];
 
+<<<<<<< HEAD
     //  protected $dates = [
     //     'start_date','end_date',
 
     //    ];
+=======
+     protected $dates = [
+        'start_date','end_date',
+
+       ];
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
      //
      public function user (){
@@ -61,6 +71,7 @@ class Event extends Model implements ReactableInterface
 
         return '/uploads/'.$imagePath;
     }
+<<<<<<< HEAD
 
     /**
      * The orders associated with the event.
@@ -106,4 +117,6 @@ class Event extends Model implements ReactableInterface
        return $query->selectRaw("$arg AS distance")->whereRaw("$arg < ?",[50]);
     }
 
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 }

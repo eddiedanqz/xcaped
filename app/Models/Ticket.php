@@ -37,6 +37,7 @@ class Ticket extends Model
     {
         return $this->belongsTo(Event::class, 'event_id')->withTrashed();
     }
+<<<<<<< HEAD
 
      /**
      * The order associated with the ticket.
@@ -52,4 +53,6 @@ class Ticket extends Model
         );
     }
 
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 }

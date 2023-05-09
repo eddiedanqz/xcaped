@@ -6,7 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Ticket;
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+=======
+
+
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
 class TicketController extends Controller
 {
@@ -21,6 +26,19 @@ class TicketController extends Controller
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -29,6 +47,7 @@ class TicketController extends Controller
     public function store(Request $request)
     {
        $tickets = json_decode($request->tickets);
+<<<<<<< HEAD
        $event_id = $request->id;
 
         //   return $tickets;
@@ -50,6 +69,20 @@ class TicketController extends Controller
             $ticket->event_id = $event_id;
             $ticket->save();
         });
+=======
+       $event_id = json_decode($request->id);
+    //    return $event_id;
+
+       //    return $tickets;
+       foreach ($tickets as $req) {
+            $ticket = new Ticket;
+            $ticket->title = $req->title;
+            $ticket->price = $req->price;
+            $ticket->capacity = $req->capacity;
+            $ticket->event_id = $event_id;
+            $ticket->save();
+        }
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
         return response(['message'=>'Ticket Created'],201);
     }
@@ -88,8 +121,14 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         $tickets = json_decode($request->tickets);
+<<<<<<< HEAD
 
      try {
+=======
+     //    return $event_id;
+
+        //    return $tickets;
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
         foreach ($tickets as $req) {
              $ticket = Ticket::findOrFail($req->id);
              $ticket->title = $req->title;
@@ -97,9 +136,12 @@ class TicketController extends Controller
              $ticket->capacity = $req->capacity;
              $ticket->save();
          }
+<<<<<<< HEAD
      }catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Ticket doesn\'t exist'], 404);
         }
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
          return response(['message'=>'Ticket Updated'],201);
     }
@@ -114,7 +156,10 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
+<<<<<<< HEAD
 
         return response(['message'=>'Deleted'],200);
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
     }
 }

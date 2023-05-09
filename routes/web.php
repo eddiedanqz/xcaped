@@ -1,8 +1,12 @@
 <?php
 
+<<<<<<< HEAD
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+=======
+use Illuminate\Support\Facades\Route;
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +20,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+<<<<<<< HEAD
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -29,3 +34,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+=======
+    return view('welcome');
+});
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4

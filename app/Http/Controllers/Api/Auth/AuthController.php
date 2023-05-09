@@ -31,12 +31,18 @@ class AuthController extends Controller
 
     $token = $user->createToken('xcoken')->plainTextToken;
     $authUser = UserResource::make($user);
+<<<<<<< HEAD
     $notesCount = $authUser->unreadNotifications()->count();
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
     $response =  [
       'user' => $authUser,
       'token' => $token,
+<<<<<<< HEAD
       'count' =>$notesCount
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
     ];
 
     return response()->json($response);
@@ -51,6 +57,10 @@ class AuthController extends Controller
     public function register(StoreUserRequest $request)
     {
         //
+<<<<<<< HEAD
+=======
+
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
         $user =  User::create([
             'username' => $request['username'],
             'fullname' => $request['fullname'],
@@ -79,6 +89,10 @@ class AuthController extends Controller
     {
         auth()->user()->tokens()->delete();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
         return [
             'message' => 'Logged Out',
           ];

@@ -1,6 +1,7 @@
 {
     "name": "laravel/laravel",
     "type": "project",
+<<<<<<< HEAD
     "description": "Your Event Companion",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
@@ -31,6 +32,29 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^6.1",
+=======
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3|^8.0",
+        "fideloper/proxy": "^4.4",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.7",
+        "laravel/framework": "^8.40",
+        "laravel/sanctum": "^2.12",
+        "laravel/tinker": "^2.5",
+        "predis/predis": "^2.0",
+        "qirolab/laravel-reactions": "^2.5"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^5.0",
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
         "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {

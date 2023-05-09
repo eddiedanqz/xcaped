@@ -79,6 +79,7 @@ class User extends Authenticatable implements ReactsInterface
 //     return '/uploads/'.$imagePath;
 //   }
 
+<<<<<<< HEAD
  /**
      * The orders associated with the account.
      *
@@ -89,4 +90,6 @@ class User extends Authenticatable implements ReactsInterface
         return $this->hasMany(Order::class);
     }
 
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 }
