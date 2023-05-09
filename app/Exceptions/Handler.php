@@ -35,6 +35,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
+<<<<<<< HEAD
 
         });
     }
@@ -52,4 +53,9 @@ class Handler extends ExceptionHandler
         {
             return parent::render($request, $exception);
         }
+=======
+            //
+        });
+    }
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 }

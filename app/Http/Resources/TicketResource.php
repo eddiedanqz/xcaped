@@ -16,7 +16,10 @@ class TicketResource extends JsonResource
     {
         return [
             "id" => $this->id,
+<<<<<<< HEAD
             "eventId" =>$this->event_id,
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
             "title" =>$this->title,
             "price" =>$this->price,
             "capacity" =>$this->capacity,

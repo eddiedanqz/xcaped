@@ -166,9 +166,12 @@ return [
          * Package Service Providers...
          */
         Intervention\Image\ImageServiceProvider::class,
+<<<<<<< HEAD
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
         /*
          * Application Service Providers...
          */
@@ -177,7 +180,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+<<<<<<< HEAD
         App\Providers\TelescopeServiceProvider::class,
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
     ],
 
@@ -233,10 +239,14 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         //
+<<<<<<< HEAD
         'Image' => Intervention\Image\Facades\Image::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
 
+=======
+        'Image' => Intervention\Image\Facades\Image::class
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
     ],
 

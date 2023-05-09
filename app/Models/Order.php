@@ -16,11 +16,18 @@ class Order extends Model
      */
     protected $fillable = [
         'full_name','user_email','status','order_no','user_id','grand_total',
+<<<<<<< HEAD
         'isPaid','payment_method','quantity','event_id',
         'message',
     ];
 
     protected $dateFormat = 'Y-m-d';
+=======
+        'isPaid','payment_method',
+        'message',
+    ];
+
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 
     /**
      * The roles that belong to the Order
@@ -42,6 +49,7 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+<<<<<<< HEAD
      /**
      * The attendees associated with the order.
      *
@@ -75,4 +83,6 @@ class Order extends Model
     //         'ticket_id'
     //     );
     // }
+=======
+>>>>>>> be6ea65c8c62721b1860ad20ee80d24752cb36d4
 }
