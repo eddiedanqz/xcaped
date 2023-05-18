@@ -11,15 +11,15 @@ class Attendee extends Model
 
     protected $table = 'attendees';
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['fullname','status','email','check_time','event_id',
-                      'ticket_id','reference','order_id','user_id'];
+    protected $fillable = ['fullname', 'status', 'email', 'check_time', 'event_id',
+        'ticket_id', 'reference', 'order_id', 'user_id'];
 
-      /**
+    /**
      * The order associated with the attendee.
      *
      * @return BelongsTo
@@ -48,5 +48,4 @@ class Attendee extends Model
     {
         return $this->belongsTo(Event::class);
     }
-
 }

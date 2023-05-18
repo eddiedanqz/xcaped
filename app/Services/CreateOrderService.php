@@ -1,36 +1,33 @@
 <?php
+
 namespace App\Services;
 
+use App\Models\Attendee;
 use App\Models\Order;
 use App\Models\Ticket;
-use App\Models\Attendee;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\OrderCreated;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CreateOrderService {
-
+class CreateOrderService
+{
     public function create($request)
     {
         $user = auth()->user();
 
         $total = 0;
         $quantity = 0;
-        $eventId;
 
         $data = json_decode($request->tickets);
         //  $data = [$request->all()];
 
-         $order = new Order();
-         $order->order_no = 'XCP'.rand(11111111,99999999);
-         $order->user_id = $user->id;
-         $order->full_name = $user->fullname;
-         $order->user_email = $user->email;
+        $order = new Order();
+        $order->order_no = 'XCP'.rand(11111111, 99999999);
+        $order->user_id = $user->id;
+        $order->full_name = $user->fullname;
+        $order->user_email = $user->email;
 
-         //Calculate total price
-        foreach ($data as $ticket)
-        {
+        //Calculate total price
+        foreach ($data as $ticket) {
             $total += $ticket->total;
             $quantity += $ticket->qty;
             $eventId = $ticket->eventId;
@@ -43,16 +40,15 @@ class CreateOrderService {
         $order->save();
 
         //Create order item
-        foreach ($data as $item)
-        {
-         $order->items()->attach($item->ticketId,
-            [
-                'price' => $item->price,
-                'quantity'=>  $item->qty
-            ]);
+        foreach ($data as $item) {
+            $order->items()->attach($item->ticketId,
+                [
+                    'price' => $item->price,
+                    'quantity' => $item->qty,
+                ]);
             //Check stock
             $ticket = Ticket::find($item->ticketId);
-            $ticket->capacity = $ticket->capacity -  $item->qty;
+            $ticket->capacity = $ticket->capacity - $item->qty;
             $ticket->update();
         }
 
@@ -86,16 +82,14 @@ class CreateOrderService {
 
         //Send notification
         Notification::send($user, new OrderCreated($order));
-
     }
 
-    private function createAtendee($data,$order,$eventId,$user)
+    private function createAtendee($data, $order, $eventId, $user)
     {
-
         $attendees = [];
 
         foreach ($data as $item) {
-            for ($i=0; $i < $item->qty; $i++) {
+            for ($i = 0; $i < $item->qty; $i++) {
                 $attendee = new Attendee;
                 $attendee->order_id = $order->id;
                 $attendee->event_id = $eventId;
@@ -103,15 +97,14 @@ class CreateOrderService {
                 $attendee->ticket_id = $item->ticketId;
                 $attendee->fullname = $user->fullname;
                 $attendee->email = $user->email;
-                $attendee->reference = rand(11111111,99999999);
+                $attendee->reference = rand(11111111, 99999999);
                 $attendees[] = $attendee;
             }
         }
 
         //
-        foreach($attendees as $attendee){
+        foreach ($attendees as $attendee) {
             $attendee->save();
         }
     }
 }
-?>

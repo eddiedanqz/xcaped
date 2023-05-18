@@ -1,31 +1,30 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Event;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
-class UpdateEventService {
-
-    public function update($request,$id)
+class UpdateEventService
+{
+    public function update($request, $id)
     {
-
         $user = auth()->user();
 
-        if ($request->hasFile('image'))
-        {
-         $name = $request->file('image')->store('/images/uploads','public');
-         $nameArray = explode("/", $name);
-         $filename = array_pop($nameArray);
+        if ($request->hasFile('image')) {
+            $name = $request->file('image')->store('/images/uploads', 'public');
+            $nameArray = explode('/', $name);
+            $filename = array_pop($nameArray);
         }
 
         $event = Event::find($id);
-        if (!$event) {
-          throw new ModelNotFoundException("Event does not exist.");
+        if (! $event) {
+            throw new ModelNotFoundException('Event does not exist.');
         }
 
         $event->title = $request->title;
-        $event->slug =Str::slug($request->title).time();
+        $event->slug = Str::slug($request->title).time();
         $event->type = $request->type;
         $event->category_id = $request->category_id;
         $event->description = $request->description;
@@ -39,7 +38,5 @@ class UpdateEventService {
         $event->address_latitude = $request->lat;
         $event->address_longitude = $request->lon;
         $event->save();
-
     }
 }
-?>

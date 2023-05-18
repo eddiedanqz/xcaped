@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Api\Event;
 
+use App\Actions\GetDistanceAction;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use App\Traits\ImageUploader;
-use App\Http\Resources\EventResource;
+use App\Services\CreateTicketService;
 use App\Services\StoreEventService;
 use App\Services\UpdateEventService;
-use App\Services\CreateTicketService;
-use App\Actions\GetDistanceAction;
-use Stevebauman\Location\Facades\Location;
+use App\Traits\ImageUploader;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Stevebauman\Location\Facades\Location;
 
 class EventController extends Controller
-{  use  ImageUploader;
+{
+    use  ImageUploader;
 
     public function __construct()
     {
@@ -29,12 +29,12 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetDistanceAction $getDistanceAction)
+    public function index()
     {
         $gip = Location::get($_SERVER['REMOTE_ADDR']);
-       // $lat = $gip->latitude;
-       // $lng = $gip->longitude;
-
+        // $lat = $gip->latitude;
+        // $lng = $gip->longitude;
+        $getDistanceAction = new GetDistanceAction;
         $distance = $getDistanceAction->execute();
 
         $events = Event::select('*')->nearby($distance)->orderBy('distance')->published()
@@ -46,19 +46,18 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,StoreEventService $storeEventService)
+    public function store(Request $request, StoreEventService $storeEventService)
     {
-        $event =  $storeEventService->store($request);
+        $event = $storeEventService->store($request);
         //create Ticket
         if ($request->has('tickets')) {
             $ticketService = new CreateTicketService();
-            $ticketService->create($event,$request->tickets);
+            $ticketService->create($event, $request->tickets);
         }
 
-        return response($event,201);
+        return response($event, 201);
     }
 
     /**
@@ -71,14 +70,14 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         $user = User::findOrFail($event->user_id);
-        $follows = (auth()->user()) ? auth()->user()->following->contains('id',$event->user_id) : false;
-        $saved = (auth()->user()) ? auth()->user()->interest->contains('id',$event->id) : false;
+        $follows = (auth()->user()) ? auth()->user()->following->contains('id', $event->user_id) : false;
+        $saved = (auth()->user()) ? auth()->user()->interest->contains('id', $event->id) : false;
 
         return  response([
             'event' => EventResource::make($event),
             'follows' => $follows,
             'saved' => $saved,
-            'profile' => $user->profile->profilePhoto
+            'profile' => $user->profile->profilePhoto,
         ]);
     }
 
@@ -90,25 +89,26 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-            $event = Event::findOrFail($id);
+        $event = Event::findOrFail($id);
+
         return  EventResource::make($event);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,UpdateEventService $updateEventService, $id)
+    public function update(Request $request, UpdateEventService $updateEventService, $id)
     {
         try {
-            $updateEventService->update($request,$id);
+            $updateEventService->update($request, $id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
-        return response()->json(['message' => 'Event updated'],201);
+
+        return response()->json(['message' => 'Event updated'], 201);
     }
 
     /**

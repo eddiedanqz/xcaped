@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-
-use Qirolab\Laravel\Reactions\Traits\Reacts;
-use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
+use Qirolab\Laravel\Reactions\Traits\Reacts;
 
 class User extends Authenticatable implements ReactsInterface
 {
@@ -21,8 +19,8 @@ class User extends Authenticatable implements ReactsInterface
      * @var array
      */
     protected $fillable = [
-        'fullname','type',
-        'email','role','username',
+        'fullname', 'type',
+        'email', 'role', 'username',
         'password',
     ];
 
@@ -45,33 +43,33 @@ class User extends Authenticatable implements ReactsInterface
         'email_verified_at' => 'datetime',
     ];
 
-    public  function events(){
+    public function events()
+    {
+        return $this->hasMany(Event::class)->orderBy('start_date', 'desc');
+    }
 
-        return $this->hasMany(Event::class)->orderBy('start_date','desc');
+   public function following()
+   {
+       return $this->belongsToMany(Profile::class)->withTimeStamps();
    }
 
-   public  function following(){
-
-    return $this->belongsToMany(Profile::class)->withTimeStamps();
-    }
-
-    public  function profile(){
-
+    public function profile()
+    {
         return $this->hasOne(Profile::class);
-
     }
 
-     protected static function boot(){
+     protected static function boot()
+     {
          parent::boot();
 
-         static::created(function($user){
+         static::created(function ($user) {
              $user->profile()->create();
          });
      }
 
-
-    public function interest(){
-        return  $this->belongsToMany(Event::class ,'interested', 'user_id', 'event_id')->withTimeStamps();
+    public function interest()
+    {
+        return  $this->belongsToMany(Event::class, 'interested', 'user_id', 'event_id')->withTimeStamps();
     }
 //    public function photo(){
 //     $imagePath = ($this->logo) ? 'vendors/'.$this->logo : 'user-placeholder.jpg';
@@ -79,7 +77,7 @@ class User extends Authenticatable implements ReactsInterface
 //     return '/uploads/'.$imagePath;
 //   }
 
- /**
+    /**
      * The orders associated with the account.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -89,4 +87,13 @@ class User extends Authenticatable implements ReactsInterface
         return $this->hasMany(Order::class);
     }
 
+    /**
+     * Get the place associated with the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function place()
+    {
+        return $this->hasOne(Place::class);
+    }
 }
