@@ -69,11 +69,11 @@ class PlaceController extends Controller
         $place->address_latitude = $request->latitude;
         $place->address_longitude = $request->longitude;
         $place->phone = $request->phone;
-        $place->type = $request->type;
-        $place->start_day = $request->start_day;
-        $place->close_day = $request->close_day;
-        $place->start_time = $request->start_time;
-        $place->close_time = $request->close_time;
+        $place->type_id = $request->typeId;
+        $place->start_day = $request->startDay;
+        $place->close_day = $request->closeDay;
+        $place->start_time = $request->startTime;
+        $place->close_time = $request->closeTime;
         $place->save();
 
         return response()->json($place, 201);
@@ -130,11 +130,11 @@ class PlaceController extends Controller
         $place->address_latitude = $request->latitude;
         $place->address_longitude = $request->longitude;
         $place->phone = $request->phone;
-        $place->type = $request->type;
-        $place->start_day = $request->start_day;
-        $place->close_day = $request->close_day;
-        $place->start_time = $request->start_time;
-        $place->close_time = $request->close_time;
+        $place->type_id = $request->typeId;
+        $place->start_day = $request->startDay;
+        $place->close_day = $request->closeDay;
+        $place->start_time = $request->startTime;
+        $place->close_time = $request->closeTime;
         $place->save();
 
         return response()->json($place, 201);
