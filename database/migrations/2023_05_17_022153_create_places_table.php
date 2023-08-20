@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('phone');
             $table->timestamps();
 
-            $table->foreign('type_id')->references('id')->on('place_types')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('place_types');
         });
     }
 

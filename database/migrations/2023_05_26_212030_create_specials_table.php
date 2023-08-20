@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('promotions', function (Blueprint $table) {
+        Schema::create('specials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('place_id')->constrained();
-            $table->foreignId('special_id')->constrained();
-            $table->text('details');
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->string('type');
-            $table->date('date');
+            $table->string('icon')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promotions');
+        Schema::dropIfExists('specials');
     }
 };

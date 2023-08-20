@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/notifications/read', 'Api\Notification\UserNotificationController@read');
     //Place
     Route::apiResources(['place' => 'Api\Place\PlaceController']);
+    Route::apiResources(['promotion' => 'Api\Place\PromotionController']);
     //Logout
     Route::post('/logout', 'Api\Auth\AuthController@logout');
 });

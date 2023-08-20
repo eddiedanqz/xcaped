@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Place;
 
 use App\Actions\GetDistanceAction;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PlaceResource;
 use App\Models\Place;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,10 +25,10 @@ class PlaceController extends Controller
         $getDistanceAction = new GetDistanceAction;
         $distance = $getDistanceAction->execute();
 
-        $places = Place::select('*')->nearby($distance)->orderBy('distance')
-        ->offset(0)->paginate(10);
+        $places = Place::query()->with(['type', 'promotions.special'])->select('*')
+        ->nearby($distance)->orderBy('distance')->offset(0)->paginate(10);
 
-        return $places;
+        return PlaceResource::collection($places);
     }
 
     /**
