@@ -10,8 +10,8 @@
         "dest": "/api/index.php?type=$1&file=$2"
         },
         {
-        "src": "/img/(.*)",
-        "dest": "/public/img/"
+        "src": "/storage/(.*)",
+        "dest": "/public/storage/"
         },
         {
         "src": "/(.*)",
