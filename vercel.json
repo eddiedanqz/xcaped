@@ -10,10 +10,6 @@
         "dest": "/api/index.php?type=$1&file=$2"
         },
         {
-        "src": "/storage/(.*)",
-        "dest": "/public/storage/"
-        },
-        {
         "src": "/(.*)",
         "dest": "/api/index.php"
     }],
@@ -31,7 +27,6 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
-        "VIEW_COMPILED_PATH": "/tmp/views",
         "SSR_TEMP_PATH": "/tmp/ssr",
         "NODE_PATH": "node"
     }
