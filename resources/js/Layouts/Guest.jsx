@@ -122,7 +122,7 @@ export default function Guest({ auth, children }) {
                 </div>
             </nav>
 
-            <div className="flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-1">
+            <div className="flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
                 {children}
             </div>
         </div>
