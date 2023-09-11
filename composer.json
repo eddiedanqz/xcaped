@@ -21,6 +21,7 @@
         "predis/predis": "^2.0",
         "qirolab/laravel-reactions": "^2.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/laravel-searchable": "^1.11",
         "stevebauman/location": "^6.5",
         "tightenco/ziggy": "^1.5",
         "torann/geoip": "^3.0"

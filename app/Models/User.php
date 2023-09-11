@@ -8,8 +8,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
 use Qirolab\Laravel\Reactions\Traits\Reacts;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements ReactsInterface
+class User extends Authenticatable implements ReactsInterface, Searchable
 {
     use HasApiTokens, HasFactory, Notifiable, Reacts;
 
@@ -95,5 +97,16 @@ class User extends Authenticatable implements ReactsInterface
     public function place()
     {
         return $this->hasOne(Place::class);
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+        // $url = route('blogPost.show', $this->slug);
+
+        return new \Spatie\Searchable\SearchResult(
+            $this,
+            $this->fullname,
+
+        );
     }
 }
