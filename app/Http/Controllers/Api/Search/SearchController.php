@@ -6,14 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Spatie\Searchable\ModelSearchAspect;
 use Spatie\Searchable\Search;
 
 class SearchController extends Controller
 {
     public function search(Request $request)
     {
+        // return $to = Carbon::parse();
+
         $searchResults = (new Search())
-            ->registerModel(Event::class, ['title', 'venue'])
+            ->registerModel(Event::class, function (ModelSearchAspect $modelSearchAspect) use ($request) {
+                $modelSearchAspect
+                   ->addSearchableAttribute('title')
+                   ->addSearchableAttribute('venue')
+                   //->published()
+                   ->where('venue', 'Like', '%'.$request['venue'].'%')
+                   ->where('category_id', 'Like', '%'.$request['category'].'%')
+                   ->dateFilter($request['date'])
+                   ->with('category');
+            })
             ->registerModel(User::class, ['fullname', 'username'])
             ->limitAspectResults(30)
             ->search($request['query']);

@@ -106,6 +106,17 @@ class Event extends Model implements Searchable
         return $query->selectRaw("$arg AS distance")->whereRaw("$arg < ?", [50]);
     }
 
+    /**
+     * Nearby events
+     */
+    public function scopeDateFilter($query, $arg)
+    {
+        if (isset($arg)) {
+            // Apply the date range filter
+            $query->whereDate('start_date', $arg);
+        }
+    }
+
     public function getSearchResult(): SearchResult
     {
         //  $url = route('blogPost.show', $this->slug);
