@@ -83,6 +83,16 @@ class Event extends Model implements Searchable
     }
 
     /**
+     * Get all of the invitations for the Event
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    /**
      * Published events
      */
     public function scopePublished($query)

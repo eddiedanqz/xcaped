@@ -57,9 +57,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/attendee/checkin/', 'Api\Report\AttendeeController@checkin')->name('checkin');
     Route::get('/report/{event}', 'Api\Report\DashboardController@index');
     Route::get('/search/attendee/', 'Api\Search\AttendeeController@search');
-//
+    //
     Route::get('/notifications/', 'Api\Notification\UserNotificationController@index');
     Route::get('/notifications/read', 'Api\Notification\UserNotificationController@read');
+    //
+    Route::get('/invitations/all/', 'Api\Event\InvitationsController@index');
+    Route::post('/invitations/send/', 'Api\Event\InvitationsController@store');
+    Route::post('/invitations/undo/', 'Api\Event\InvitationsController@undo');
+
     //Place
     Route::apiResources(['place' => 'Api\Place\PlaceController']);
     Route::apiResources(['promotion' => 'Api\Place\PromotionController']);
