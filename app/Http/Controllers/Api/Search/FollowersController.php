@@ -4,18 +4,16 @@ namespace App\Http\Controllers\Api\Search;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Searchable\Search;
 
 class FollowersController extends Controller
 {
     public function search(Request $request)
     {
-        $searchTerm = $request['query']; // Replace with your search term
+        $searchTerm = $request['query'];
 
-        $followers = User::whereHas('profile.followers', function ($query) use ($searchTerm) {
-            // Apply your search criteria here
+        $followers = auth()->user()->profile->followers()
+        ->whereHas('profile', function ($query) use ($searchTerm) {
             $query->where('fullname', 'like', '%'.$searchTerm.'%')
             ->orWhere('username', 'like', '%'.$searchTerm.'%');
         })
