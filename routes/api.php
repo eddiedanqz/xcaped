@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //follow user
     Route::post('/follow/{user}/', 'Api\User\FollowController@index');
+    Route::get('/followers/search', 'Api\Search\FollowersController@search');
     Route::get('/followers/', 'Api\User\FollowController@followers');
     //interested event
     Route::get('/event/saved', 'Api\Event\SaveEventController@index');

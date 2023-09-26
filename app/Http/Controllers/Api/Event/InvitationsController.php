@@ -33,8 +33,8 @@ class InvitationsController extends Controller
         $invitation = new Invitation;
         $invitation->title = $request->title;
         $invitation->banner = $request->banner;
-        $invitation->event_id = $request->event_id;
-        $invitation->user_id = $request->user_id;
+        $invitation->event_id = $request->eventId;
+        $invitation->user_id = $request->id;
         $invitation->save();
 
         //Send notification
@@ -54,9 +54,9 @@ class InvitationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function undo($id)
+    public function undo(Request $request)
     {
-        $invitation = Invitation::findOrFail($id);
+        $invitation = Invitation::findOrFail($request->id);
         $invitation->delete();
 
         return response('Done', 200);

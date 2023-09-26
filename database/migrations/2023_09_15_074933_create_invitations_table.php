@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('event_id')->constrained();
             $table->string('title');
-            $table->string('banner');
+            $table->string('banner')->nullable();
             $table->timestamps();
         });
     }
