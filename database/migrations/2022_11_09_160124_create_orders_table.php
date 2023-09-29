@@ -21,10 +21,10 @@ class CreateOrdersTable extends Migration
             $table->string('full_name');
             $table->string('user_email');
 
-            $table->enum('status',['pending','processing','delivered','completed','decline'])->default('pending');
+            $table->enum('status', ['pending', 'completed', 'decline'])->default('pending');
             $table->float('grand_total');
             $table->boolean('isPaid')->default(false);
-            $table->enum('payment_method',['mobile_money','card'])->default('mobile_money');
+            $table->enum('payment_method', ['mobile_money', 'card'])->default('mobile_money');
             $table->string('message')->nullable();
             $table->timestamps();
 
