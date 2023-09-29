@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Place
     Route::apiResources(['place' => 'Api\Place\PlaceController']);
     Route::apiResources(['promotion' => 'Api\Place\PromotionController']);
+    //Payment
+    Route::post(['/pay', 'Api\Payment\PaymentController@redirectToGateway'])->name('pay');
     //Logout
     Route::post('/logout', 'Api\Auth\AuthController@logout');
 });

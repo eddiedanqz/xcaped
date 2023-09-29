@@ -169,6 +169,8 @@ return [
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Unicodeveloper\Paystack\PaystackServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -236,7 +238,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-
+        'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
 
     ],
 
