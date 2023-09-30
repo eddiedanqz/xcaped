@@ -14,6 +14,8 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/pay', 'Api\Payment\PaymentController@redirectToGateway')->name('pay');
+Route::get('/payment/callback', 'Api\Payment\PaymentController@handleGatewayCallback');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,5 +29,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/welcome', function () {
+    return view('welcome');
+});
 
 require __DIR__.'/auth.php';

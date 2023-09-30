@@ -1,10 +1,19 @@
 import React from "react";
-import { Link, Head } from "@inertiajs/inertia-react";
+import { Head, Link, useForm } from "@inertiajs/inertia-react";
 import Guest from "@/Layouts/Guest";
 import Button from "@/Components/Button";
 import { InfoCard, CheckCircle } from "../Components/index";
 
 export default function Welcome(props) {
+    const { data, setData, post, processing, errors, reset } = useForm({});
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("pay"));
+        console.log(data);
+        console.log(errors);
+    };
+
     return (
         <>
             <Head title="Welcome" />
@@ -23,7 +32,8 @@ export default function Welcome(props) {
                             </p>
                             <div className="flex flex-row space-x-5">
                                 <Button
-                                    type="button"
+                                    type="submit"
+                                    onClick={submit}
                                     className="peach-gradient rounded-sm shadow-lg"
                                 >
                                     Get The App
@@ -153,22 +163,22 @@ export default function Welcome(props) {
                         </div>
                     </section>
                     {/** */}
-                    <section class="py-10 bg-white sm:py-16 lg:py-24">
-                        <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-                            <div class="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-24">
+                    <section className="py-10 bg-white sm:py-16 lg:py-24">
+                        <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+                            <div className="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-24">
                                 <div>
                                     <img
-                                        class="w-full max-w-md mx-auto"
+                                        className="w-full max-w-md mx-auto"
                                         src="https://cdn.rareblocks.xyz/collection/celebration/images/integration/2/services-icons.png"
                                         alt=""
                                     />
                                 </div>
 
-                                <div class="text-center lg:text-left">
-                                    <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
+                                <div className="text-center lg:text-left">
+                                    <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
                                         Discover more events.
                                     </h2>
-                                    <p class="mt-6 text-base text-gray-600">
+                                    <p className="mt-6 text-base text-gray-600">
                                         With our advanced search filtering, find
                                         the best place for a night out with
                                         freinds and family.Host and share events
@@ -180,15 +190,15 @@ export default function Welcome(props) {
                     </section>
                 </div>
                 {/**Call To Action */}
-                <section class="bg-red-600 mt-10 2xl:pt-24 2xl:bg-white">
-                    <div class="px-4 mx-auto overflow-hidden bg-black w-full sm:px-6 lg:px-8">
-                        <div class="py-10 sm:py-16 lg:py-20 2xl:pl-20">
-                            <div class="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-8 2xl:gap-x-20">
+                <section className="bg-red-600 mt-10 2xl:pt-24 2xl:bg-white">
+                    <div className="px-4 mx-auto overflow-hidden bg-black w-full sm:px-6 lg:px-8">
+                        <div className="py-10 sm:py-16 lg:py-20 2xl:pl-20">
+                            <div className="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-8 2xl:gap-x-20">
                                 <div>
-                                    <h2 class="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl lg:leading-tight">
+                                    <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl lg:leading-tight">
                                         Use mobile app for better performance
                                     </h2>
-                                    <p class="mt-4 text-base text-gray-50">
+                                    <p className="mt-4 text-base text-gray-50">
                                         Amet minim mollit non deserunt ullamco
                                         est sit aliqua dolor do amet sint. Velit
                                         officia consequat duis enim velit
@@ -196,15 +206,15 @@ export default function Welcome(props) {
                                         sunt nostrud amet.
                                     </p>
 
-                                    <div class="flex flex-row items-center mt-8 space-x-4 lg:mt-12">
+                                    <div className="flex flex-row items-center mt-8 space-x-4 lg:mt-12">
                                         <a
                                             href="#"
                                             title=""
-                                            class="flex"
+                                            className="flex"
                                             role="button"
                                         >
                                             <img
-                                                class="w-auto h-14"
+                                                className="w-auto h-14"
                                                 src="https://cdn.rareblocks.xyz/collection/celebration/images/cta/8/btn-app-store.svg"
                                                 alt=""
                                             />
@@ -213,11 +223,11 @@ export default function Welcome(props) {
                                         <a
                                             href="#"
                                             title=""
-                                            class="flex"
+                                            className="flex"
                                             role="button"
                                         >
                                             <img
-                                                class="w-auto h-14"
+                                                className="w-auto h-14"
                                                 src="https://cdn.rareblocks.xyz/collection/celebration/images/cta/8/btn-play-store.svg"
                                                 alt=""
                                             />
@@ -225,16 +235,16 @@ export default function Welcome(props) {
                                     </div>
                                 </div>
 
-                                <div class="relative px-12">
+                                <div className="relative px-12">
                                     <svg
-                                        class="absolute inset-x-0 bottom-0 left-1/2 -translate-x-1/2 -mb-48 lg:-mb-72 text-yellow-300 w-[460px] h-[460px] sm:w-[600px] sm:h-[600px]"
+                                        className="absolute inset-x-0 bottom-0 left-1/2 -translate-x-1/2 -mb-48 lg:-mb-72 text-yellow-300 w-[460px] h-[460px] sm:w-[600px] sm:h-[600px]"
                                         fill="currentColor"
                                         viewBox="0 0 8 8"
                                     >
                                         <circle cx="4" cy="4" r="3" />
                                     </svg>
                                     <img
-                                        class="relative w-full max-w-xs mx-auto -mb-60 lg:-mb-64"
+                                        className="relative w-full max-w-xs mx-auto -mb-60 lg:-mb-64"
                                         src="https://cdn.rareblocks.xyz/collection/celebration/images/cta/8/iphone-mockup.png"
                                         alt=""
                                     />
@@ -243,22 +253,22 @@ export default function Welcome(props) {
                         </div>
                     </div>
                 </section>
-                <section class="py-8 px-0 mx-0 bg-gray-100 w-full">
-                    <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-                        <div class="text-center xl:flex xl:items-center xl:justify-between xl:text-left">
-                            <div class="xl:flex xl:items-center xl:justify-start">
-                                <p class="mt-5 text-sm text-gray-500 xl:ml-6 xl:mt-0">
+                <section className="py-8 px-0 mx-0 bg-gray-100 w-full">
+                    <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+                        <div className="text-center xl:flex xl:items-center xl:justify-between xl:text-left">
+                            <div className="xl:flex xl:items-center xl:justify-start">
+                                <p className="mt-5 text-sm text-gray-500 xl:ml-6 xl:mt-0">
                                     © Copyright 2023 Xcaped
                                 </p>
                             </div>
 
-                            <div class="items-center mt-8 xl:mt-0 xl:flex xl:justify-end xl:space-x-8">
-                                <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 xl:justify-end">
+                            <div className="items-center mt-8 xl:mt-0 xl:flex xl:justify-end xl:space-x-8">
+                                <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 xl:justify-end">
                                     <li>
                                         <a
                                             href="#"
                                             title=""
-                                            class="text-sm text-gray-600 transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="text-sm text-gray-600 transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             {" "}
                                             About{" "}
@@ -269,7 +279,7 @@ export default function Welcome(props) {
                                         <a
                                             href="#"
                                             title=""
-                                            class="text-sm text-gray-600 transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="text-sm text-gray-600 transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             {" "}
                                             Privacy Policy{" "}
@@ -280,7 +290,7 @@ export default function Welcome(props) {
                                         <a
                                             href="#"
                                             title=""
-                                            class="text-sm text-gray-600  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="text-sm text-gray-600  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             {" "}
                                             Terms & Conditions{" "}
@@ -291,7 +301,7 @@ export default function Welcome(props) {
                                         <a
                                             href="#"
                                             title=""
-                                            class="text-sm text-gray-600  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="text-sm text-gray-600  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             {" "}
                                             Support{" "}
@@ -299,17 +309,17 @@ export default function Welcome(props) {
                                     </li>
                                 </ul>
 
-                                <div class="w-full h-px mt-8 mb-5 xl:w-px xl:m-0 xl:h-6 bg-gray-50/20"></div>
+                                <div className="w-full h-px mt-8 mb-5 xl:w-px xl:m-0 xl:h-6 bg-gray-50/20"></div>
 
-                                <ul class="flex items-center justify-center space-x-8 xl:justify-end">
+                                <ul className="flex items-center justify-center space-x-8 xl:justify-end">
                                     <li>
                                         <a
                                             href="#"
                                             title=""
-                                            class="block text-gray-700  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="block text-gray-700  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             <svg
-                                                class="w-6 h-6"
+                                                className="w-6 h-6"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24"
                                                 fill="currentColor"
@@ -323,10 +333,10 @@ export default function Welcome(props) {
                                         <a
                                             href="#"
                                             title=""
-                                            class="block text-gray-700  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="block text-gray-700  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             <svg
-                                                class="w-6 h-6"
+                                                className="w-6 h-6"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24"
                                                 fill="currentColor"
@@ -340,10 +350,10 @@ export default function Welcome(props) {
                                         <a
                                             href="#"
                                             title=""
-                                            class="block text-gray-700  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
+                                            className="block text-gray-700  transition-all duration-200 hover:text-opacity-80 focus:text-opacity-80"
                                         >
                                             <svg
-                                                class="w-6 h-6"
+                                                className="w-6 h-6"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24"
                                                 fill="currentColor"
