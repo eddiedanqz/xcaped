@@ -29,8 +29,6 @@ return new class extends Migration
             $table->time('close_time');
             $table->string('phone');
             $table->timestamps();
-
-            $table->foreign('type_id')->references('id')->on('place_types');
         });
     }
 
