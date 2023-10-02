@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('place_id')->constrained();
-            $table->foreignId('special_id')->constrained();
+            $table->unsignedBigInteger('special_id');
             $table->text('details');
             $table->string('type');
             $table->date('date');
