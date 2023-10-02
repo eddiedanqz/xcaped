@@ -5,15 +5,6 @@ import Button from "@/Components/Button";
 import { InfoCard, CheckCircle } from "../Components/index";
 
 export default function Welcome(props) {
-    const { data, setData, post, processing, errors, reset } = useForm({});
-
-    const submit = (e) => {
-        e.preventDefault();
-        post(route("pay"));
-        console.log(data);
-        console.log(errors);
-    };
-
     return (
         <>
             <Head title="Welcome" />
@@ -33,7 +24,6 @@ export default function Welcome(props) {
                             <div className="flex flex-row space-x-5">
                                 <Button
                                     type="submit"
-                                    onClick={submit}
                                     className="peach-gradient rounded-sm shadow-lg"
                                 >
                                     Get The App

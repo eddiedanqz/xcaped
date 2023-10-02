@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Api\Event;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Services\CreateOrderService;
-use App\Models\Ticket;
-use App\Models\Attendee;
-
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -19,19 +16,20 @@ class OrderController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,CreateOrderService $createOrderService)
+    public function store(Request $request, CreateOrderService $createOrderService)
     {
-          $createOrderService->create($request);
-          return response(['message' => 'Order Created'],200);
+        $order = $createOrderService->create($request);
+        //
+        //redirect()->route('pay', $order);
+
+        return response(['message' => 'Order Created', 'order' => $order], 201);
     }
 
     /**
@@ -46,8 +44,19 @@ class OrderController extends Controller
         $order = Order::find($id);
 
         return response([
-            'order' => $order
-        ],200);
+            'order' => $order,
+        ], 200);
     }
 
+    public function update($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status = 'completed';
+        $order->isPaid = true;
+        $order->save();
+
+        return response([
+            'order' => $order,
+        ], 200);
+    }
 }

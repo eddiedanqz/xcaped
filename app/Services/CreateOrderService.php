@@ -82,6 +82,8 @@ class CreateOrderService
 
         //Send notification
         Notification::send($user, new OrderCreated($order));
+
+        return $order;
     }
 
     private function createAtendee($data, $order, $eventId, $user)

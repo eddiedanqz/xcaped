@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/event/save/{event}', 'Api\Event\SaveEventController@store');
 //
     Route::post('/order', 'Api\Event\OrderController@store');
+    Route::post('/update/order/{id}', 'Api\Event\OrderController@update');
+
     Route::get('/my-tickets', 'Api\Ticket\MyTicketController@index');
     Route::get('/my-ticket/{id}', 'Api\Ticket\MyTicketController@show');
     Route::post('/ticket/share/{attendee}', 'Api\Ticket\MyTicketController@update');
@@ -71,7 +73,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResources(['promotion' => 'Api\Place\PromotionController']);
     //Payment
     Route::get('/payment/callback', 'Api\Payment\PaymentController@handleGatewayCallback');
-    Route::post('/pay/', 'Api\Payment\PaymentController@redirectToGateway')->name('pay');
+    // Route::post('/pay/', 'Api\Payment\PaymentController@redirectToGateway')->name('pay');
     //Logout
     Route::post('/logout', 'Api\Auth\AuthController@logout');
 });

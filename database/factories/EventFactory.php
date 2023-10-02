@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Event;
 use Illuminate\Support\Str;
 
 /**
@@ -29,24 +28,24 @@ class EventFactory extends Factory
         $latitude = $this->faker->randomFloat(6, $centerLatitude - 0.5, $centerLatitude + 0.5);
         $longitude = $this->faker->randomFloat(6, $centerLongitude - 0.5, $centerLongitude + 0.5);
 
-
         return [
-        'title'=> $title,
-        'slug' => Str::slug($title).time(),
-        'description' => $this->faker->text(),
-        'category_id' => rand(1,2),
-        'start_date' => $startDate,
-        'start_time' => $this->faker->time('H:i'),
-        'end_date' => $endDate,
-        'end_time' => $this->faker->time('H:i'),
-        'venue' => $this->faker->name(),
-        'banner' => $this->faker->imageUrl(900,580,'animals',true),
-        'address' => $this->faker->address(),
-        'address_latitude' => $latitude,
-        'address_longitude' => $longitude,
-        'author' => $this->faker->unique()->name(),
-         'type' => 'public',
-        'user_id' => rand(1,2)
+            'title' => $title,
+            'slug' => Str::slug($title).time(),
+            'description' => $this->faker->text(),
+            'category_id' => rand(1, 2),
+            'start_date' => $startDate,
+            'start_time' => $this->faker->time('H:i'),
+            'end_date' => $endDate,
+            'end_time' => $this->faker->time('H:i'),
+            'venue' => $this->faker->name(),
+            'banner' => $this->faker->imageUrl(900, 580, 'animals', true),
+            'address' => $this->faker->address(),
+            'address_latitude' => $latitude,
+            'address_longitude' => $longitude,
+            'author' => $this->faker->unique()->name(),
+            'type' => 'public',
+            'status' => 'published',
+            'user_id' => rand(1, 2),
         ];
     }
 }

@@ -17,12 +17,12 @@ class PaymentController extends Controller
     public function redirectToGateway(Request $request)
     {
         $data = [
-            'amount' => $request['amount'] * 100,
+            'amount' => $request['grand_total'] * 100,
             'reference' => paystack()->genTranxRef(),
-            'email' => $request['email'],
-            'currency' => $request['currency'],
+            'email' => auth()->user()->email,
+            'currency' => 'GHS',
             'metadata' => [
-                'orderID' => $request['orderID'],
+                'orderID' => $request['id'],
             ],
         ];
 
@@ -46,6 +46,6 @@ class PaymentController extends Controller
         return $paymentDetails;
         // Now you have the payment details,
         // you can store the authorization_code in your db to allow for recurrent subscriptions
-        // you can then redirect or do whatever you want
+        // update order status
     }
 }
