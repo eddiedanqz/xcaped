@@ -15,9 +15,9 @@ class CreateAttendeesTable extends Migration
     {
         Schema::create('attendees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('order_id')->index();
+            $table->unsignedBigInteger('order_id')->index();
             $table->unsignedBigInteger('event_id')->index();
-            $table->unsignedInteger('ticket_id')->index();
+            $table->unsignedBigInteger('ticket_id')->index();
             $table->unsignedBigInteger('user_id')->index();
             $table->string('fullname');
             $table->string('email');
