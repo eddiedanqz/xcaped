@@ -49,7 +49,7 @@ export default function Welcome(props) {
                             <div className="relative m-8">
                                 <div className="shadow-2xl rounded-3xl h-full">
                                     <img
-                                        :src="'../storage/img/Tickets.png'"
+                                        src="../storage/img/Tickets.png"
                                         className="h-[400px] w-full relative"
                                     />
                                 </div>
