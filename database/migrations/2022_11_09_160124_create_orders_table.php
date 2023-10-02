@@ -17,12 +17,15 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->string('order_no')->unique();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('event_id')->index();
 
             $table->string('full_name');
             $table->string('user_email');
 
             $table->enum('status', ['pending', 'completed', 'decline'])->default('pending');
             $table->float('grand_total');
+            $table->integer('quantity');
+
             $table->boolean('isPaid')->default(false);
             $table->enum('payment_method', ['mobile_money', 'card'])->default('mobile_money');
             $table->string('message')->nullable();
