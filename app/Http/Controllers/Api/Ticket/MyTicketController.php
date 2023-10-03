@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api\Ticket;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Ticket;
-use App\Models\Attendee;
 use App\Http\Resources\AttendeeResource;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Attendee;
+use Illuminate\Http\Request;
 
 class MyTicketController extends Controller
 {
@@ -20,9 +18,7 @@ class MyTicketController extends Controller
     {
         $user = auth()->user();
 
-        $myticket = Cache::remember('myticket',now()->addMinutes(150),function () use ($user) {
-            return Attendee::where('user_id',$user->id)->latest()->paginate(10);
-        });
+        $myticket = Attendee::where('user_id', $user->id)->latest()->paginate(10);
 
         return AttendeeResource::collection($myticket);
     }
@@ -36,21 +32,22 @@ class MyTicketController extends Controller
     public function show($id)
     {
         $user = auth()->user();
-        $myticket = Attendee::where('user_id',$user->id)->findOrFail($id);
+        $myticket = Attendee::where('user_id', $user->id)->findOrFail($id);
+
         return AttendeeResource::make($myticket);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Attendee $attendee,Request $request)
+    public function update(Attendee $attendee, Request $request)
     {
         $user = auth()->user();
         $attendee->update(['user_id' => $request->id]);
+
         return response(['message' => 'success']);
     }
 

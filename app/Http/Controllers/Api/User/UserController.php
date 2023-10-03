@@ -3,23 +3,22 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Traits\ImageUploader;
-use Illuminate\Support\Facades\Cache;
-use App\Http\Resources\EventResource;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Storage;
-use App\Models\User;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserPasswordRequest;
+use App\Http\Resources\EventResource;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use App\Traits\ImageUploader;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
-{  use ImageUploader;
+{
+    use ImageUploader;
 
     public function __construct()
     {
         $this->middleware('auth');
-
     }
 
     /**
@@ -29,37 +28,22 @@ class UserController extends Controller
      */
     public function index($id)
     {
-          $user = User::find($id);
-          $query = $user->events()->paginate(3);
+        $user = User::find($id);
+        $query = $user->events()->paginate(3);
 
-          $events = EventResource::collection($query);
+        $events = EventResource::collection($query);
 
-          //checks if auth user is following $user
-          $follows = (auth()->user()) ? auth()->user()->following->contains('id',$user->id) : false;
+        //checks if auth user is following $user
+        $follows = (auth()->user()) ? auth()->user()->following->contains('id', $user->id) : false;
 
-          $savedCount = Cache::remember(
-              'count.events.' . $user->id,
-              now()->addSeconds(30),
-              function () use ($user) {
-                  return $user->interest->count();
-              });
+        $savedCount = $user->interest->count();
 
-          $followersCount = Cache::remember(
-              'count.followers.' . $user->id,
-              now()->addSeconds(30),
-              function () use ($user) {
-                  return $user->profile->followers->count();
-              });
+        $followersCount = $user->profile->followers->count();
 
-          $followingCount = Cache::remember(
-              'count.following.' . $user->id,
-              now()->addSeconds(30),
-              function () use ($user) {
-                  return $user->following->count();
-              });
+        $followingCount = $user->following->count();
 
-        return response(['user'=> $user,'events' => $events,'savedCount' => $savedCount,'follows' => $follows,
-    'followers' => $followersCount,'following' => $followingCount]);
+        return response(['user' => $user, 'events' => $events, 'savedCount' => $savedCount, 'follows' => $follows,
+            'followers' => $followersCount, 'following' => $followingCount]);
     }
 
     /**
@@ -71,8 +55,8 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $name = $request->file('image')->store('/images/user','public');
-        $nameArray = explode("/", $name);
+        $name = $request->file('image')->store('/images/user', 'public');
+        $nameArray = explode('/', $name);
         $filename = array_pop($nameArray);
 
         $currentPhoto = $user->profile->profilePhoto;
@@ -80,14 +64,13 @@ class UserController extends Controller
         $userPhoto = public_path('storage/image/user/').$currentPhoto;
 
         Storage::delete($userPhoto);
-        if(file_exists($userPhoto)){
+        if (file_exists($userPhoto)) {
             @unlink($userPhoto);
-            }
+        }
 
         $user->profile->update(['profilePhoto' => $filename]);
 
         return UserResource::make($user);
-
     }
 
     /**
@@ -100,31 +83,30 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request)
     {
          //
-         $user = auth()->user();
+        $user = auth()->user();
 
-         $user->update($request->all());
-         $user->profile->update($request->all());
+        $user->update($request->all());
+        $user->profile->update($request->all());
 
-         return UserResource::make($user);
+        return UserResource::make($user);
     }
 
-     /**
-     *
+    /**
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function updatePassword(UserPasswordRequest $request)
-     {
+    {
         $user = auth()->user();
 
         //if password not empty
-        if(Hash::check($request->OldPassword, $user->password)){
+        if (Hash::check($request->OldPassword, $user->password)) {
             $user->update(['password' => Hash::make($request->password)]);
         }
 
-        return ['message' => "Password Updated"];
-     }
+        return ['message' => 'Password Updated'];
+    }
 
     /**
      * Remove the specified resource from storage.
