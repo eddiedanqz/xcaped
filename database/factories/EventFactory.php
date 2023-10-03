@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -18,7 +19,7 @@ class EventFactory extends Factory
     public function definition()
     {
         $startDate = $this->faker->dateTimeThisYear('+1 month.');
-        $endDate = strtotime('+1 day', $startDate->getTimestamp());
+        $endDate = Carbon::parse(strtotime('+1 day', $startDate->getTimestamp()));
         $title = $this->faker->name();
 
         $centerLatitude = 5.5547;
