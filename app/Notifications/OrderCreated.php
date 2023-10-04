@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -29,7 +28,7 @@ class OrderCreated extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['database'];
     }
 
     /**
@@ -56,7 +55,7 @@ class OrderCreated extends Notification
     {
         return [
             'title' => 'Order created',
-            'body' => 'Ticket will be available shortly.'
+            'body' => 'Ticket will be available shortly.',
         ];
     }
 }
