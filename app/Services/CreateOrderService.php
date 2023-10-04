@@ -81,7 +81,7 @@ class CreateOrderService
         // }
 
         //Send notification
-        Notification::send($user, new OrderCreated($order));
+        //Notification::send($user, new OrderCreated($order));
 
         return $order;
     }
