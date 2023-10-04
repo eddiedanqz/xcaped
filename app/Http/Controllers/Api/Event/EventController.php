@@ -37,7 +37,8 @@ class EventController extends Controller
         $getDistanceAction = new GetDistanceAction;
         $distance = $getDistanceAction->execute();
 
-        $events = Event::select('*')->nearby($distance)->orderBy('distance')->published()
+        $events = Event::select('*')->nearby($distance)->orderBy('distance')
+        //->published()
         ->offset(0)->paginate(10);
 
         return EventResource::collection($events);
