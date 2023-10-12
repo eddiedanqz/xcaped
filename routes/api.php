@@ -81,3 +81,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 //Auth
 Route::post('/register', 'Api\Auth\AuthController@register');
 Route::post('/login', 'Api\Auth\AuthController@login')->name('login');
+Route::post('/password-reset', 'Api\Auth\PasswordResetController@__invoke')->name('login');
