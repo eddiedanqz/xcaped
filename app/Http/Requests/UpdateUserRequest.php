@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
         $user = auth()->user();
 
         return [
-            'fullname' => ['required', 'string', 'max:255'],
+            'fullname' => ['required', 'string', 'max:191'],
             'username' => ['required', 'string', 'max:191', 'unique:users,username,'.$user->id],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
         ];
