@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Searchable\Searchable;
@@ -116,6 +118,17 @@ class Event extends Model implements Searchable
         return $query->selectRaw("$arg AS distance")->whereRaw("$arg < ?", [50]);
     }
 
+    public function scopeOngoing($query)
+    {
+        $now = now();
+
+        $query->where('start_date', '<=', $now)
+            ->where(function (Builder $query) use ($now) {
+                $query->where('end_date', '>=', $now)
+                    ->orWhereNull('end_date');
+            });
+    }
+
     /**
      * Nearby events
      */
@@ -125,6 +138,14 @@ class Event extends Model implements Searchable
             // Apply the date range filter
             $query->whereDate('start_date', $arg);
         }
+    }
+
+    public function scopeWithEventCount(Builder $query, $followerIds)
+    {
+        return $query
+            ->select('user_id', DB::raw('COUNT(*) as event_count'))
+            ->whereIn('user_id', $followerIds)
+            ->groupBy('user_id');
     }
 
     public function getSearchResult(): SearchResult

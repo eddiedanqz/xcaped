@@ -16,7 +16,6 @@ class AttendeeController extends Controller
 
         $attendees = Attendee::where('event_id', $id)
                 ->where('fullname', 'Like', '%'.$search.'%')
-                ->orWhere('username', 'Like', '%'.$search.'%')
                 ->orWhere('reference', 'Like', '%'.$search.'%')
                 ->paginate(10)->appends(['term' => $search, 'eventId' => $id]);
 

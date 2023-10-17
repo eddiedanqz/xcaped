@@ -48,4 +48,15 @@ class Attendee extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function getSearchResult(): SearchResult
+    {
+        // $url = route('blogPost.show', $this->slug);
+
+        return new \Spatie\Searchable\SearchResult(
+            $this,
+            $this->fullname,
+
+        );
+    }
 }

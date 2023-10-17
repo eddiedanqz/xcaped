@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Notification;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class UserNotificationController extends Controller
 {
@@ -14,7 +13,7 @@ class UserNotificationController extends Controller
      */
     public function index()
     {
-        return auth()->user()->notifications;
+        return auth()->user()->notifications()->paginate(10);
     }
 
     /**
@@ -25,6 +24,7 @@ class UserNotificationController extends Controller
     public function read()
     {
         auth()->user()->unreadNotifications->markAsRead();
+
         return auth()->user()->notifications;
     }
 

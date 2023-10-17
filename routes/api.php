@@ -20,6 +20,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return $request->user();
     });
 
+    Route::get('/home', 'Api\Home\HomeController@index');
+    Route::get('/nearby', 'Api\Home\HomeController@nearby');
+    Route::get('/live', 'Api\Home\HomeController@live');
+    Route::get('/events/following', 'Api\Home\HomeController@following');
     //Event
     Route::get('/events', 'Api\Event\EventController@index');
     Route::post('/event/create', 'Api\Event\EventController@store');

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Event;
 
-use App\Actions\GetDistanceAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
@@ -13,7 +12,6 @@ use App\Services\UpdateEventService;
 use App\Traits\ImageUploader;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Stevebauman\Location\Facades\Location;
 
 class EventController extends Controller
 {
@@ -31,17 +29,6 @@ class EventController extends Controller
      */
     public function index()
     {
-        $gip = Location::get($_SERVER['REMOTE_ADDR']);
-        // $lat = $gip->latitude;
-        // $lng = $gip->longitude;
-        $getDistanceAction = new GetDistanceAction;
-        $distance = $getDistanceAction->execute();
-
-        $events = Event::select('*')->nearby($distance)->orderBy('distance')
-        //->published()
-        ->offset(0)->paginate(10);
-
-        return EventResource::collection($events);
     }
 
     /**
