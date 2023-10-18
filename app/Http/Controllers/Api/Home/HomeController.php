@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\FollowerResource;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
 
@@ -106,5 +107,13 @@ class HomeController extends Controller
                ->paginate(10);
 
         return FollowerResource::collection($following);
+    }
+
+    public function calendar($id)
+    {
+        $events = Event::with('user')->where('user_id', $id)->upcoming()
+        ->get();
+
+        return EventResource::collection($events);
     }
 }

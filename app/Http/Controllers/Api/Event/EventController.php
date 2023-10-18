@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
+use App\Models\Profile;
 use App\Models\User;
 use App\Services\CreateTicketService;
 use App\Services\StoreEventService;
@@ -61,8 +62,13 @@ class EventController extends Controller
         $follows = (auth()->user()) ? auth()->user()->following->contains('id', $event->user_id) : false;
         $saved = (auth()->user()) ? auth()->user()->interest->contains('id', $event->id) : false;
 
+        $ids = $event->invitations->pluck('user_id')->toArray();
+
+        $invitees = Profile::findOrFail($ids)->take(3);
+
         return  response([
             'event' => EventResource::make($event),
+            'invitees' => $invitees,
             'follows' => $follows,
             'saved' => $saved,
             'profile' => $user->profile->profilePhoto,

@@ -97,9 +97,9 @@ class Event extends Model implements Searchable
     /**
      * Published events
      */
-    public function scopePublished($query)
+    public function scopeStatus($query, $arg)
     {
-        return $query->where('status', '=', 'published');
+        return $query->where('status', '=', $arg);
     }
 
     /**
