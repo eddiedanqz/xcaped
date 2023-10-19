@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/live', 'Api\Home\HomeController@live');
     Route::get('/events/following', 'Api\Home\HomeController@following');
     Route::get('/events/following/{id}', 'Api\Home\HomeController@calendar');
+
+    Route::get('/category/event/{id}', 'Api\Home\CategoryEventController@__invoke');
     //Event
     Route::get('/events', 'Api\Event\EventController@index');
     Route::post('/event/create', 'Api\Event\EventController@store');
