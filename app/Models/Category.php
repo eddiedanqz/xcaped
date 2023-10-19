@@ -16,11 +16,11 @@ class Category extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','slug'];
+    protected $fillable = ['name', 'slug', 'image', 'color', 'bg_color'];
 
     //relationship
-    public function events() {
-
+    public function events()
+    {
         return $this->hasMany(Event::class);
     }
 }
