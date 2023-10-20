@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Notification;
 
 use App\Http\Controllers\Controller;
+use DB;
 
 class UserNotificationController extends Controller
 {
@@ -37,5 +38,20 @@ class UserNotificationController extends Controller
     public function destroy()
     {
         auth()->user()->notifications()->delete();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        DB::table('notifications')
+        ->where('id', $id)
+        ->delete();
+
+        return response('Deleted', 201);
     }
 }

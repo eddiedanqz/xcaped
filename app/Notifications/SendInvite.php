@@ -57,7 +57,10 @@ class SendInvite extends Notification
     {
         return [
             'title' => $this->details['title'],
-            'data' => $this->details['body'],
+            'body' => $this->details['body'],
+            'id' => $this->details['eventId'],
+            'link' => $this->details['link'],
+            'image' => $this->details['banner'],
         ];
     }
 }

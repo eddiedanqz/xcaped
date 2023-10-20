@@ -66,22 +66,8 @@ class CreateOrderService
             }
         });
 
-        // foreach ($data as $item) {
-        //     for ($i=0; $i < $item['qty']; $i++) {
-        //         $attendee = new Attendee;
-        //         $attendee->order_id = $order->id;
-        //         $attendee->event_id = $eventId;
-        //         $attendee->user_id = $user->id;
-        //         $attendee->ticket_id = $item['ticketId'];
-        //         $attendee->fullname = $user->fullname;
-        //         $attendee->email = $user->email;
-        //         $attendee->reference = rand(11111111,99999999);
-        //         $attendee->save();
-        //     }
-        // }
-
         //Send notification
-        //Notification::send($user, new OrderCreated($order));
+        Notification::send($user, new OrderCreated($order));
 
         return $order;
     }

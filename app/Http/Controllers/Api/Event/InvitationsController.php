@@ -37,12 +37,16 @@ class InvitationsController extends Controller
         $invitation->user_id = $request->id;
         $invitation->save();
 
-        //Send notification
-        $details = [
-            'title' => $invitation->id,
-            'body' => 'You have a new event invitation',
-        ];
         $user = User::findOrFail($invitation->user_id);
+        $details = [
+            'title' => $invitation->title,
+            'body' => 'You have a new event invitation',
+            'eventId' => $invitation->event_id,
+            'link' => 'Event',
+            'banner' => $invitation->banner,
+        ];
+
+        //Send notification
         $user->notify(new SendInvite($details));
 
         return response($invitation);

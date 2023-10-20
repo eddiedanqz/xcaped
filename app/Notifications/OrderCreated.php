@@ -10,14 +10,16 @@ class OrderCreated extends Notification
 {
     use Queueable;
 
+    private $order;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -56,6 +58,9 @@ class OrderCreated extends Notification
         return [
             'title' => 'Order created',
             'body' => 'Ticket will be available shortly.',
+            'id' => $this->order['id'],
+            'link' => '',
+            'image' => '',
         ];
     }
 }

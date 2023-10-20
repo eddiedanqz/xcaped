@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //
     Route::get('/notifications/', 'Api\Notification\UserNotificationController@index');
     Route::get('/notifications/read', 'Api\Notification\UserNotificationController@read');
+    Route::delete('/notifications/{uuid}', 'Api\Notification\UserNotificationController@delete');
     //
     Route::get('/invitations/all/', 'Api\Event\InvitationsController@index');
     Route::post('/invitations/send/', 'Api\Event\InvitationsController@store');
