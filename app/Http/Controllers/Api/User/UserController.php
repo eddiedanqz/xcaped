@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Requests\UserPasswordRequest;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ImageUploader;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -36,13 +37,13 @@ class UserController extends Controller
         //checks if auth user is following $user
         $follows = (auth()->user()) ? auth()->user()->following->contains('id', $user->id) : false;
 
-        $savedCount = $user->interest->count();
+        $eventCount = $user->events->count();
 
         $followersCount = $user->profile->followers->count();
 
         $followingCount = $user->following->count();
 
-        return response(['user' => $user, 'events' => $events, 'savedCount' => $savedCount, 'follows' => $follows,
+        return response(['user' => $user, 'events' => $events, 'eventCount' => $eventCount, 'follows' => $follows,
             'followers' => $followersCount, 'following' => $followingCount]);
     }
 
@@ -55,13 +56,13 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $name = $request->file('image')->store('/images/user', 'public');
+        $name = $request->file('image')->store('/images/uploads', 'public');
         $nameArray = explode('/', $name);
         $filename = array_pop($nameArray);
 
         $currentPhoto = $user->profile->profilePhoto;
         //if user already has image delete it
-        $userPhoto = public_path('storage/image/user/').$currentPhoto;
+        $userPhoto = public_path('storage/image/uploads/').$currentPhoto;
 
         Storage::delete($userPhoto);
         if (file_exists($userPhoto)) {
@@ -96,13 +97,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(UserPasswordRequest $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
         $user = auth()->user();
 
         //if password not empty
-        if (Hash::check($request->OldPassword, $user->password)) {
-            $user->update(['password' => Hash::make($request->password)]);
+        if ($request['password']) {
+            $user->update(['password' => Hash::make($request['password'])]);
         }
 
         return ['message' => 'Password Updated'];

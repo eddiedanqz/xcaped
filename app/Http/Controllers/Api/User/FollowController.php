@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Http\Resources\UserResource;
-
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class FollowController extends Controller
 {
@@ -14,7 +13,6 @@ class FollowController extends Controller
     {
         $this->middleware(['auth']);
     }
-
 
     /**
      * Handle the incoming request.
@@ -30,6 +28,14 @@ class FollowController extends Controller
     public function followers()
     {
         $user = auth()->user()->profile->followers;
+
+        return UserResource::collection($user);
+    }
+
+    public function following()
+    {
+        $user = auth()->user()->following;
+
         return UserResource::collection($user);
     }
 }

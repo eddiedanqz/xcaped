@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UpdatePasswordRequest extends FormRequest
 {
@@ -25,6 +26,12 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'password' => ['required', 'string', 'min:6'],
+            'oldPassword' => ['required', function ($attribute, $value, $fail) {
+                if (! Hash::check($value, auth()->user()->password)) {
+                    return $fail(__('The old password is incorrect.'));
+                }
+            }],
+
         ];
     }
 }
