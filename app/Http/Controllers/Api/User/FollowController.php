@@ -32,10 +32,13 @@ class FollowController extends Controller
         return UserResource::collection($user);
     }
 
-    public function following()
+    public function people($id)
     {
-        $user = auth()->user()->following;
+        $user = User::find($id);
+        $followers = $user->profile->followers()->paginate(10);
+        $following = $user->following()->paginate(10);
 
-        return UserResource::collection($user);
+        return ['following' => UserResource::collection($followers),
+            'followers' => UserResource::collection($followers)];
     }
 }

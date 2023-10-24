@@ -47,11 +47,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/profile/update', 'Api\User\UserController@update');
     Route::post('/profile/password/', 'Api\User\UserController@updatePassword');
     Route::get('/profile/{user}', 'Api\User\UserController@index');
+    Route::get('/profile/users', 'Api\User\FollowController@people');
 
     //follow user
     Route::post('/follow/{user}/', 'Api\User\FollowController@index');
     Route::get('/followers/search', 'Api\Search\FollowersController@search');
     Route::get('/followers/', 'Api\User\FollowController@followers');
+    Route::get('/account/fans/{id}', 'Api\User\FollowController@people');
+
     //interested event
     Route::get('/event/saved', 'Api\Event\SaveEventController@index');
     Route::post('/event/save/{event}', 'Api\Event\SaveEventController@store');
