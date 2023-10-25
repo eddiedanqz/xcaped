@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Event;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateEventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Profile;
@@ -37,8 +38,9 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, StoreEventService $storeEventService)
+    public function store(CreateEventRequest $request)
     {
+        $storeEventService = new StoreEventService;
         $event = $storeEventService->store($request);
         //create Ticket
         if ($request->has('tickets')) {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CreateEventRequest extends FormRequest
 {
@@ -19,7 +19,6 @@ class CreateEventRequest extends FormRequest
         return true;
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,15 +27,17 @@ class CreateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
+            'title' => ['required', 'string'],
             'category_id' => ['required'],
-            'description' => ['nullable'],
-            'image' => ['image','nullable','max:1999'],
+            'description' => ['required', 'string'],
             'start_date' => ['required'],
             'start_time' => ['required'],
             'end_date' => ['nullable'],
             'end_time' => ['nullable'],
-            'venue' => ['required'],
+            'venue' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'type' => ['required', 'string'],
+            'image' => ['image', 'nullable', 'max:1999'],
 
         ];
     }
