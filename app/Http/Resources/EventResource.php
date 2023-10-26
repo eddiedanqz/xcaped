@@ -16,11 +16,11 @@ class EventResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'userId' => $this->user_id,
             'slug' => $this->slug,
             'title' => $this->title,
             'type' => $this->type,
-            'status' => $this->status,
-            'userId' => $this->user_id,
+            'status' => new EventStatusResource($this->status),
             'category' => new CategoryResource($this->category),
             'author' => $this->author,
             'banner' => $this->banner,

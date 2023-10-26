@@ -30,7 +30,7 @@ class CreateEventsTable extends Migration
             $table->string('address')->nullable();
             $table->double('address_latitude')->nullable();
             $table->double('address_longitude')->nullable();
-            $table->enum('status', ['pending', 'published', 'cancelled', 'ended'])->default('pending');
+            $table->foreignId('status_id')->constrained();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('author');

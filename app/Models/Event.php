@@ -52,6 +52,11 @@ class Event extends Model implements Searchable
          return $this->belongsTo(Category::class);
      }
 
+     public function status()
+     {
+         return $this->belongsTo(EventStatus::class);
+     }
+
     public function ticket()
     {
         return $this->hasMany(Ticket::class);
