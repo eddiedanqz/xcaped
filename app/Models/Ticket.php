@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Ticket extends Model
 {
     use HasFactory, SoftDeletes;
 
-
-    protected $fillable = ['title','capacity', 'available_from', 'available_to', 'price', 'event_id'];
+    protected $fillable = ['title', 'capacity', 'available_from', 'available_to', 'price', 'event_id'];
 
     /**
      * Set to null if empty
+     *
      * @param $input
      */
     // public function setEventIdAttribute($input)
@@ -25,6 +24,7 @@ class Ticket extends Model
 
     /**
      * Set attribute to money format
+     *
      * @param $input
      */
     // public function setAmountAttribute($input)
@@ -32,14 +32,14 @@ class Ticket extends Model
     //     $this->attributes['amount'] = $input ? $input : null;
     // }
 
-
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id')->withTrashed();
+        return $this->belongsTo(Event::class, 'event_id');
     }
 
-     /**
+    /**
      * The order associated with the ticket.
+     *
      * @return BelongsToMany
      */
     public function orders()
@@ -51,5 +51,4 @@ class Ticket extends Model
             'order_id'
         );
     }
-
 }

@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
 use Qirolab\Laravel\Reactions\Traits\Reacts;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable implements ReactsInterface, Searchable
+class User extends Authenticatable implements HasName, Searchable
 {
     use HasApiTokens, HasFactory, Notifiable, Reacts;
 
@@ -108,5 +108,10 @@ class User extends Authenticatable implements ReactsInterface, Searchable
             $this->fullname,
 
         );
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->fullname;
     }
 }
