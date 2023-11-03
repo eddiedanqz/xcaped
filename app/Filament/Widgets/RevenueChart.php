@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Order;
+use App\Settings\GeneralSettings;
 use DB;
 use Filament\Widgets\LineChartWidget;
 
@@ -14,6 +15,7 @@ class RevenueChart extends LineChartWidget
 
     protected function getData(): array
     {
+        $rate = app(GeneralSettings::class)->commission;
         $results = Order::select(
             // DB::raw('YEAR(created_at) as year'),
             DB::raw("DATE_FORMAT(created_at, '%b') as month"),
@@ -27,7 +29,7 @@ class RevenueChart extends LineChartWidget
 
         foreach ($results as $item) {
             $months[] = $item['month'];
-            $total[] = $item['total'] * (6 / 100);
+            $total[] = $item['total'] * ($rate / 100);
         }
 
         return [

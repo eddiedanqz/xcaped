@@ -4,30 +4,33 @@ namespace App\Filament\Widgets;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Card;
+use  Filament\Widgets\StatsOverviewWidget\Card;
 
 class StatsOverview extends BaseWidget
 {
+    protected static ?string $pollingInterval = null;
+
     protected function getCards(): array
     {
-        $sum = Order::sum('grand_total');
-        $paid_out = $sum * (6 / 100);
+        $rate = app(GeneralSettings::class)->commission;
+        $gross = Order::sum('grand_total');
+        $commission = $gross * ($rate / 100);
+        $net = $gross - $commission;
 
         return [
             Card::make('Total Users', User::count())
-            ->description('32k increase')
-            ->descriptionIcon('heroicon-s-trending-up')
             ->color('success'),
             Card::make('New Users', User::where('created_at', '>=', Carbon::now()->subDay()->toDateTimeString())->count())
-                ->description('7% increase')
-                ->descriptionIcon('heroicon-s-trending-down')
                 ->color('danger'),
-            Card::make('Total Revenue', $paid_out)
-                ->description('3% increase')
-                ->descriptionIcon('heroicon-s-trending-up')
-                ->color('success'),
+            Card::make('Commission', $rate.'%'),
+            Card::make('Gross Revenue', number_format($gross, 2))
+            ->color('danger'),
+            Card::make('Net Revenue', number_format($net, 2))
+            ->color('success'),
+            Card::make('Total Revenue', number_format($commission, 2)),
         ];
     }
 }
