@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('full_name');
             $table->string('user_email');
 
-            $table->enum('status', ['pending', 'completed', 'decline'])->default('pending');
+            $table->foreignId('status_id')->constrained();
             $table->float('grand_total');
             $table->integer('quantity');
 

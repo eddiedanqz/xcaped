@@ -62,6 +62,11 @@ class Event extends Model implements Searchable
         return $this->hasMany(Ticket::class);
     }
 
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
     public function banner()
     {
         $imagePath = ($this->banner) ? 'user/uploads/'.$this->banner : 'imageonline-co-placeholder-image.jpg';

@@ -54,14 +54,14 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('order_no'),
-                Tables\Columns\TextColumn::make('full_name'),
-                Tables\Columns\TextColumn::make('user_email'),
+                Tables\Columns\TextColumn::make('order_no')->searchable(),
+                Tables\Columns\TextColumn::make('full_name')->searchable(),
+                Tables\Columns\TextColumn::make('user_email')->searchable(),
                 Tables\Columns\TextColumn::make('quantity'),
                 Tables\Columns\TextColumn::make('grand_total'),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('isPaid'),
-                Tables\Columns\TextColumn::make('payment_method'),
+                Tables\Columns\TextColumn::make('status')->sortable(),
+                Tables\Columns\TextColumn::make('isPaid')->sortable(),
+                Tables\Columns\TextColumn::make('payment_method')->sortable(),
 
             ])
             ->filters([

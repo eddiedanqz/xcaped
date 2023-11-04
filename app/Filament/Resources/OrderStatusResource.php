@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EventStatusResource\Pages;
-use App\Models\EventStatus;
+use App\Filament\Resources\OrderStatusResource\Pages;
+use App\Models\OrderStatus;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -11,13 +11,15 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Support\Str;
 
-class EventStatusResource extends Resource
+class OrderStatusResource extends Resource
 {
-    protected static ?string $model = EventStatus::class;
+    protected static ?string $model = OrderStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     protected static ?string $navigationGroup = 'Events';
+
+    //protected static ?string $navigationLabel = 'Statuses';
 
     public static function form(Form $form): Form
     {
@@ -79,9 +81,9 @@ class EventStatusResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEventStatuses::route('/'),
-            'create' => Pages\CreateEventStatus::route('/create'),
-            'edit' => Pages\EditEventStatus::route('/{record}/edit'),
+            'index' => Pages\ListOrderStatuses::route('/'),
+            'create' => Pages\CreateOrderStatus::route('/create'),
+            'edit' => Pages\EditOrderStatus::route('/{record}/edit'),
         ];
     }
 }
