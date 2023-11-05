@@ -17,7 +17,7 @@ class Event extends Model implements Searchable
     //
     protected $fillable = [
         'title', 'description', 'category_id', 'banner', 'start_date', 'start_time', 'end_date', 'end_time',
-        'venue', 'city', 'country', 'address', 'address_latitude', 'address_longitude', 'ticket_url', 'status', 'author',
+        'venue', 'city', 'country', 'address', 'address_latitude', 'address_longitude', 'ticket_url', 'status_id', 'author',
         'slug', 'type', 'user_id',
     ];
 
@@ -109,7 +109,7 @@ class Event extends Model implements Searchable
      */
     public function scopeStatus($query, $arg)
     {
-        return $query->where('status', '=', $arg);
+        return $query->where('status_id', '=', $arg);
     }
 
     /**
@@ -137,6 +137,14 @@ class Event extends Model implements Searchable
                 $query->where('end_date', '>=', $now)
                     ->orWhereNull('end_date');
             });
+    }
+
+    public function scopeHasEnded($query)
+    {
+        $currentDateTime = Carbon::now();
+        $eventEndDateTime = $this->end_date->setTimeFromTimeString($this->end_time);
+
+        return false;
     }
 
     /**
