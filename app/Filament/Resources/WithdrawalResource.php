@@ -52,12 +52,12 @@ class WithdrawalResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('order_no')->searchable(),
-                Tables\Columns\TextColumn::make('event_id')->searchable(),
-                Tables\Columns\TextColumn::make('status_id')->sortable(),
+                Tables\Columns\TextColumn::make('event.title')->searchable(),
+                Tables\Columns\TextColumn::make('status.name')->sortable(),
                 Tables\Columns\TextColumn::make('organizer')->searchable(),
                 Tables\Columns\TextColumn::make('method'),
                 Tables\Columns\TextColumn::make('details'),
-                Tables\Columns\TextColumn::make('actual amount'),
+                Tables\Columns\TextColumn::make('actual_amount'),
                 Tables\Columns\TextColumn::make('ended_at')->searchable(),
             ])
             ->filters([

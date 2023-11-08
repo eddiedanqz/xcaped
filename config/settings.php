@@ -8,6 +8,7 @@ return [
      */
     'settings' => [
         GeneralSettings::class,
+        UserSettings::class,
     ],
 
     /*

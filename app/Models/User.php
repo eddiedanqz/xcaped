@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\UserSettings;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +14,7 @@ use Spatie\Searchable\SearchResult;
 
 class User extends Authenticatable implements HasName, Searchable
 {
-    use HasApiTokens, HasFactory, Notifiable, Reacts;
+    use HasApiTokens, HasFactory, Notifiable, Reacts ,UserSettings;
 
     /**
      * The attributes that are mass assignable.
@@ -113,5 +114,10 @@ class User extends Authenticatable implements HasName, Searchable
     public function getFilamentName(): string
     {
         return $this->fullname;
+    }
+
+    public function settings()
+    {
+        return $this->hasMany(UserSetting::class);
     }
 }

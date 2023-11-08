@@ -22,6 +22,7 @@ class DashboardController extends Controller
 
         $paid_out = $sum * ($rate / 100);
         $net = $sum - $paid_out;
+
         $response = [
             'orders' => $orders,
             'sold' => $sold,
