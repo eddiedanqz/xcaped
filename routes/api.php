@@ -56,10 +56,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/followers/', 'Api\User\FollowController@followers');
     Route::get('/account/fans/{id}', 'Api\User\FollowController@people');
 
+    //
+    //Route::get('/', '@create');
+    Route::apiResources(['withdrawal' => 'Api\User\PaymentDetailController']);
+
     //interested event
     Route::get('/event/saved', 'Api\Event\SaveEventController@index');
     Route::post('/event/save/{event}', 'Api\Event\SaveEventController@store');
-//
+
+    //
     Route::post('/order', 'Api\Event\OrderController@store');
     Route::post('/update/order/{id}', 'Api\Event\OrderController@update');
 
@@ -71,11 +76,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/attendee/checkin/', 'Api\Report\AttendeeController@checkin')->name('checkin');
     Route::get('/report/{event}', 'Api\Report\DashboardController@index');
     Route::get('/search/attendee/', 'Api\Search\AttendeeController@search');
-    //
+    //Notification
     Route::get('/notifications/', 'Api\Notification\UserNotificationController@index');
     Route::get('/notifications/read', 'Api\Notification\UserNotificationController@read');
     Route::delete('/notifications/{uuid}', 'Api\Notification\UserNotificationController@delete');
-    //
+    //Invites
     Route::get('/invitations/all/', 'Api\Event\InvitationsController@index');
     Route::post('/invitations/send/', 'Api\Event\InvitationsController@store');
     Route::post('/invitations/undo/', 'Api\Event\InvitationsController@undo');
@@ -86,6 +91,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Payment
     Route::get('/payment/callback', 'Api\Payment\PaymentController@handleGatewayCallback');
     // Route::post('/pay/', 'Api\Payment\PaymentController@redirectToGateway')->name('pay');
+
     //Logout
     Route::post('/logout', 'Api\Auth\AuthController@logout');
 });
