@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Auth\AuthController;
+use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Auth
-Route::post('/register', 'Api\Auth\AuthController@register');
-Route::post('/login', 'Api\Auth\AuthController@login')->name('login');
-Route::post('/password-reset', 'Api\Auth\PasswordResetController@__invoke')->name('login');
+
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/password-reset', [PasswordResetController::class, '__invoke']);
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //User
