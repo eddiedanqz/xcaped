@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Auth
+Route::post('/register', 'Api\Auth\AuthController@register');
+Route::post('/login', 'Api\Auth\AuthController@login')->name('login');
+Route::post('/password-reset', 'Api\Auth\PasswordResetController@__invoke')->name('login');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //User
     Route::get('/user', function (Request $request) {
@@ -71,7 +76,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/my-tickets', 'Api\Ticket\MyTicketController@index');
     Route::get('/my-ticket/{id}', 'Api\Ticket\MyTicketController@show');
     Route::post('/ticket/share/{attendee}', 'Api\Ticket\MyTicketController@update');
-//
+    //
     Route::get('/attendees/{event}', 'Api\Report\AttendeeController@index');
     Route::post('/attendee/checkin/', 'Api\Report\AttendeeController@checkin')->name('checkin');
     Route::get('/report/{event}', 'Api\Report\DashboardController@index');
@@ -95,8 +100,3 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Logout
     Route::post('/logout', 'Api\Auth\AuthController@logout');
 });
-
-//Auth
-Route::post('/register', 'Api\Auth\AuthController@register');
-Route::post('/login', 'Api\Auth\AuthController@login')->name('login');
-Route::post('/password-reset', 'Api\Auth\PasswordResetController@__invoke')->name('login');
