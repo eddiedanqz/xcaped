@@ -16,11 +16,11 @@ class AuthController extends Controller
     {
         //Check username
         $user = User::where('username', $request['user'])
-               ->orWhere('email', $request['user'])->first();
+            ->orWhere('email', $request['user'])->first();
 
         //Check Password
         if (! $user || ! Hash::check($request['password'], $user->password)) {
-            return response([
+            return response()->json([
                 'message' => 'Invalid Credentials',
             ], 401);
         }
