@@ -4,11 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventStatusResource\Pages;
 use App\Models\EventStatus;
-use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
 class EventStatusResource extends Resource
@@ -23,24 +22,24 @@ class EventStatusResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                ->afterStateUpdated(function ($set, $state, $context) {
-                    if ($context === 'edit') {
-                        return;
-                    }
-                    $set('slug', Str::slug($state));
-                })
+                TextInput::make('name')
+                    ->afterStateUpdated(function ($set, $state, $context) {
+                        if ($context === 'edit') {
+                            return;
+                        }
+                        $set('slug', Str::slug($state));
+                    })
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('slug')
-                ->maxLength(255)
-                ->rules(['alpha_dash'])
-                ->unique(ignoreRecord: true)
-                ->required()
-                ->maxLength(191),
-                Forms\Components\TextInput::make('color')
+                TextInput::make('slug')
+                    ->maxLength(255)
+                    ->rules(['alpha_dash'])
+                    ->unique(ignoreRecord: true)
+                    ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('bg_color')
+                TextInput::make('color')
+                    ->maxLength(191),
+                TextInput::make('bg_color')
                     ->maxLength(191),
             ]);
     }

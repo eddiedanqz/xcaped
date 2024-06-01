@@ -4,11 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
 use App\Models\Event;
-use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class EventResource extends Resource
 {
@@ -22,45 +21,45 @@ class EventResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
+                TextInput::make('user_id')
                     ->required(),
-                Forms\Components\TextInput::make('title')
+                TextInput::make('title')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('slug')
+                TextInput::make('slug')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\Select::make('category_id')
-                ->relationship('category', 'name')
-                ->searchable()
-                ->preload()
-                ->required(),
-                Forms\Components\TextInput::make('type')
+                Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                TextInput::make('type')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->required()
                     ->maxLength(65535),
-                Forms\Components\FileUpload::make('banner')->image()
-                ->maxSize(1024)
-                ->imageResizeMode('contain')
+                FileUpload::make('banner')->image()
+                    ->maxSize(1024)
+                    ->imageResizeMode('contain')
                    //->imageCropAspectRatio('1:1')
-                ->imageResizeTargetWidth('277')
-                ->imageResizeTargetHeight('139'),
-                Forms\Components\DatePicker::make('start_date')
+                    ->imageResizeTargetWidth('277')
+                    ->imageResizeTargetHeight('139'),
+                DatePicker::make('start_date')
                     ->required(),
-                Forms\Components\TextInput::make('start_time')
+                TextInput::make('start_time')
                     ->required(),
-                Forms\Components\DatePicker::make('end_date'),
-                Forms\Components\TextInput::make('end_time'),
-                Forms\Components\TextInput::make('venue')
+                DatePicker::make('end_date'),
+                TextInput::make('end_time'),
+                TextInput::make('venue')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('address')
+                TextInput::make('address')
                     ->maxLength(191),
-                Forms\Components\TextInput::make('address_latitude'),
-                Forms\Components\TextInput::make('address_longitude'),
-                Forms\Components\TextInput::make('author')
+                TextInput::make('address_latitude'),
+                TextInput::make('address_longitude'),
+                TextInput::make('author')
                     ->required()
                     ->maxLength(191),
             ]);
@@ -71,7 +70,6 @@ class EventResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('slug')->limit(10),
                 Tables\Columns\TextColumn::make('category.name')->searchable(),
                 Tables\Columns\TextColumn::make('status.name')->sortable(),
                 Tables\Columns\TextColumn::make('type')->sortable(),

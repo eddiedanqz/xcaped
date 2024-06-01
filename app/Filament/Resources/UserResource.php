@@ -5,11 +5,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
@@ -26,31 +26,31 @@ class UserResource extends Resource
         return $form
             ->schema([
                 TextInput::make('fullname')
-            ->required(),
+                    ->required(),
                 TextInput::make('username')
-            ->required(),
+                    ->required(),
                 TextInput::make('email')
-                ->email()
-                ->required(),
+                    ->email()
+                    ->required(),
                 TextInput::make('password')
-                ->password()
-                ->autocomplete('new-password')
-                ->required(),
+                    ->password()
+                    ->autocomplete('new-password')
+                    ->required(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            TextColumn::make('fullname')->searchable(),
-            TextColumn::make('username')->searchable(),
-            TextColumn::make('email')->searchable(),
-            TextColumn::make('created_at')
-            ->dateTime(),
-            TextColumn::make('updated_at')
-            ->dateTime(),
-        ])
+            ->columns([
+                TextColumn::make('fullname')->searchable(),
+                TextColumn::make('username')->searchable(),
+                TextColumn::make('email')->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime(),
+                TextColumn::make('updated_at')
+                    ->dateTime(),
+            ])
 
             ->filters([
                 //

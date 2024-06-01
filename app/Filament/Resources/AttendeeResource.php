@@ -4,10 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttendeeResource\Pages;
 use App\Models\Attendee;
-use Filament\Resources\Form;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class AttendeeResource extends Resource
 {
@@ -23,7 +24,9 @@ class AttendeeResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('fullname')
+                    ->required()
+                    ->maxLength(191),
             ]);
     }
 

@@ -6,10 +6,10 @@ use App\Filament\Resources\WithdrawalResource\Pages;
 use App\Models\Withdrawal;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class WithdrawalResource extends Resource
@@ -29,17 +29,17 @@ class WithdrawalResource extends Resource
                 TextInput::make('order_no'),
                 TextInput::make('organizer'),
                 Select::make('event_id')
-                ->relationship('event', 'id')
-                ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->title)
-                ->searchable()
-                ->preload()
-                ->required(),
+                    ->relationship('event', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->title)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Select::make('status_id')
-                ->relationship('status', 'id')
-                ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->name)
-                ->searchable()
-                ->preload()
-                ->required(),
+                    ->relationship('status', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->name)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 TextInput::make('method')->required(),
                 TextInput::make('details')->required(),
                 TextInput::make('actual_amount')->required(),

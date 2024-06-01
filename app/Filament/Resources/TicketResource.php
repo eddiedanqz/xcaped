@@ -6,10 +6,10 @@ use App\Filament\Resources\TicketResource\Pages;
 use App\Models\Ticket;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class TicketResource extends Resource
@@ -25,11 +25,11 @@ class TicketResource extends Resource
         return $form
             ->schema([
                 Select::make('event_id')
-                ->relationship('event', 'id')
-                ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->title)
-                ->searchable()
-                ->preload()
-                ->required(),
+                    ->relationship('event', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->title)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(191),

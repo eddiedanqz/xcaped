@@ -4,11 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
-use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
@@ -23,25 +23,25 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                ->afterStateUpdated(function ($set, $state, $context) {
-                    if ($context === 'edit') {
-                        return;
-                    }
-                    $set('slug', Str::slug($state));
-                })
+                TextInput::make('name')
+                    ->afterStateUpdated(function ($set, $state, $context) {
+                        if ($context === 'edit') {
+                            return;
+                        }
+                        $set('slug', Str::slug($state));
+                    })
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('slug')
-                ->maxLength(255)
-                ->rules(['alpha_dash'])
-                ->unique(ignoreRecord: true)
-                ->required(),
-                Forms\Components\Textarea::make('image')
+                TextInput::make('slug')
+                    ->maxLength(255)
+                    ->rules(['alpha_dash'])
+                    ->unique(ignoreRecord: true)
+                    ->required(),
+                Textarea::make('image')
                     ->maxLength(65535),
-                Forms\Components\TextInput::make('color')
+                TextInput::make('color')
                     ->maxLength(191),
-                Forms\Components\TextInput::make('bg_color')
+                TextInput::make('bg_color')
                     ->maxLength(191),
             ]);
     }

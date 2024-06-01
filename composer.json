@@ -5,11 +5,11 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "fakerphp/faker": "^1.9.1",
         "fedeisas/laravel-mail-css-inliner": "5.0",
         "fideloper/proxy": "^4.4",
-        "filament/filament": "^2.0",
+        "filament/filament": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.6.9",
@@ -19,7 +19,7 @@
         "laravel/sanctum": "^2.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "livewire/livewire": "^2.12",
+        "livewire/livewire": "^3.0",
         "qirolab/laravel-reactions": "^2.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-searchable": "^1.11",
@@ -31,6 +31,7 @@
     },
     "require-dev": {
         "doctrine/dbal": "^3.7",
+        "filament/upgrade": "^3.2",
         "laravel/pint": "^1.5",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
@@ -53,7 +54,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

@@ -6,10 +6,10 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderResource extends Resource
@@ -26,17 +26,17 @@ class OrderResource extends Resource
             ->schema([
                 TextInput::make('order_no'),
                 Select::make('user_id')
-                ->relationship('user', 'id')
-                ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->fullname)
-                ->searchable()
-                ->preload()
-                ->required(),
+                    ->relationship('user', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->fullname)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Select::make('event_id')
-                ->relationship('event', 'id')
-                ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->title)
-                ->searchable()
-                ->preload()
-                ->required(),
+                    ->relationship('event', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->title)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 TextInput::make('user_email'),
                 TextInput::make('full_name'),
                 Select::make('status')->options([
