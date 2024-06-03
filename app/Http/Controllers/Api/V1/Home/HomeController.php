@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Home;
+namespace App\Http\Controllers\Api\V1\Home;
 
 use App\Actions\GetDistanceAction;
 use App\Http\Controllers\Controller;
@@ -31,18 +31,18 @@ class HomeController extends Controller
 
         $user = auth()->user();
         $events = Event::select('*')->nearby($distance)->orderBy('distance')
-        ->offset(0);
+            ->offset(0);
 
         $published = $events //upcoming()->published()
-          ->paginate(10);
+            ->paginate(10);
 
         $live = $events->ongoing()->paginate(10);
 
         $followerIds = $user->following->pluck('id')->toArray();
 
         $following = Event::with('user')->upcoming()
-               ->withEventCount($followerIds)
-               ->paginate(10);
+            ->withEventCount($followerIds)
+            ->paginate(10);
 
         //return $following = Event::with('user')->whereIn('user_id', $user->following->pluck('id'))->paginate(10);
 
@@ -66,10 +66,10 @@ class HomeController extends Controller
 
         $user = auth()->user();
         $events = Event::select('*')->nearby($distance)->orderBy('distance')
-        ->offset(0);
+            ->offset(0);
 
         $published = $events //upcoming()->published()
-          ->paginate(10);
+            ->paginate(10);
 
         return EventResource::collection($published);
     }
@@ -87,10 +87,10 @@ class HomeController extends Controller
 
         $user = auth()->user();
         $events = Event::select('*')->nearby($distance)->orderBy('distance')
-        ->offset(0);
+            ->offset(0);
 
-        $published = $events //upcoming()->published()
-          ->paginate(10);
+        // $published = $events //upcoming()->published()
+        //   ->paginate(10);
 
         $live = $events->ongoing()->paginate(10);
 
@@ -103,8 +103,8 @@ class HomeController extends Controller
         $followerIds = $user->following->pluck('id')->toArray();
 
         $following = Event::with('user')->upcoming()
-               ->withEventCount($followerIds)
-               ->paginate(10);
+            ->withEventCount($followerIds)
+            ->paginate(10);
 
         return FollowerResource::collection($following);
     }
@@ -112,7 +112,7 @@ class HomeController extends Controller
     public function calendar($id)
     {
         $events = Event::with('user')->where('user_id', $id)->upcoming()
-        ->get();
+            ->get();
 
         return EventResource::collection($events);
     }

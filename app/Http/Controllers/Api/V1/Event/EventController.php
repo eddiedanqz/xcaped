@@ -13,11 +13,12 @@ use App\Services\StoreEventService;
 use App\Services\UpdateEventService;
 use App\Traits\ImageUploader;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    use  ImageUploader;
+    use ImageUploader;
 
     public function __construct()
     {
@@ -38,7 +39,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateEventRequest $request)
+    public function store(CreateEventRequest $request): JsonResponse
     {
         $storeEventService = new StoreEventService;
         $event = $storeEventService->store($request);
@@ -48,7 +49,7 @@ class EventController extends Controller
             $ticketService->create($event, $request->tickets);
         }
 
-        return response($event, 201);
+        return response()->json($event, 201);
     }
 
     /**
@@ -68,7 +69,7 @@ class EventController extends Controller
 
         $invitees = Profile::findOrFail($ids)->take(3);
 
-        return  response([
+        return response([
             'event' => EventResource::make($event),
             'invitees' => $invitees,
             'follows' => $follows,
@@ -87,7 +88,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        return  EventResource::make($event);
+        return EventResource::make($event);
     }
 
     /**

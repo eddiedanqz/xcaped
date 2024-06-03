@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
+use App\Http\Controllers\APi\V1\Home\CategoryEventController;
+use App\Http\Controllers\Api\V1\Home\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,19 +26,19 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/password-reset', [PasswordResetController::class, '__invoke']);
 });
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     //User
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
-    Route::get('/home', 'Api\Home\HomeController@index');
-    Route::get('/nearby', 'Api\Home\HomeController@nearby');
-    Route::get('/live', 'Api\Home\HomeController@live');
-    Route::get('/events/following', 'Api\Home\HomeController@following');
-    Route::get('/events/following/{id}', 'Api\Home\HomeController@calendar');
+    Route::get('/explore', [HomeController::class, 'index']);
+    Route::get('/nearby', [HomeController::class, 'nearby']);
+    Route::get('/live', [HomeController::class, 'live']);
+    Route::get('/events/following', [HomeController::class, 'following']);
+    Route::get('/events/following/{id}', [HomeController::class, 'calendar']);
 
-    Route::get('/category/event/{id}', 'Api\Home\CategoryEventController@__invoke');
+    Route::get('/category/event/{id}', [CategoryEventController::class, '__invoke']);
     //Event
     Route::get('/events', 'Api\Event\EventController@index');
     Route::post('/event/create', 'Api\Event\EventController@store');

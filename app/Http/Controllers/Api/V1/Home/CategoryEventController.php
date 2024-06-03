@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\APi\Home;
+namespace App\Http\Controllers\APi\V1\Home;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
@@ -18,7 +18,7 @@ class CategoryEventController extends Controller
     public function __invoke($id)
     {
         $events = Event::where('category_id', $id)->upcoming()
-        ->paginate(10);
+            ->paginate(10);
 
         return EventResource::collection($events);
     }
