@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\EventStatus;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -33,7 +36,7 @@ class EventFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title).time(),
             'description' => $this->faker->text(),
-            'category_id' => rand(1, 2),
+            'category_id' => Category::factory()->create(),
             'start_date' => $startDate,
             'start_time' => $this->faker->time('H:i'),
             'end_date' => $endDate,
@@ -43,10 +46,9 @@ class EventFactory extends Factory
             'address' => $this->faker->address(),
             'address_latitude' => $latitude,
             'address_longitude' => $longitude,
-            'author' => $this->faker->unique()->name(),
             'type' => 'public',
-            'status' => 'published',
-            'user_id' => rand(1, 2),
+            'status_id' => EventStatus::factory()->create(),
+            'user_id' => User::factory()->create(),
         ];
     }
 }

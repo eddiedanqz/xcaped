@@ -22,7 +22,6 @@ class EventResource extends JsonResource
             'type' => $this->type,
             'status' => new EventStatusResource($this->status),
             'category' => new CategoryResource($this->category),
-            'author' => $this->author,
             'banner' => $this->banner,
             'description' => $this->description,
             'end_date' => $this->end_date,

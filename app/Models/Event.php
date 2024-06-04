@@ -17,7 +17,7 @@ class Event extends Model implements Searchable
     //
     protected $fillable = [
         'title', 'description', 'category_id', 'banner', 'start_date', 'start_time', 'end_date', 'end_time',
-        'venue', 'city', 'country', 'address', 'address_latitude', 'address_longitude', 'ticket_url', 'status_id', 'author',
+        'venue', 'address', 'address_latitude', 'address_longitude', 'ticket_url', 'status_id',
         'slug', 'type', 'user_id',
     ];
 
@@ -35,27 +35,27 @@ class Event extends Model implements Searchable
 
     //    ];
 
-     //
+    //
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-      //
+    //
     //   public function getRouteKeyName()
     //   {
     //      return 'slug';
     //   }
 
-     public function category()
-     {
-         return $this->belongsTo(Category::class);
-     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
-     public function status()
-     {
-         return $this->belongsTo(EventStatus::class);
-     }
+    public function status()
+    {
+        return $this->belongsTo(EventStatus::class);
+    }
 
     public function ticket()
     {

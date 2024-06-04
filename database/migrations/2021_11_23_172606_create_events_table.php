@@ -15,7 +15,7 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('slug')->unique();
             $table->unsignedBigInteger('category_id');
@@ -31,16 +31,8 @@ class CreateEventsTable extends Migration
             $table->double('address_latitude')->nullable();
             $table->double('address_longitude')->nullable();
             $table->foreignId('status_id')->constrained();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->string('author');
             $table->rememberToken();
             $table->timestamps();
-            $table->index('user_id');
-
-            $table->foreign('author')->references('username')->on('users')->onUpdate('cascade');
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
