@@ -30,7 +30,7 @@ class EventStatusFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name),
             'color' => $this->faker->word(),
-            'bgColor' => $this->faker->word(),
+            'bg_color' => $this->faker->word(),
         ];
     }
 }

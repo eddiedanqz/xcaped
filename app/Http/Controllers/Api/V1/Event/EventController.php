@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Event;
+namespace App\Http\Controllers\Api\V1\Event;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEventRequest;
