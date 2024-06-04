@@ -35,7 +35,7 @@ class AuthController extends Controller
             'count' => $notesCount,
         ];
 
-        return response()->json($response);
+        return response()->json($response, 200);
     }
 
     /**
