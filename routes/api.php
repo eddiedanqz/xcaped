@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
+use App\Http\Controllers\Api\V1\Event\EventController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/category/event/{id}', [CategoryEventController::class, '__invoke']);
     //Event
     Route::get('/events', 'Api\Event\EventController@index');
-    Route::post('/event/create', 'Api\Event\EventController@store');
+    Route::post('/event/create', [EventController::class, 'store']);
     Route::post('/event/{id}', 'Api\Event\EventController@update');
     Route::post('/publish/event', 'Api\Event\EventStatusController@__invoke');
     Route::get('/event/edit/{id}', 'Api\Event\EventController@edit');
