@@ -41,13 +41,13 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
 
     Route::get('/category/event/{id}', [CategoryEventController::class, '__invoke']);
     //Event
-    Route::get('/events', 'Api\Event\EventController@index');
+    Route::get('/events', [EventController::class, 'index']);
     Route::post('/event/create', [EventController::class, 'store']);
     Route::post('/event/{id}', 'Api\Event\EventController@update');
-    Route::post('/publish/event', 'Api\Event\EventStatusController@__invoke');
     Route::get('/event/edit/{id}', 'Api\Event\EventController@edit');
     Route::get('/event/show/{id}', 'Api\Event\EventController@show');
     Route::delete('/event/delete/{id}', 'Api\Event\EventController@destroy');
+    Route::post('/publish/event', 'Api\Event\EventStatusController@__invoke');
     Route::get('/my-events', 'Api\User\MyEventController@index');
     //Ticket
     Route::post('/ticket', 'Api\Event\TicketController@store');

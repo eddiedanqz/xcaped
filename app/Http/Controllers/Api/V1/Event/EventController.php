@@ -41,6 +41,8 @@ class EventController extends Controller
      */
     public function store(CreateEventRequest $request): JsonResponse
     {
+        return $request->validated();
+
         $storeEventService = new StoreEventService;
         $event = $storeEventService->store($request);
         //create Ticket
