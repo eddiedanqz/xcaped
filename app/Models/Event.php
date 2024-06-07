@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Observers\EventObserver;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
+#[ObservedBy([EventObserver::class])]
 class Event extends Model implements Searchable
 {
     use HasFactory;

@@ -40,7 +40,6 @@ class StoreEventService
         $event->address_latitude = $request->lat;
         $event->address_longitude = $request->lon;
         $event->user_id = $user->id;
-        $event->author = $user->username;
         $event->save();
 
         $details = [

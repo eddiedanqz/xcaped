@@ -28,6 +28,7 @@ class CreateEventRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string'],
+            // 'slug' => ['required', 'string'],
             'category_id' => ['required'],
             'description' => ['required', 'string'],
             'start_date' => ['required'],

@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Npabisz\LaravelSettings\Models\AbstractSetting;
+use Illuminate\Database\Eloquent\Model;
 
-class Setting extends AbstractSetting
+class Setting extends Model
 {
-    /**
-     * @return array
-     */
-    public static function getSettingsDefinitions (): array
+    public static function getSettingsDefinitions(): array
     {
         return [
             /**

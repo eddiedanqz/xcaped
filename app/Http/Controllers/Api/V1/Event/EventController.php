@@ -41,15 +41,17 @@ class EventController extends Controller
      */
     public function store(CreateEventRequest $request): JsonResponse
     {
-        return $request->validated();
+        $data = $request->validated();
 
-        $storeEventService = new StoreEventService;
-        $event = $storeEventService->store($request);
-        //create Ticket
-        if ($request->has('tickets')) {
-            $ticketService = new CreateTicketService();
-            $ticketService->create($event, $request->tickets);
-        }
+        $event = auth()->user()->events()->create($data);
+
+        // $storeEventService = new StoreEventService;
+        // $event = $storeEventService->store($request);
+        // //create Ticket
+        // if ($request->has('tickets')) {
+        //     $ticketService = new CreateTicketService();
+        //     $ticketService->create($event, $request->tickets);
+        // }
 
         return response()->json($event, 201);
     }
