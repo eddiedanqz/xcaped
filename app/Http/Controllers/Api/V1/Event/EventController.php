@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1\Event;
 
+use App\Actions\CreateEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Profile;
 use App\Models\User;
-use App\Services\CreateTicketService;
-use App\Services\StoreEventService;
-use App\Services\UpdateEventService;
 use App\Traits\ImageUploader;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -39,47 +36,37 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateEventRequest $request): JsonResponse
+    public function store(
+        CreateEventRequest $request,
+        CreateEvent $createEvent): JsonResponse
     {
-        $data = $request->validated();
+        $createEvent->execute($request->validated());
 
-        $event = auth()->user()->events()->create($data);
-
-        // $storeEventService = new StoreEventService;
-        // $event = $storeEventService->store($request);
-        // //create Ticket
-        // if ($request->has('tickets')) {
-        //     $ticketService = new CreateTicketService();
-        //     $ticketService->create($event, $request->tickets);
-        // }
-
-        return response()->json($event, 201);
+        return response()->json('Success', 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Event $event): JsonResponse
     {
-        $event = Event::findOrFail($id);
         $user = User::findOrFail($event->user_id);
-        $follows = (auth()->user()) ? auth()->user()->following->contains('id', $event->user_id) : false;
-        $saved = (auth()->user()) ? auth()->user()->interest->contains('id', $event->id) : false;
+        $follows = auth()->user()->following->contains('id', $event->user_id) ?? false;
+        $saved = auth()->user()->interest->contains('id', $event->id) ?? false;
 
         $ids = $event->invitations->pluck('user_id')->toArray();
 
         $invitees = Profile::findOrFail($ids)->take(3);
 
-        return response([
+        return response()->json([
             'event' => EventResource::make($event),
             'invitees' => $invitees,
             'follows' => $follows,
             'saved' => $saved,
             'profile' => $user->profile->profilePhoto,
-        ]);
+        ], 200);
     }
 
     /**
@@ -98,16 +85,11 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UpdateEventService $updateEventService, $id)
+    public function update(UpdateEventRequest $request, Event $event)
     {
-        try {
-            $updateEventService->update($request, $id);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
-        }
+        $event->update($request->validated());
 
         return response()->json(['message' => 'Event updated'], 201);
     }
@@ -115,16 +97,13 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $slug)
+    public function destroy(Event $event): JsonResponse
     {
-        //$event = $slug
-
         // delete the Event
-        $slug->delete();
+        $event->delete();
 
-        return ['message' => 'Event Deleted'];
+        return response()->json(['message' => 'Event Deleted']);
     }
 }

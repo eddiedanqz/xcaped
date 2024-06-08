@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\Event;
 use App\Models\EventStatus;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class EventObserver
@@ -27,9 +26,8 @@ class EventObserver
      */
     public function creating(Event $event)
     {
-        Log::info('Creating event fired for YourModel.');
         // $event->user_id = auth()->user()->id;
-        $event->slug = Str::slug($event->title);
+        $event->slug = Str::slug($event->title).time();
 
         $status = EventStatus::where('slug', 'pending')->first();
         $event->status_id = $status->id;
@@ -37,13 +35,14 @@ class EventObserver
     }
 
     /**
-     * Handle the Event "updated" event.
+     * Handle the Event "updating" event.
      *
      * @return void
      */
-    public function updated(Event $event)
+    public function updating(Event $event)
     {
-        //
+        $event->slug = Str::slug($event->title).time();
+
     }
 
     /**
