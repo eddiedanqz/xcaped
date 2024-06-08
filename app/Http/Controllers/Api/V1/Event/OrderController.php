@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\CreateOrderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -26,11 +27,19 @@ class OrderController extends Controller
      */
     public function store(Request $request, CreateOrderService $createOrderService)
     {
-        $order = $createOrderService->create($request);
-        //
-        //redirect()->route('pay', $order);
+        try {
+            $order = DB::transaction(function () use ($request, $createOrderService) {
 
-        return response(['message' => 'Order Created', 'order' => $order], 201);
+                $order = $createOrderService->Create($request);
+
+                return $order;
+            });
+
+            return response(['message' => 'Order Created', 'order' => $order], 201);
+        } catch (\Exception $e) {
+            return response(['message' => 'Failed to create orde'], 400);
+        }
+
     }
 
     /**
@@ -44,7 +53,7 @@ class OrderController extends Controller
         auth()->user()->id;
         $order = Order::find($id);
 
-        return response([
+        return response()->json([
             'order' => $order,
         ], 200);
     }
