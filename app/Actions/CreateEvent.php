@@ -10,7 +10,7 @@ class CreateEvent
 {
     public function execute($data, $request)
     {
-        DB::transaction(function ($data, $request) {
+        DB::transaction(function () use ($data, $request) {
             $event = auth()->user()->events()->create($data);
 
             if ($request->hasFile('image')) {
