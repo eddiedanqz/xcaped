@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
+use App\Domain\Shared\Enums\TicketStatus;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasUuids,SoftDeletes;
 
     protected $fillable = ['title', 'capacity', 'available_from', 'available_to', 'price', 'event_id'];
 
     /**
      * Set to null if empty
      *
-     * @param $input
+     * @param  $input
      */
     // public function setEventIdAttribute($input)
     // {
@@ -25,7 +27,7 @@ class Ticket extends Model
     /**
      * Set attribute to money format
      *
-     * @param $input
+     * @param  $input
      */
     // public function setAmountAttribute($input)
     // {
@@ -50,5 +52,10 @@ class Ticket extends Model
             'ticket_id',
             'order_id'
         );
+    }
+
+    public function closed(): bool
+    {
+        return $this->status === TicketStatus::CLOSED->value;
     }
 }
