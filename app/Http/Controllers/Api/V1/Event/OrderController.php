@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Event;
 
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\CreateOrderService;
@@ -61,7 +62,7 @@ class OrderController extends Controller
     public function update($id)
     {
         $order = Order::findOrFail($id);
-        $order->status = 'completed';
+        $order->status = OrderStatus::COMPLETED->value;
         $order->isPaid = true;
         $order->save();
 
