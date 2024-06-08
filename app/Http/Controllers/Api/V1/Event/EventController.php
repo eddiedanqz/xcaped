@@ -39,7 +39,7 @@ class EventController extends Controller
         EventRequest $request,
         CreateEvent $createEvent): JsonResponse
     {
-        $createEvent->execute($request->validated());
+        $createEvent->execute($request->validated(), $request);
 
         return response()->json('Success', 201);
     }
@@ -73,7 +73,7 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): JsonResponse
     {
         $event = Event::findOrFail($id);
 
@@ -82,12 +82,19 @@ class EventController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(EventRequest $request, Event $event)
+    public function update(EventRequest $request, Event $event): JsonResponse
     {
         $event->update($request->validated());
+
+        if ($request->hasFile('image')) {
+            $event
+                ->getFirstMedia('banner')
+                ?->delete();
+
+            $event->addMedia($request['image'])
+                ->toMediaCollection('banner');
+        }
 
         return response()->json(['message' => 'Event updated'], 201);
     }

@@ -5,14 +5,17 @@ namespace App\Models;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
-class Event extends Model implements Searchable
+class Event extends Model implements HasMedia, Searchable
 {
-    use HasFactory;
+    use HasFactory,InteractsWithMedia;
 
     //
     protected $fillable = [
@@ -30,10 +33,7 @@ class Event extends Model implements Searchable
         'remember_token',
     ];
 
-    //  protected $dates = [
-    //     'start_date','end_date',
-
-    //    ];
+    protected $appends = ['banner'];
 
     //
     public function user()
@@ -67,11 +67,19 @@ class Event extends Model implements Searchable
         return $this->hasMany(Withdrawal::class);
     }
 
-    public function banner()
-    {
-        $imagePath = ($this->banner) ? 'user/uploads/'.$this->banner : 'imageonline-co-placeholder-image.jpg';
+    // public function banner()
+    // {
+    //     $imagePath = ($this->banner) ? 'user/uploads/'.$this->banner : 'imageonline-co-placeholder-image.jpg';
 
-        return '/uploads/'.$imagePath;
+    //     return '/uploads/'.$imagePath;
+    // }
+
+    public function banner(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getFirstMediaUrl('banner')
+             ?: 'https://placehold.co/600x400'
+        );
     }
 
     /**

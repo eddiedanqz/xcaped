@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 
-class CreateEventRequest extends FormRequest
+class EventRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,33 +27,15 @@ class CreateEventRequest extends FormRequest
             'title' => ['required', 'string'],
             'category_id' => ['required'],
             'description' => ['required', 'string'],
-            'start_date' => ['required'],
+            'start_date' => ['required', 'date'],
             'start_time' => ['required'],
-            'end_date' => ['nullable'],
-            'end_time' => ['nullable'],
+            'end_date' => ['nullable', 'sometimes', 'date'],
+            'end_time' => ['nullable', 'sometimes'],
             'venue' => ['required', 'string'],
             'address' => ['required', 'string'],
             'type' => ['required', 'string'],
-            'image' => ['image', 'nullable', 'max:1999'],
+            'image' => ['image', 'nullable', 'max:1999', 'sometimes'],
 
         ];
     }
-
-    // public function messages() {
-    //     return [
-    //       'title.required' => 'A title is required',
-    //       'category_id.required' => 'category is required',
-    //       'image.max' => 'The document must not be greater than 10 megabytes',
-    //     ];
-    //   }
-
-    //  protected function failedValidation(Validator $validator) {
-    //     $response = new Response(
-    //         [
-    //           "success" => false, "message" => "File upload failed.",
-    //           'errors' => $validator->errors()
-    //         ],
-    //         422);
-    //     throw new ValidationException($validator, $response);
-    //   }
 }
