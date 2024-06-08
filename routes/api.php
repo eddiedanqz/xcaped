@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Event\SaveEventController;
 use App\Http\Controllers\Api\V1\Event\TicketController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
+use App\Http\Controllers\Api\V1\Payment\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -121,9 +122,12 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     //Place
     Route::apiResources(['place' => 'Api\Place\PlaceController']);
     Route::apiResources(['promotion' => 'Api\Place\PromotionController']);
+
     //Payment
-    Route::get('/payment/callback', 'Api\Payment\PaymentController@handleGatewayCallback');
-    // Route::post('/pay/', 'Api\Payment\PaymentController@redirectToGateway')->name('pay');
+    Route::controller(PaymentController::class)->group(function () {
+        Route::get('/payment/callback', 'handleGatewayCallback');
+        // Route::post('/pay/', 'Api\Payment\PaymentController@redirectToGateway')->name('pay');
+    });
 
     //Logout
     Route::post('/logout', 'Api\Auth\AuthController@logout');
