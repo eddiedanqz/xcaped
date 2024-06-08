@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api\V1\Event;
 
 use App\Actions\CreateEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateEventRequest;
-use App\Http\Requests\UpdateEventRequest;
+use App\Http\Requests\EventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Profile;
@@ -37,7 +36,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(
-        CreateEventRequest $request,
+        EventRequest $request,
         CreateEvent $createEvent): JsonResponse
     {
         $createEvent->execute($request->validated());
@@ -57,7 +56,6 @@ class EventController extends Controller
         $saved = auth()->user()->interest->contains('id', $event->id) ?? false;
 
         $ids = $event->invitations->pluck('user_id')->toArray();
-
         $invitees = Profile::findOrFail($ids)->take(3);
 
         return response()->json([
@@ -87,7 +85,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEventRequest $request, Event $event)
+    public function update(EventRequest $request, Event $event)
     {
         $event->update($request->validated());
 

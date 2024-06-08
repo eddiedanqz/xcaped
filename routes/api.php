@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V1\Event\EventController;
+use App\Http\Controllers\Api\V1\Event\EventStatusController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
 use Illuminate\Http\Request;
@@ -40,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/events/following/{id}', [HomeController::class, 'calendar']);
 
     Route::get('/category/event/{id}', [CategoryEventController::class, '__invoke']);
+
     //Event
     Route::controller(EventController::class)->group(function () {
         Route::get('/events', 'index');
@@ -50,7 +52,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
         Route::delete('/event/delete/{event}', 'destroy');
     });
 
-    Route::post('/publish/event', 'Api\Event\EventStatusController@__invoke');
+    Route::controller(EventStatusController::class)->group(function () {
+        Route::post('/publish/event', 'invoke');
+    });
     Route::get('/my-events', 'Api\User\MyEventController@index');
     //Ticket
     Route::post('/ticket', 'Api\Event\TicketController@store');
