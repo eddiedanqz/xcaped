@@ -15,12 +15,8 @@ class CreateOrderItemsTable extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('ticket_id');
-
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
-
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignUuId('ticket_id')->constrained()->onDelete('cascade');
             $table->float('price');
             $table->integer('quantity');
             $table->timestamps();

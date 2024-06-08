@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Event;
+namespace App\Http\Controllers\Api\V1\Event;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Event;
 use App\Http\Resources\EventResource;
-
+use App\Models\Event;
+use Illuminate\Http\Request;
 
 class SaveEventController extends Controller
 {

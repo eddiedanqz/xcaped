@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Event;
+namespace App\Http\Controllers\Api\V1\Event;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -16,6 +16,7 @@ class OrderController extends Controller
      */
     public function index()
     {
+        return auth()->user()->events()->orders;
     }
 
     /**

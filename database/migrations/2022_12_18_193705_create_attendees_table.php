@@ -15,22 +15,17 @@ class CreateAttendeesTable extends Migration
     {
         Schema::create('attendees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id')->index();
-            $table->unsignedBigInteger('event_id')->index();
-            $table->unsignedBigInteger('ticket_id')->index();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignUuId('ticket_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('fullname');
             $table->string('email');
 
             $table->string('reference', 20);
             $table->enum('status', ['pending', 'checked'])->default('pending');
-
             $table->dateTime('check_time')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->timestamps();
         });
     }

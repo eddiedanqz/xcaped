@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Actions\CreateAttendee;
+use App\Actions\CreateOrderItem;
 use App\Models\Attendee;
 use App\Models\Order;
-use App\Models\Ticket;
 use App\Notifications\OrderCreated;
 use Illuminate\Support\Facades\Notification;
 
@@ -14,85 +15,29 @@ class CreateOrderService
     {
         $user = auth()->user();
 
-        $total = 0;
-        $quantity = 0;
+        $data = $request->tickets;
 
-        $data = json_decode($request->tickets);
-        //  $data = [$request->all()];
-
-        $order = new Order();
-        $order->order_no = 'XCP'.rand(11111111, 99999999);
-        $order->user_id = $user->id;
-        $order->full_name = $user->fullname;
-        $order->user_email = $user->email;
-
-        //Calculate total price
-        foreach ($data as $ticket) {
-            $total += $ticket->total;
-            $quantity += $ticket->qty;
-            $eventId = $ticket->eventId;
-        }
-
-        $order->event_id = $eventId;
-        $order->grand_total = $total;
-        $order->quantity = $quantity;
-        //Save order items
-        $order->save();
+        $order = Order::create([
+            'order_no' => 'XCP'.rand(11111111, 99999999),
+            'user_id' => $user->id,
+            'full_name' => $user->fullname,
+            'user_email' => $user->email,
+            'event_id' => $request->eventId,
+            'grand_total' => $request->total,
+            'quantity' => $request->totalQuantity,
+        ]);
 
         //Create order item
-        foreach ($data as $item) {
-            $order->items()->attach($item->ticketId,
-                [
-                    'price' => $item->price,
-                    'quantity' => $item->qty,
-                ]);
-            //Check stock
-            $ticket = Ticket::find($item->ticketId);
-            $ticket->capacity = $ticket->capacity - $item->qty;
-            $ticket->update();
-        }
+        $createItem = new CreateOrderItem;
+        $createItem->execute($data, $order);
 
-        collect($data)->each(function ($item) use ($order, $eventId, $user) {
-            for ($i = 0; $i < $item->qty; $i++) {
-                $attendee = new Attendee;
-                $attendee->order_id = $order->id;
-                $attendee->event_id = $eventId;
-                $attendee->user_id = $user->id;
-                $attendee->ticket_id = $item->ticketId;
-                $attendee->fullname = $user->fullname;
-                $attendee->email = $user->email;
-                $attendee->reference = rand(11111111, 99999999);
-                $attendee->save();
-            }
-        });
+        //Register attendee
+        $createAttendee = new CreateAttendee;
+        $createAttendee->execute($order, $data, $request->eventId);
 
         //Send notification
         Notification::send($user, new OrderCreated($order));
 
         return $order;
-    }
-
-    private function createAtendee($data, $order, $eventId, $user)
-    {
-        $attendees = [];
-
-        foreach ($data as $item) {
-            for ($i = 0; $i < $item->qty; $i++) {
-                $attendee = new Attendee;
-                $attendee->order_id = $order->id;
-                $attendee->event_id = $eventId;
-                $attendee->user_id = $user->id;
-                $attendee->ticket_id = $item->ticketId;
-                $attendee->fullname = $user->fullname;
-                $attendee->email = $user->email;
-                $attendee->reference = rand(11111111, 99999999);
-                $attendees[] = $attendee;
-            }
-        }
-
-        //
-        foreach ($attendees as $attendee) {
-            $attendee->save();
-        }
     }
 }

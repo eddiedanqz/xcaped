@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V1\Event\EventController;
 use App\Http\Controllers\Api\V1\Event\EventStatusController;
+use App\Http\Controllers\Api\V1\Event\OrderController;
+use App\Http\Controllers\Api\V1\Event\SaveEventController;
 use App\Http\Controllers\Api\V1\Event\TicketController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
@@ -85,16 +87,19 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/account/fans/{id}', 'Api\User\FollowController@people');
 
     //
-    //Route::get('/', '@create');
     Route::apiResources(['withdrawal' => 'Api\User\PaymentDetailController']);
 
-    //interested event
-    Route::get('/event/saved', 'Api\Event\SaveEventController@index');
-    Route::post('/event/save/{event}', 'Api\Event\SaveEventController@store');
+    //Interested event
+    Route::controller(SaveEventController::class)->group(function () {
+        Route::get('/event/saved', 'index');
+        Route::post('/event/save/{event}', 'store');
+    });
 
-    //
-    Route::post('/order', 'Api\Event\OrderController@store');
-    Route::post('/update/order/{id}', 'Api\Event\OrderController@update');
+    //Order
+    Route::controller(OrderController::class)->group(function () {
+        Route::post('/order', 'store');
+        Route::post('/update/order/{id}', 'update');
+    });
 
     Route::get('/my-tickets', 'Api\Ticket\MyTicketController@index');
     Route::get('/my-ticket/{id}', 'Api\Ticket\MyTicketController@show');
