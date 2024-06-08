@@ -21,7 +21,6 @@ class CreateEventsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->string('type');
             $table->text('description');
-            $table->string('banner')->nullable();
             $table->date('start_date');
             $table->time('start_time');
             $table->date('end_date')->nullable();

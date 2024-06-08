@@ -1,48 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Api\Event;
+namespace App\Http\Controllers\Api\V1\Event;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Event;
+use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return Ticket::with('event')->all();
+        $tickets = Ticket::with('event')->all();
+
+        return response()->json($tickets, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-       $tickets = json_decode($request->tickets);
-       $event_id = $request->id;
+        $tickets = json_decode($request->tickets);
+        $event_id = $request->id;
 
-        //   return $tickets;
-        //    foreach ($tickets as $req) {
-        //         $ticket = new Ticket;
-        //         $ticket->title = $req->title;
-        //         $ticket->price = $req->price;
-        //         $ticket->capacity = $req->capacity;
-        //         $ticket->event_id = $event_id;
-        //         $ticket->save();
-        //     }
-
-        collect($tickets)->each(function ($item) use ( $event_id)
-        {
+        collect($tickets)->each(function ($item) use ($event_id) {
             $ticket = new Ticket;
             $ticket->title = $item->title;
             $ticket->price = $item->price;
@@ -51,7 +39,7 @@ class TicketController extends Controller
             $ticket->save();
         });
 
-        return response(['message'=>'Ticket Created'],201);
+        return response(['message' => 'Ticket Created'], 201);
     }
 
     /**
@@ -62,46 +50,28 @@ class TicketController extends Controller
      */
     public function show($id)
     {
-        $ticket = Ticket::findOrFail($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id): JsonResponse
     {
-        $ticket = Ticket::where('event_id',$id)->get();
+        $ticket = Ticket::where('event_id', $id)->get();
 
-        return response($ticket);
+        return response()->json($ticket, 200);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TicketRequest $request, Ticket $ticket): JsonResponse
     {
-        $tickets = json_decode($request->tickets);
+        $ticket->update($request->validated());
 
-     try {
-        foreach ($tickets as $req) {
-             $ticket = Ticket::findOrFail($req->id);
-             $ticket->title = $req->title;
-             $ticket->price = $req->price;
-             $ticket->capacity = $req->capacity;
-             $ticket->save();
-         }
-     }catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Ticket doesn\'t exist'], 404);
-        }
-
-         return response(['message'=>'Ticket Updated'],201);
+        return response()->json(['message' => 'Ticket Updated'], 201);
     }
 
     /**
@@ -110,11 +80,10 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ticket $ticket): JsonResponse
     {
-        $ticket = Ticket::findOrFail($id);
         $ticket->delete();
 
-        return response(['message'=>'Deleted'],200);
+        return response()->json(['message' => 'Deleted'], 200);
     }
 }

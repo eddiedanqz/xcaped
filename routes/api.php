@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\User\MyEventController;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V1\Event\EventController;
 use App\Http\Controllers\Api\V1\Event\EventStatusController;
+use App\Http\Controllers\Api\V1\Event\TicketController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
 use Illuminate\Http\Request;
@@ -55,11 +57,17 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::controller(EventStatusController::class)->group(function () {
         Route::post('/publish/event', 'invoke');
     });
-    Route::get('/my-events', 'Api\User\MyEventController@index');
+
+    Route::controller(MyEventController::class)->group(function () {
+        Route::get('/my-events', 'index');
+    });
+
     //Ticket
-    Route::post('/ticket', 'Api\Event\TicketController@store');
-    Route::post('/ticket/{id}', 'Api\Event\TicketController@update');
-    Route::get('/event/ticket/{id}', 'Api\Event\TicketController@edit');
+    Route::controller(TicketController::class)->group(function () {
+        Route::post('/ticket', 'store');
+        Route::put('/ticket/{ticket}', 'update');
+        Route::get('/ticket/{id}', '@edit');
+    });
 
     Route::get('/search', 'Api\Search\SearchController@search');
     Route::get('/categories', 'Api\Category\CategoryController@index');
