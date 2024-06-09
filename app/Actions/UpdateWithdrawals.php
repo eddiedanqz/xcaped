@@ -35,18 +35,19 @@ final class UpdateWithdrawals
             $net = $gross - $commission;
 
             // Perform your update operations here, for example:
-            $withdrawal = new Withdrawal;
-            $withdrawal->order_no = paystack()->genTranxRef();
-            $withdrawal->organizer = $event->author;
-            $withdrawal->event_id = $event->id;
-            $withdrawal->status_id = $event->status_id;
-            $withdrawal->method = $method;
-            $withdrawal->details = $details;
-            $withdrawal->commission = $rate;
-            $withdrawal->amount = $gross;
-            $withdrawal->actual_amount = $net;
-            $withdrawal->ended_at = $event->end_date;
-            $withdrawal->save();
+            Withdrawal::create([
+                'order_no' => paystack()->genTranxRef(),
+                'organizer' => $event->author,
+                'event_id' => $event->id,
+                'status_id' => $event->status_id,
+                'method' => $method,
+                'details' => $details,
+                'commission' => $rate,
+                'amount' => $gross,
+                'actual_amount' => $net,
+                'ended_at' => $event->end_date,
+            ]);
+
         });
     }
 }

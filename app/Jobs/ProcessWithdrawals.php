@@ -2,8 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Actions\GetEndedEvents;
-use App\Actions\UpdateWithdrawals;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,12 +28,8 @@ class ProcessWithdrawals implements ShouldQueue
      */
     public function handle()
     {
-        $endedEvents = new GetEndedEvents;
-
-        $update = new UpdateWithdrawals;
-
+        $endedEvents = new JustEndedEvents;
         $events = $endedEvents->execute();
 
-        $update->execute($events);
     }
 }
