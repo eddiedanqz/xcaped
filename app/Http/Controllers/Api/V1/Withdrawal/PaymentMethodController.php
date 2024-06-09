@@ -44,7 +44,11 @@ class PaymentMethodController extends Controller
 
         $data = $request->validated();
 
-        foreach ($data['settings'] as $key => $value) {
+        if ($data['settings']['payment_method'] === 'Mobile Money') {
+            $user->setSetting('payment_method', $data['settings']['payment_method']);
+            $user->setSetting('payment_details.phone_number', $data['settings']['payment_details']['phone_number'],
+            );
+        } else {
             $user->setSetting($key, $value);
         }
 
