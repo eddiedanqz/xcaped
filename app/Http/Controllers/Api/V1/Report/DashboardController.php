@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Report;
+namespace App\Http\Controllers\Api\V1\Report;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;

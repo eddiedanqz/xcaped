@@ -8,7 +8,7 @@ use App\Models\Attendee;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class AttendeeController extends Controller
+class AttendeeSearchController extends Controller
 {
     public function search(Request $request): JsonResponse
     {

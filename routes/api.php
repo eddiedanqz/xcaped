@@ -12,6 +12,8 @@ use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
 use App\Http\Controllers\Api\V1\Notification\UserNotificationController;
 use App\Http\Controllers\Api\V1\Payment\PaymentController;
+use App\Http\Controllers\Api\V1\Report\AttendeeController;
+use App\Http\Controllers\Api\V1\Report\DashboardController;
 use App\Http\Controllers\Api\V1\Search\FollowersController;
 use App\Http\Controllers\Api\V1\Search\SearchController;
 use App\Http\Controllers\Api\V1\Ticket\MyTicketController;
@@ -129,10 +131,20 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     });
 
     //
-    Route::get('/attendees/{event}', 'Api\Report\AttendeeController@index');
-    Route::post('/attendee/checkin/', 'Api\Report\AttendeeController@checkin')->name('checkin');
-    Route::get('/report/{event}', 'Api\Report\DashboardController@index');
-    Route::get('/search/attendee/', 'Api\Search\AttendeeController@search');
+    Route::controller(AttendeeController::class)->group(function () {
+        Route::get('/attendees/{event}', 'index');
+        Route::post('/attendee/checkin/', 'checkin')->name('checkin');
+    });
+
+    //
+    Route::controller(AttendeeSearchController::class)->group(function () {
+        Route::get('/search/attendee/', 'search');
+    });
+
+    //
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/report/{event}', '@index');
+    });
 
     //Notification
     Route::controller(UserNotificationController::class)->group(function () {
