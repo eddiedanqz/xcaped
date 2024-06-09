@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\V1\Withdrawal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentDetailRequest;
 use App\Traits\CreateRecipient;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class PaymentDetailController extends Controller
+class PaymentMethodController extends Controller
 {
     use CreateRecipient;
 
@@ -15,16 +17,17 @@ class PaymentDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResponse
     {
+        $settings = auth()->user()->settings;
+
+        return response()->json($settings, 200);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): JsonResponse
     {
         //fetch list of telcos/bank
         return $this->getList();
@@ -35,16 +38,17 @@ class PaymentDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PaymentDetailRequest $request): JsonResponse
     {
         $user = auth()->user();
-        //create reciepient
 
-        //store user
-        $method = $user->setSetting('payment_method', $request->method);
-        $details = $user->setSetting('payment_details', $request->details);
+        $data = $request->validated();
 
-        return response('Saved', 200);
+        foreach ($data['settings'] as $key => $value) {
+            $user->setSetting($key, $value);
+        }
+
+        return response()->json('Saved', 201);
     }
 
     /**
@@ -71,13 +75,15 @@ class PaymentDetailController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
-        //
+        $user = auth()->user();
+
+        $settings = $user->settings;
+        $settings->put('theme', 'dark');
+        $user->settings = $settings;
+        $user->save();
     }
 
     /**
