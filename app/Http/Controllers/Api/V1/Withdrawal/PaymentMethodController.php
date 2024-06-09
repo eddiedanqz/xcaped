@@ -45,9 +45,10 @@ class PaymentMethodController extends Controller
         $data = $request->validated();
 
         if ($data['settings']['payment_method'] === 'Mobile Money') {
-            $user->setSetting('payment_method', $data['settings']['payment_method']);
-            $user->setSetting('payment_details.phone_number', $data['settings']['payment_details']['phone_number'],
+            $user->settings->put('payment_method', $data['settings']['payment_method']);
+            $user->settings->put('payment_details->phone_number', $data['settings']['payment_details']['phone_number'],
             );
+            $user->save();
         } else {
             $user->setSetting($key, $value);
         }
