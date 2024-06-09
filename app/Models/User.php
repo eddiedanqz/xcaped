@@ -142,13 +142,8 @@ class User extends Authenticatable implements HasName, Searchable
 
     public function setSetting($key, $value)
     {
-        // Convert the settings collection to an array
-        $settings = $this->settings->toArray();
-
-        // Set the new value using Arr::set
+        $settings = $this->settings;
         Arr::set($settings, $key, $value);
-
-        // Convert the array back to a collection and save it
         $this->settings = collect($settings);
         $this->save();
     }
