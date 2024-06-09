@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\V1\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePasswordRequest;
@@ -9,6 +9,7 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ImageUploader;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($id): JsonResponse
     {
         $user = User::find($id);
         $query = $user->events()->paginate(3);
@@ -43,7 +44,7 @@ class UserController extends Controller
 
         $followingCount = $user->following->count();
 
-        return response(['user' => $user, 'events' => $events, 'eventCount' => $eventCount, 'follows' => $follows,
+        return response()->json(['user' => $user, 'events' => $events, 'eventCount' => $eventCount, 'follows' => $follows,
             'followers' => $followersCount, 'following' => $followingCount]);
     }
 
@@ -83,7 +84,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request)
     {
-         //
+        //
         $user = auth()->user();
 
         $user->update($request->all());

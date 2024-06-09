@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Ticket;
+namespace App\Http\Controllers\Api\V1\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AttendeeResource;

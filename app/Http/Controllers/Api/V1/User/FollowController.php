@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\V1\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FollowController extends Controller
@@ -20,9 +21,11 @@ class FollowController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index(User $user): JsonResponse
     {
-        return auth()->user()->following()->toggle($user->profile);
+        $action = auth()->user()->following()->toggle($user->profile);
+
+        return response()->json($action, 201);
     }
 
     public function followers()

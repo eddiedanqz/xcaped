@@ -10,7 +10,13 @@ use App\Http\Controllers\Api\V1\Event\SaveEventController;
 use App\Http\Controllers\Api\V1\Event\TicketController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Home\HomeController;
+use App\Http\Controllers\Api\V1\Notification\UserNotificationController;
 use App\Http\Controllers\Api\V1\Payment\PaymentController;
+use App\Http\Controllers\Api\V1\Search\FollowersController;
+use App\Http\Controllers\Api\V1\Search\SearchController;
+use App\Http\Controllers\Api\V1\Ticket\MyTicketController;
+use App\Http\Controllers\Api\V1\User\FollowController;
+use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Withdrawal\PaymentMethodController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,11 +46,13 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
         return $request->user();
     });
 
-    Route::get('/explore', [HomeController::class, 'index']);
-    Route::get('/nearby', [HomeController::class, 'nearby']);
-    Route::get('/live', [HomeController::class, 'live']);
-    Route::get('/events/following', [HomeController::class, 'following']);
-    Route::get('/events/following/{id}', [HomeController::class, 'calendar']);
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/explore', 'index');
+        Route::get('/nearby', 'nearby');
+        Route::get('/live', 'live');
+        Route::get('/events/following', 'following');
+        Route::get('/events/following/{id}', 'calendar');
+    });
 
     Route::get('/category/event/{id}', [CategoryEventController::class, '__invoke']);
 
@@ -73,21 +81,32 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
         Route::get('/ticket/{id}', '@edit');
     });
 
-    Route::get('/search', 'Api\Search\SearchController@search');
-    Route::get('/categories', 'Api\Category\CategoryController@index');
+    Route::controller(SearchController::class)->group(function () {
+        Route::get('/search', 'search');
+    });
 
-    Route::post('/profile/photo/update', 'Api\User\UserController@updatePhoto');
-    Route::post('/profile/update', 'Api\User\UserController@update');
-    Route::post('/profile/password/', 'Api\User\UserController@updatePassword');
-    Route::get('/profile/{user}', 'Api\User\UserController@index');
-    Route::get('/profile/users', 'Api\User\FollowController@people');
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/categories', 'index');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::post('/profile/photo/update', 'updatePhoto');
+        Route::post('/profile/update', 'update');
+        Route::post('/profile/password/', 'updatePassword');
+        Route::get('/profile/{user}', 'index');
+    });
 
     //follow user
-    Route::post('/follow/{user}/', 'Api\User\FollowController@index');
-    Route::get('/followers/search', 'Api\Search\FollowersController@search');
-    Route::get('/followers/', 'Api\User\FollowController@followers');
-    Route::get('/account/fans/{id}', 'Api\User\FollowController@people');
+    Route::controller(FollowController::class)->group(function () {
+        //   Route::get('/profile/users', 'Api\User\FollowController@people');
+        Route::post('/follow/{user}/', 'Api\User\FollowController@index');
+        Route::get('/followers/', 'Api\User\FollowController@followers');
+        Route::get('/account/fans/{id}', 'Api\User\FollowController@people');
+    });
 
+    Route::controller(FollowersController::class)->group(function () {
+        Route::get('/followers/search', 'search');
+    });
     //
     Route::apiResources(['withdrawal' => 'Api\User\PaymentDetailController']);
 
@@ -103,18 +122,25 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
         Route::post('/update/order/{id}', 'update');
     });
 
-    Route::get('/my-tickets', 'Api\Ticket\MyTicketController@index');
-    Route::get('/my-ticket/{id}', 'Api\Ticket\MyTicketController@show');
-    Route::post('/ticket/share/{attendee}', 'Api\Ticket\MyTicketController@update');
+    Route::controller(MyTicketController::class)->group(function () {
+        Route::get('/my-tickets', 'index');
+        Route::get('/my-ticket/{id}', 'show');
+        Route::post('/ticket/share/{attendee}', 'update');
+    });
+
     //
     Route::get('/attendees/{event}', 'Api\Report\AttendeeController@index');
     Route::post('/attendee/checkin/', 'Api\Report\AttendeeController@checkin')->name('checkin');
     Route::get('/report/{event}', 'Api\Report\DashboardController@index');
     Route::get('/search/attendee/', 'Api\Search\AttendeeController@search');
+
     //Notification
-    Route::get('/notifications/', 'Api\Notification\UserNotificationController@index');
-    Route::get('/notifications/read', 'Api\Notification\UserNotificationController@read');
-    Route::delete('/notifications/{uuid}', 'Api\Notification\UserNotificationController@delete');
+    Route::controller(UserNotificationController::class)->group(function () {
+        Route::get('/notifications/', 'index');
+        Route::get('/notifications/read', 'read');
+        Route::delete('/notifications/{uuid}', 'delete');
+    });
+
     //Invites
     Route::get('/invitations/all/', 'Api\Event\InvitationsController@index');
     Route::post('/invitations/send/', 'Api\Event\InvitationsController@store');
@@ -136,5 +162,5 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     });
 
     //Logout
-    Route::post('/logout', 'Api\Auth\AuthController@logout');
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

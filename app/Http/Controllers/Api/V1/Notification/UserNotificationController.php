@@ -1,32 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\Api\Notification;
+namespace App\Http\Controllers\Api\V1\Notification;
 
 use App\Http\Controllers\Controller;
 use DB;
+use Illuminate\Http\JsonResponse;
 
 class UserNotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return auth()->user()->notifications()->paginate(10);
+        $notifications = auth()->user()->notifications()->paginate(10);
+
+        return response()->json($notifications, 200);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function read()
+    public function read(): JsonResponse
     {
         auth()->user()->unreadNotifications->markAsRead();
 
-        return auth()->user()->notifications;
+        $notifications = auth()->user()->notifications;
+
+        return response()->json($notifications, 200);
     }
 
     /**
@@ -49,8 +50,8 @@ class UserNotificationController extends Controller
     public function delete($id)
     {
         DB::table('notifications')
-        ->where('id', $id)
-        ->delete();
+            ->where('id', $id)
+            ->delete();
 
         return response('Deleted', 201);
     }

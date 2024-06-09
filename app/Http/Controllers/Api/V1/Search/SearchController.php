@@ -1,40 +1,41 @@
 <?php
 
-namespace App\Http\Controllers\Api\Search;
+namespace App\Http\Controllers\Api\V1\Search;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Searchable\ModelSearchAspect;
 use Spatie\Searchable\Search;
 
 class SearchController extends Controller
 {
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         // return $request;
 
         $searchResults = (new Search())
             ->registerModel(Event::class, function (ModelSearchAspect $modelSearchAspect) use ($request) {
                 $modelSearchAspect
-                ->addSearchableAttribute('title')
-                ->addSearchableAttribute('venue')
+                    ->addSearchableAttribute('title')
+                    ->addSearchableAttribute('venue')
                    //->published()
-                   ->where('venue', 'Like', '%'.$request['venue'].'%')
-                   ->where('category_id', 'Like', '%'.$request['category'].'%')
-                   ->dateFilter($request['date'])
-                   ->with('category');
+                    ->where('venue', 'Like', '%'.$request['venue'].'%')
+                    ->where('category_id', 'Like', '%'.$request['category'].'%')
+                    ->dateFilter($request['date'])
+                    ->with('category');
             })
-                ->registerModel(User::class, function (ModelSearchAspect $modelSearchAspect) {
-                    $modelSearchAspect
+            ->registerModel(User::class, function (ModelSearchAspect $modelSearchAspect) {
+                $modelSearchAspect
                     ->addSearchableAttribute('fullname')
                     ->addSearchableAttribute('username')
                     ->with('profile');
-                })
+            })
             ->limitAspectResults(30)
             ->search($request['query']);
 
-        return $searchResults;
+        return response()->json($searchResults, 200);
     }
 }
