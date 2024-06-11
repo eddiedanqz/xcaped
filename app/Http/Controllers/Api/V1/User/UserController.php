@@ -57,14 +57,12 @@ class UserController extends Controller
         $user = auth()->user();
         $data = $request->validated();
 
-        if ($request->hasFile('avatar')) {
-            $user->profile
-                ->getFirstMedia('avatar')
-                ?->delete();
+        $user->profile
+            ->getFirstMedia('avatar')
+            ?->delete();
 
-            $user->profile->addMedia($data['avatar'])
-                ->toMediaCollection('avatar');
-        }
+        $user->profile->addMedia($data['image'])
+            ->toMediaCollection('avatar');
 
         return UserResource::make($user);
     }
