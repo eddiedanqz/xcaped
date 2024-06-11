@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Profile extends Model
+class Profile extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory,InteractsWithMedia;
 
     //
     /**
@@ -19,6 +22,8 @@ class Profile extends Model
         'profilePhoto', 'bio', 'location', 'user_id', 'phone',
     ];
 
+    protected $appends = ['avatar'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -28,11 +33,12 @@ class Profile extends Model
     {
         return $this->belongsToMany(User::class);
     }
-    // public function banner(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn () => $this->getFirstMediaUrl('avatar')
-    //             ?: "https://ui-avatars.com/api/?name={$this->title}&background=random&size=150"
-    //     );
-    // }
+
+    public function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getFirstMediaUrl('avatar')
+                ?: "https://ui-avatars.com/api/?name={$this->user->fullname}&background=random&size=50&rounded=true"
+        );
+    }
 }

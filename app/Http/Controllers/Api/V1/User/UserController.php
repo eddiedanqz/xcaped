@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\EventResource;
@@ -10,7 +11,6 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ImageUploader;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,9 +28,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id): JsonResponse
+    public function index(User $user): JsonResponse
     {
-        $user = User::find($id);
         $query = $user->events()->paginate(3);
 
         $events = EventResource::collection($query);
@@ -53,24 +52,19 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updatePhoto(Request $request)
+    public function updatePhoto(UpdateImageRequest $request)
     {
         $user = auth()->user();
+        $data = $request->validated();
 
-        $name = $request->file('image')->store('/images/uploads', 'public');
-        $nameArray = explode('/', $name);
-        $filename = array_pop($nameArray);
+        if ($request->hasFile('avatar')) {
+            $user->profile
+                ->getFirstMedia('avatar')
+                ?->delete();
 
-        $currentPhoto = $user->profile->profilePhoto;
-        //if user already has image delete it
-        $userPhoto = public_path('storage/image/uploads/').$currentPhoto;
-
-        Storage::delete($userPhoto);
-        if (file_exists($userPhoto)) {
-            @unlink($userPhoto);
+            $user->profile->addMedia($data['avatar'])
+                ->toMediaCollection('avatar');
         }
-
-        $user->profile->update(['profilePhoto' => $filename]);
 
         return UserResource::make($user);
     }

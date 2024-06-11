@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UserSettings;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,13 +9,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Laravel\Sanctum\HasApiTokens;
-use Qirolab\Laravel\Reactions\Traits\Reacts;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
 class User extends Authenticatable implements HasName, Searchable
 {
-    use HasApiTokens, HasFactory, Notifiable, Reacts ,UserSettings;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

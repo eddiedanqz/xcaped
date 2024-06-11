@@ -92,7 +92,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     });
 
     Route::controller(UserController::class)->group(function () {
-        Route::post('/profile/photo/update', 'updatePhoto');
+        Route::put('/photo/update', 'updatePhoto');
         Route::post('/profile/update', 'update');
         Route::post('/profile/password/', 'updatePassword');
         Route::get('/profile/{user}', 'index');

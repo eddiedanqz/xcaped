@@ -67,13 +67,6 @@ class Event extends Model implements HasMedia, Searchable
         return $this->hasMany(Withdrawal::class);
     }
 
-    // public function banner()
-    // {
-    //     $imagePath = ($this->banner) ? 'user/uploads/'.$this->banner : 'imageonline-co-placeholder-image.jpg';
-
-    //     return '/uploads/'.$imagePath;
-    // }
-
     public function banner(): Attribute
     {
         return Attribute::make(
