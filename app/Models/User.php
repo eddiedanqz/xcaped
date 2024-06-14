@@ -24,7 +24,7 @@ class User extends Authenticatable implements HasName, Searchable
     protected $fillable = [
         'fullname', 'type',
         'email', 'role', 'username',
-        'password',
+        'password', 'settings',
     ];
 
     /**
@@ -53,8 +53,8 @@ class User extends Authenticatable implements HasName, Searchable
         'notifications' => [
             'email' => true,
         ],
-        'payment_method' => '',
         'payment_details' => [
+            'method' => '',
             'phone_number' => '',
             'bank_details' => [
                 'account_number' => '',
@@ -128,23 +128,23 @@ class User extends Authenticatable implements HasName, Searchable
         return $this->fullname;
     }
 
-    public function getSetting($key, $default = null)
-    {
-        return $this->settings->get($key, $default);
-    }
+    // public function getSetting($key, $default = null)
+    // {
+    //     return $this->settings->get($key, $default);
+    // }
 
-    public function setSettingsAttribute($value)
-    {
-        $this->attributes['settings'] = json_encode($value);
-    }
+    // public function setSettingsAttribute($value)
+    // {
+    //     $this->attributes['settings'] = json_encode($value);
+    // }
 
-    public function setSetting($key, $value)
-    {
-        $settings = $this->settings;
-        $settings->put($key, $value);
-        $this->settings = $settings;
-        $this->save();
-    }
+    // public function setSetting($key, $value)
+    // {
+    //     $settings = $this->settings;
+    //     $settings->put($key, $value);
+    //     $this->settings = $settings;
+    //     $this->save();
+    // }
 
     public function getSettingsAttribute($value)
     {
@@ -152,11 +152,11 @@ class User extends Authenticatable implements HasName, Searchable
         $settings = json_decode($value, true) ?? [];
 
         // Merge with default settings
-        return collect(array_merge_recursive($this->defaultSettings, $settings));
+        return collect($settings);
     }
 
-    public function hasSetting($key)
-    {
-        return Arr::has($this->settings->toArray(), $key);
-    }
+    // public function hasSetting($key)
+    // {
+    //     return Arr::has($this->settings->toArray(), $key);
+    // }
 }

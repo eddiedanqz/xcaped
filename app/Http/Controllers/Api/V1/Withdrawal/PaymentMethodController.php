@@ -7,6 +7,7 @@ use App\Http\Requests\PaymentDetailRequest;
 use App\Traits\CreateRecipient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentMethodController extends Controller
 {
@@ -41,17 +42,17 @@ class PaymentMethodController extends Controller
     public function store(PaymentDetailRequest $request): JsonResponse
     {
         $user = auth()->user();
-
         $data = $request->validated();
 
-        if ($data['settings']['payment_method'] === 'Mobile Money') {
-            $user->settings->put('payment_method', $data['settings']['payment_method']);
-            $user->settings->put('payment_details->phone_number', $data['settings']['payment_details']['phone_number'],
-            );
-            $user->save();
-        } else {
-            $user->setSetting($key, $value);
-        }
+        DB::table('users')
+            ->where('id', $user->id)
+            ->update([
+                'settings->payment_details->payment_method' => $data['payment_method'],
+                'settings->payment_details->phone_number' => $data['phone_number'],
+                'settings->payment_details->bank_name' => $data['bank_name'],
+                'settings->payment_details->account_number' => $data['account_number'],
+                'settings->payment_details->bank_code' => $request->bank_code,
+            ]);
 
         return response()->json('Saved', 201);
     }

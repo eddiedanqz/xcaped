@@ -22,10 +22,10 @@ class PaymentDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'settings.payment_method' => ['required', 'string'],
-            'settings.payment_details.phone_number' => ['nullable', 'sometimes', 'string'],
-            'settings.payment_details.bank_details.account_number' => ['nullable', 'sometimes', 'string'],
-            'settings.payment_details.bank_details.bank_name' => ['nullable', 'sometimes', 'string'],
+            'payment_method' => ['required', 'string'],
+            'phone_number' => ['nullable', 'sometimes', 'string'],
+            'account_number' => ['nullable', 'sometimes', 'string'],
+            'bank_name' => ['nullable', 'sometimes', 'string'],
         ];
     }
 }
