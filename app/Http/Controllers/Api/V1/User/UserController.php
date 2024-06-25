@@ -64,7 +64,7 @@ class UserController extends Controller
         $user->profile->addMedia($data['image'])
             ->toMediaCollection('avatar');
 
-        return UserResource::make($user);
+        return  response()->json(UserResource::make($user),200);
     }
 
     /**
@@ -82,7 +82,7 @@ class UserController extends Controller
         $user->update($request->all());
         $user->profile->update($request->all());
 
-        return UserResource::make($user);
+        return response()->json(UserResource::make($user),200);
     }
 
     /**
@@ -99,7 +99,7 @@ class UserController extends Controller
             $user->update(['password' => Hash::make($request['password'])]);
         }
 
-        return ['message' => 'Password Updated'];
+        return response()->json(['message' => 'Password Updated'],201);
     }
 
     /**

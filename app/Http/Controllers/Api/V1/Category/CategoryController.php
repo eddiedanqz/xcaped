@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Category;
+namespace App\Http\Controllers\Api\V1\Category;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Http\Resources\CategoryResource;
-
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -21,6 +19,4 @@ class CategoryController extends Controller
 
         return CategoryResource::collection($category);
     }
-
-
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1\Withdrawal;
 
-use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Order;
 use App\Models\Withdrawal;
-use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
+use App\Settings\GeneralSettings;
+use App\Http\Controllers\Controller;
 
 class WithdrawalController extends Controller
 {
@@ -22,7 +23,7 @@ class WithdrawalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(Event $event): void
     {
         $user = User::findOrFail($event->user_id);
         $method = $user->settings->get('payment_method');
@@ -37,15 +38,14 @@ class WithdrawalController extends Controller
         // Perform your update operations here, for example:
         Withdrawal::create([
             'order_no' => paystack()->genTranxRef(),
-            'organizer' => $event->author,
             'event_id' => $event->id,
-            'status_id' => $event->status_id,
             'method' => $method,
             'details' => $details,
             'commission' => $rate,
             'amount' => $gross,
             'actual_amount' => $net,
             'ended_at' => $event->end_date,
+            'event_status' => $event->status_id,
         ]);
     }
 

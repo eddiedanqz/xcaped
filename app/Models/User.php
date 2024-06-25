@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Arr;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
@@ -128,24 +127,6 @@ class User extends Authenticatable implements HasName, Searchable
         return $this->fullname;
     }
 
-    // public function getSetting($key, $default = null)
-    // {
-    //     return $this->settings->get($key, $default);
-    // }
-
-    // public function setSettingsAttribute($value)
-    // {
-    //     $this->attributes['settings'] = json_encode($value);
-    // }
-
-    // public function setSetting($key, $value)
-    // {
-    //     $settings = $this->settings;
-    //     $settings->put($key, $value);
-    //     $this->settings = $settings;
-    //     $this->save();
-    // }
-
     public function getSettingsAttribute($value)
     {
         // Decode the JSON value from the database
@@ -154,9 +135,4 @@ class User extends Authenticatable implements HasName, Searchable
         // Merge with default settings
         return collect($settings);
     }
-
-    // public function hasSetting($key)
-    // {
-    //     return Arr::has($this->settings->toArray(), $key);
-    // }
 }

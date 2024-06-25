@@ -28,7 +28,7 @@ class PaymentMethodController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): JsonResponse
+    public function create()
     {
         //fetch list of telcos/bank
         return $this->getList();
@@ -39,7 +39,24 @@ class PaymentMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(PaymentDetailRequest $request): JsonResponse
+    public function storeBank(PaymentDetailRequest $request): JsonResponse
+    {
+        $user = auth()->user();
+        $data = $request->validated();
+
+        DB::table('users')
+            ->where('id', $user->id)
+            ->update([
+                'settings->payment_details->payment_method' => $data['payment_method'],
+                'settings->payment_details->bank_name' => $data['bank_name'],
+                'settings->payment_details->account_number' => $data['account_number'],
+                'settings->payment_details->bank_code' => $request->bank_code,
+            ]);
+
+        return response()->json('Saved', 201);
+    }
+
+    public function storeMomo(PaymentDetailRequest $request): JsonResponse
     {
         $user = auth()->user();
         $data = $request->validated();
@@ -49,13 +66,11 @@ class PaymentMethodController extends Controller
             ->update([
                 'settings->payment_details->payment_method' => $data['payment_method'],
                 'settings->payment_details->phone_number' => $data['phone_number'],
-                'settings->payment_details->bank_name' => $data['bank_name'],
-                'settings->payment_details->account_number' => $data['account_number'],
-                'settings->payment_details->bank_code' => $request->bank_code,
             ]);
 
         return response()->json('Saved', 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -90,6 +105,11 @@ class PaymentMethodController extends Controller
         $settings->put('theme', 'dark');
         $user->settings = $settings;
         $user->save();
+
+        return new JsonResponse(
+            data:'Updated',
+             status:201
+        );
     }
 
     /**
