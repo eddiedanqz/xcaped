@@ -15,12 +15,8 @@ class CreateInterestedsTable extends Migration
     {
         Schema::create('interested', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
-            $table->unsignedBigInteger('user_id');
-
-            $table->foreign('event_id')
-            ->references('id')->on('events')
-            ->onDelete('cascade');
+            $table->foreignUuId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

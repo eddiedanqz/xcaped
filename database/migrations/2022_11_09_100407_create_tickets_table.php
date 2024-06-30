@@ -16,7 +16,7 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignUuId('event_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->integer('capacity')->unsigned();
             $table->date('available_from')->nullable();

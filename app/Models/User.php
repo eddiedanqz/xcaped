@@ -47,20 +47,20 @@ class User extends Authenticatable implements HasName, Searchable
     ];
 
     // Default settings
-    private $defaultSettings = [
-        'theme' => 'light',
-        'notifications' => [
-            'email' => true,
-        ],
-        'payment_details' => [
-            'method' => '',
-            'phone_number' => '',
-            'bank_details' => [
-                'account_number' => '',
-                'bank_name' => '',
-            ],
-        ],
-    ];
+    // private $defaultSettings = [
+    //     'theme' => 'light',
+    //     'notifications' => [
+    //         'email' => true,
+    //     ],
+    //     'payment_details' => [
+    //         'method' => '',
+    //         'phone_number' => '',
+    //         'bank_details' => [
+    //             'account_number' => '',
+    //             'bank_name' => '',
+    //         ],
+    //     ],
+    // ];
 
     public function events()
     {
@@ -127,12 +127,12 @@ class User extends Authenticatable implements HasName, Searchable
         return $this->fullname;
     }
 
-    public function getSettingsAttribute($value)
-    {
-        // Decode the JSON value from the database
-        $settings = json_decode($value, true) ?? [];
+    // public function getSettingsAttribute($value)
+    // {
+    //     // Decode the JSON value from the database
+    //     $settings = json_decode($value, true) ?? [];
 
-        // Merge with default settings
-        return collect($settings);
-    }
+    //     // Merge with default settings
+    //     return collect($settings);
+    // }
 }

@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\V1\Event\EventStatusController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
 use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Search\AttendeeSearchController;
+use App\Http\Controllers\Api\V1\Withdrawal\WithdrawalController;
 use App\Http\Controllers\Api\V1\Withdrawal\PaymentMethodController;
 use App\Http\Controllers\Api\V1\Notification\UserNotificationController;
 
@@ -111,8 +112,10 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::controller(FollowersController::class)->group(function () {
         Route::get('/followers/search', 'search');
     });
-    //
-    // Route::apiResources(['withdrawal' => 'Api\User\PaymentDetailController']);
+
+    Route::controller(WithdrawalController::class)->group(function () {
+        Route::post('/withdrawal', 'store');
+    });
 
     //Interested event
     Route::controller(SaveEventController::class)->group(function () {

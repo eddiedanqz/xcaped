@@ -15,8 +15,8 @@ class CreateAttendeesTable extends Migration
     {
         Schema::create('attendees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignUuId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignUuId('event_id')->constrained()->onDelete('cascade');
             $table->foreignUuId('ticket_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('fullname');

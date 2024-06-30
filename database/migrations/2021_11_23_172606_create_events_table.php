@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\EventStatus;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateEventsTable extends Migration
 {
@@ -14,7 +15,7 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('slug')->unique();
@@ -25,11 +26,11 @@ class CreateEventsTable extends Migration
             $table->time('start_time');
             $table->date('end_date')->nullable();
             $table->time('end_time')->nullable();
+            $table->string('status')->default(EventStatus::PENDING->value);
             $table->string('venue');
             $table->string('address')->nullable();
             $table->double('address_latitude')->nullable();
             $table->double('address_longitude')->nullable();
-            $table->foreignId('status_id')->constrained();
             $table->rememberToken();
             $table->timestamps();
         });

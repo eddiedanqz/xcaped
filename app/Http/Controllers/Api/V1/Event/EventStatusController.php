@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1\Event;
 
-use App\Http\Controllers\Controller;
 use App\Models\Event;
-use App\Models\EventStatus;
+use App\Enums\EventStatus;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class EventStatusController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $status = EventStatus::where('slug', $request['slug'])->first();
 
         $event = Event::findOrFail($request['id']);
-        $event->update(['status_id' => $status->id]);
+        $event->update(['status_id' => EventStatus::PUBLISHED->value]);
 
         return response('Event Published', 201);
     }

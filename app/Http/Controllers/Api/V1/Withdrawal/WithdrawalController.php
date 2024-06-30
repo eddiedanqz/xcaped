@@ -9,6 +9,7 @@ use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use App\Settings\GeneralSettings;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class WithdrawalController extends Controller
 {
@@ -23,11 +24,14 @@ class WithdrawalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Event $event): void
+    public function store(Request $request): JsonResponse
     {
-        $user = User::findOrFail($event->user_id);
-        $method = $user->settings->get('payment_method');
-        $details = $user->settings->get('payment_details');
+        $user = auth()->user();
+        $method = $user->settings['payment_method'];
+
+        $details = $user->settings['payment_details'];
+
+        $event = Event::findOrFail($request->id);
 
         $rate = app(GeneralSettings::class)->commission;
 
@@ -47,6 +51,8 @@ class WithdrawalController extends Controller
             'ended_at' => $event->end_date,
             'event_status' => $event->status_id,
         ]);
+
+        return response()->json('Success', 201);
     }
 
     /**

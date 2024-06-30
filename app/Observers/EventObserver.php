@@ -21,7 +21,6 @@ class EventObserver
     /**
      * Handle the event "creating" event.
      *
-     * @param  \App\Event  $event
      * @return void
      */
     public function creating(Event $event)
@@ -29,8 +28,8 @@ class EventObserver
         // $event->user_id = auth()->user()->id;
         $event->slug = Str::slug($event->title).time();
 
-        $status = EventStatus::where('slug', 'pending')->first();
-        $event->status_id = $status->id;
+        // $status = EventStatus::where('slug', 'pending')->first();
+        // $event->status_id = $status->id;
 
     }
 

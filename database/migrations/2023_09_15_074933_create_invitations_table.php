@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('event_id')->constrained();
+            $table->foreignId('user_id')->constrained()->constrained()->onDelete('cascade');
+            $table->foreignUuId('event_id')->constrained();
             $table->string('title');
             $table->string('banner')->nullable();
             $table->timestamps();

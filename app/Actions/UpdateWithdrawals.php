@@ -39,7 +39,7 @@ final class UpdateWithdrawals
                 'order_no' => paystack()->genTranxRef(),
                 'organizer' => $event->author,
                 'event_id' => $event->id,
-                'status_id' => $event->status_id,
+                'event_status' => $event->status,
                 'method' => $method,
                 'details' => $details,
                 'commission' => $rate,

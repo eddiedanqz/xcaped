@@ -15,10 +15,10 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('order_no')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignUuId('event_id')->constrained()->onDelete('cascade');
             $table->string('full_name');
             $table->string('user_email');
             $table->float('grand_total');

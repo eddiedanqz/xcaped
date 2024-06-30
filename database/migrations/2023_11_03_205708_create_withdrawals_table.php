@@ -17,15 +17,15 @@ return new class extends Migration
         Schema::create('withdrawals', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('order_no')->unique();
-            $table->foreignId('event_id')->constrained()->unique();
-            $table->string('status')->default(WithdrawalStatus::PENDING->value);
+            $table->foreignUuId('event_id')->constrained()->unique();
+            $table->string('event_status');
             $table->string('method');
             $table->json('details');
             $table->integer('commission');
             $table->double('amount', 15, 2);
+            $table->string('status')->default(WithdrawalStatus::PENDING->value);
             $table->double('actual_amount', 15, 2);
             $table->date('ended_at');
-            $table->foreignId('status_id')->constrained();
             $table->timestamps();
         });
     }

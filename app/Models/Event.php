@@ -12,10 +12,11 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Event extends Model implements HasMedia, Searchable
 {
-    use HasFactory,InteractsWithMedia;
+    use HasFactory,InteractsWithMedia,HasUuids;
 
     //
     protected $fillable = [
@@ -54,7 +55,7 @@ class Event extends Model implements HasMedia, Searchable
 
     public function status()
     {
-        return $this->belongsTo(EventStatus::class);
+        return $this->belongsTo(Status::class);
     }
 
     public function ticket()
