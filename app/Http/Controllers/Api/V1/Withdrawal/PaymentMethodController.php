@@ -39,7 +39,7 @@ class PaymentMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function storeBank(PaymentDetailRequest $request): JsonResponse
+    public function store(PaymentDetailRequest $request): JsonResponse
     {
         $user = auth()->user();
         $data = $request->validated();
@@ -47,30 +47,11 @@ class PaymentMethodController extends Controller
         DB::table('users')
             ->where('id', $user->id)
             ->update([
-                'settings->payment_details->payment_method' => $data['payment_method'],
-                'settings->payment_details->bank_name' => $data['bank_name'],
-                'settings->payment_details->account_number' => $data['account_number'],
-                'settings->payment_details->bank_code' => $request->bank_code,
+                'settings->payment_details' => $data['payment_details'],
             ]);
 
         return response()->json('Saved', 201);
     }
-
-    public function storeMomo(PaymentDetailRequest $request): JsonResponse
-    {
-        $user = auth()->user();
-        $data = $request->validated();
-
-        DB::table('users')
-            ->where('id', $user->id)
-            ->update([
-                'settings->payment_details->payment_method' => $data['payment_method'],
-                'settings->payment_details->phone_number' => $data['phone_number'],
-            ]);
-
-        return response()->json('Saved', 201);
-    }
-
 
     /**
      * Display the specified resource.
@@ -107,8 +88,8 @@ class PaymentMethodController extends Controller
         $user->save();
 
         return new JsonResponse(
-            data:'Updated',
-             status:201
+            data: 'Updated',
+            status: 201
         );
     }
 

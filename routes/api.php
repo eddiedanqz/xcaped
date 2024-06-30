@@ -1,30 +1,30 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
-use App\Http\Controllers\Api\V1\Home\HomeController;
-use App\Http\Controllers\Api\V1\User\UserController;
+use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
+use App\Http\Controllers\Api\V1\Category\CategoryController;
 use App\Http\Controllers\Api\V1\Event\EventController;
+use App\Http\Controllers\Api\V1\Event\EventStatusController;
 use App\Http\Controllers\Api\V1\Event\OrderController;
-use App\Http\Controllers\Api\V1\User\FollowController;
-use App\Http\Controllers\Api\V1\Event\TicketController;
-use App\Http\Controllers\Api\V1\User\MyEventController;
-use App\Http\Controllers\Api\V1\Search\SearchController;
 use App\Http\Controllers\Api\V1\Event\SaveEventController;
+use App\Http\Controllers\Api\V1\Event\TicketController;
+use App\Http\Controllers\APi\V1\Home\CategoryEventController;
+use App\Http\Controllers\Api\V1\Home\HomeController;
+use App\Http\Controllers\Api\V1\Notification\UserNotificationController;
 use App\Http\Controllers\Api\V1\Payment\PaymentController;
 use App\Http\Controllers\Api\V1\Report\AttendeeController;
-use App\Http\Controllers\Api\V1\Ticket\MyTicketController;
 use App\Http\Controllers\Api\V1\Report\DashboardController;
-use App\Http\Controllers\Api\V1\Search\FollowersController;
-use App\Http\Controllers\Api\V1\Category\CategoryController;
-use App\Http\Controllers\Api\V1\Event\EventStatusController;
-use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
-use App\Http\Controllers\APi\V1\Home\CategoryEventController;
 use App\Http\Controllers\Api\V1\Search\AttendeeSearchController;
-use App\Http\Controllers\Api\V1\Withdrawal\WithdrawalController;
+use App\Http\Controllers\Api\V1\Search\FollowersController;
+use App\Http\Controllers\Api\V1\Search\SearchController;
+use App\Http\Controllers\Api\V1\Ticket\MyTicketController;
+use App\Http\Controllers\Api\V1\User\FollowController;
+use App\Http\Controllers\Api\V1\User\MyEventController;
+use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Withdrawal\PaymentMethodController;
-use App\Http\Controllers\Api\V1\Notification\UserNotificationController;
+use App\Http\Controllers\Api\V1\Withdrawal\WithdrawalController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -170,8 +170,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     //Payment
     Route::controller(PaymentMethodController::class)->group(function () {
         Route::get('/settings/payments', 'index');
-        Route::post('/payments/set-bank', 'storeBank');
-        Route::post('/payment/set-momo', 'storeMomo');
+        Route::post('/payment/method', 'store');
     });
 
     Route::controller(PaymentController::class)->group(function () {

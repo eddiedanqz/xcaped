@@ -66,8 +66,10 @@ class WithdrawalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Withdrawal $withdrawal): JsonResponse
     {
-        //
+        $withdrawal->delete();
+
+        return response()->json('Data deleted', 201);
     }
 }
