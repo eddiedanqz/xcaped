@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
-use App\Models\EventStatus;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
+use App\Models\Category;
+use App\Enums\EventStatus;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Event>
@@ -42,12 +42,11 @@ class EventFactory extends Factory
             'end_date' => $endDate,
             'end_time' => $this->faker->time('H:i'),
             'venue' => $this->faker->name(),
-            'banner' => $this->faker->imageUrl(900, 580, 'animals', true),
             'address' => $this->faker->address(),
             'address_latitude' => $latitude,
             'address_longitude' => $longitude,
             'type' => 'public',
-            'status_id' => EventStatus::factory()->create(),
+            'status' => EventStatus::PUBLISHED,
             'user_id' => User::factory()->create(),
         ];
     }

@@ -38,7 +38,7 @@ class OrderController extends Controller
 
             return response(['message' => 'Order Created', 'order' => $order], 201);
         } catch (\Exception $e) {
-            return response(['message' => 'Failed to create orde'], 400);
+            return response(['message' => 'Failed to create order'], 400);
         }
 
     }

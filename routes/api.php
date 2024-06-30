@@ -170,8 +170,8 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     //Payment
     Route::controller(PaymentMethodController::class)->group(function () {
         Route::get('/settings/payments', 'index');
-        Route::post('/settings/payments', 'storeBank');
-        Route::post('/settings/payment/momo', 'storeMomo');
+        Route::post('/payments/set-bank', 'storeBank');
+        Route::post('/payment/set-momo', 'storeMomo');
     });
 
     Route::controller(PaymentController::class)->group(function () {

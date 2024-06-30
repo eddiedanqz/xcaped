@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1\Withdrawal;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Order;
 use App\Models\Withdrawal;
-use Illuminate\Http\Request;
 use App\Settings\GeneralSettings;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class WithdrawalController extends Controller
@@ -27,7 +26,8 @@ class WithdrawalController extends Controller
     public function store(Request $request): JsonResponse
     {
         $user = auth()->user();
-        $method = $user->settings['payment_method'];
+
+        $method = $user->settings['payment_details']['payment_method'];
 
         $details = $user->settings['payment_details'];
 
@@ -49,7 +49,7 @@ class WithdrawalController extends Controller
             'amount' => $gross,
             'actual_amount' => $net,
             'ended_at' => $event->end_date,
-            'event_status' => $event->status_id,
+            'event_status' => $event->status,
         ]);
 
         return response()->json('Success', 201);

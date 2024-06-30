@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Withdrawal extends Model
 {
@@ -17,9 +17,8 @@ class Withdrawal extends Model
      *
      * @var array
      */
-    protected $fillable = ['order_no', 'event_id', 'status_id', 'status', 'method',
+    protected $fillable = ['order_no', 'event_id', 'event_status', 'status', 'method',
         'details', 'commission', 'amount', 'actual_amount', 'ended_at'];
-
 
     protected $casts = [
         'details' => AsCollection::class,
